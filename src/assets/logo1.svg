@@ -1,0 +1,134 @@
+<svg width="560" height="480" viewBox="0 0 560 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1a2e"/>
+      <stop offset="100%" stop-color="#0e2342"/>
+    </linearGradient>
+    <linearGradient id="iconGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#a8c8f8"/>
+    </linearGradient>
+    <linearGradient id="rayGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5c842" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#f5c842" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="goldShine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffe066"/>
+      <stop offset="50%" stop-color="#f5c842"/>
+      <stop offset="100%" stop-color="#c8922a"/>
+    </linearGradient>
+    <linearGradient id="boxGrad1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a4a8a"/>
+      <stop offset="100%" stop-color="#0d2d5e"/>
+    </linearGradient>
+    <linearGradient id="boxGrad2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e5598"/>
+      <stop offset="100%" stop-color="#112f66"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background card -->
+  <rect x="0" y="0" width="560" height="480" rx="24" fill="url(#bgGrad)"/>
+
+  <!-- Subtle grid pattern -->
+  <g opacity="0.06" stroke="#4a9eff" stroke-width="0.5">
+    <line x1="100" y1="0" x2="100" y2="480"/>
+    <line x1="200" y1="0" x2="200" y2="480"/>
+    <line x1="300" y1="0" x2="300" y2="480"/>
+    <line x1="400" y1="0" x2="400" y2="480"/>
+    <line x1="0" y1="100" x2="560" y2="100"/>
+    <line x1="0" y1="200" x2="560" y2="200"/>
+    <line x1="0" y1="300" x2="560" y2="300"/>
+    <line x1="0" y1="400" x2="560" y2="400"/>
+  </g>
+
+  <!-- Light rays -->
+  <polygon points="280,60 220,180 200,180" fill="url(#rayGrad)" opacity="0.15"/>
+  <polygon points="280,60 250,190 230,190" fill="url(#rayGrad)" opacity="0.12"/>
+  <polygon points="280,60 310,190 330,190" fill="url(#rayGrad)" opacity="0.12"/>
+  <polygon points="280,60 340,180 360,180" fill="url(#rayGrad)" opacity="0.10"/>
+
+  <!-- Box icon with soft glow -->
+  <g filter="url(#softGlow)">
+    <!-- Front face -->
+    <path d="M180,165 L280,135 L380,165 L380,270 L280,300 L180,270 Z" fill="url(#iconGrad)" opacity="0.92"/>
+    <!-- Right face (shadow) -->
+    <path d="M380,165 L380,270 L280,300 L280,195 Z" fill="#4a7fbb" opacity="0.6"/>
+    <!-- Top face (lit) -->
+    <path d="M180,165 L280,135 L380,165 L280,195 Z" fill="white" opacity="0.95"/>
+    <!-- Fold lines -->
+    <line x1="280" y1="135" x2="280" y2="195" stroke="#0e2342" stroke-width="1.5" opacity="0.5"/>
+    <line x1="180" y1="165" x2="380" y2="165" stroke="#0e2342" stroke-width="1" opacity="0.3"/>
+  </g>
+
+  <!-- Small boxes inside (stock items) -->
+  <rect x="196" y="190" width="45" height="32" rx="3" fill="url(#boxGrad1)" opacity="0.9"/>
+  <rect x="248" y="185" width="45" height="37" rx="3" fill="url(#boxGrad2)" opacity="0.9"/>
+  <rect x="300" y="192" width="40" height="30" rx="3" fill="url(#boxGrad1)" opacity="0.9"/>
+
+  <!-- Gold star (Lumi = light) -->
+  <circle cx="280" cy="108" r="10" fill="url(#goldShine)" filter="url(#glow)"/>
+  <circle cx="280" cy="108" r="5" fill="white"/>
+  <!-- Star rays -->
+  <g stroke="#f5c842" stroke-width="1.5" stroke-linecap="round" opacity="0.8">
+    <line x1="280" y1="92"  x2="280" y2="85"/>
+    <line x1="280" y1="124" x2="280" y2="131"/>
+    <line x1="264" y1="108" x2="257" y2="108"/>
+    <line x1="296" y1="108" x2="303" y2="108"/>
+    <line x1="268" y1="96"  x2="263" y2="91"/>
+    <line x1="292" y1="96"  x2="297" y2="91"/>
+    <line x1="268" y1="120" x2="263" y2="125"/>
+    <line x1="292" y1="120" x2="297" y2="125"/>
+  </g>
+
+  <!-- Mini chart on front face (data/dashboard) -->
+  <polyline points="200,250 215,235 235,245 255,225 278,230"
+            fill="none" stroke="#f5c842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+  <circle cx="278" cy="230" r="3" fill="#f5c842"/>
+
+  <!-- LUMISTOCK text -->
+  <text x="280" y="350"
+        text-anchor="middle"
+        font-family="'Georgia', 'Times New Roman', serif"
+        font-size="42"
+        font-weight="700"
+        letter-spacing="3"
+        fill="white">LUMI<tspan fill="#f5c842">STOCK</tspan></text>
+
+  <!-- Tagline -->
+  <text x="280" y="378"
+        text-anchor="middle"
+        font-family="'Arial', sans-serif"
+        font-size="13"
+        letter-spacing="4"
+        fill="#6aadff"
+        opacity="0.85">GESTION INTELLIGENTE DES STOCKS</text>
+
+  <!-- Elegant separator -->
+  <line x1="140" y1="395" x2="240" y2="395" stroke="#2a5f9e" stroke-width="0.8"/>
+  <circle cx="280" cy="395" r="2.5" fill="#f5c842"/>
+  <line x1="320" y1="395" x2="420" y2="395" stroke="#2a5f9e" stroke-width="0.8"/>
+
+  <!-- ANSETech credit -->
+  <text x="280" y="425"
+        text-anchor="middle"
+        font-family="'Arial', sans-serif"
+        font-size="11"
+        letter-spacing="2"
+        fill="#4a7fbb"
+        opacity="0.7">by ANSE.Tech</text>
+
+  <!-- AT badge -->
+  <g opacity="0.5">
+    <rect x="500" y="445" width="42" height="24" rx="6" fill="none" stroke="#2a5f9e" stroke-width="1"/>
+    <text x="521" y="461" text-anchor="middle" font-family="'Arial', sans-serif" font-size="11" font-weight="700" fill="#6aadff" letter-spacing="1">AT</text>
+  </g>
+</svg>

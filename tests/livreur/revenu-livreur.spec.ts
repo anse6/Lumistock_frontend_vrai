@@ -1,0 +1,17 @@
+import { test } from '@playwright/test';
+
+test('test', async ({ page }) => {
+  await page.goto('http://localhost:5173/');
+  await page.getByRole('textbox', { name: 'Email' }).click();
+  await page.getByRole('textbox', { name: 'Email' }).fill('ansenana3@gmail.com');
+  await page.getByRole('textbox', { name: 'Mot de passe' }).click();
+  await page.getByRole('textbox', { name: 'Mot de passe' }).fill('123456789');
+  await page.getByRole('button', { name: 'Connectez-vous' }).click();
+  await page.getByRole('button', { name: 'Tableau de bord' }).click();
+  await page.getByRole('button', { name: 'Livraison' }).click();
+  await page.getByRole('button', { name: 'Tableau de bord' }).click();
+  await page.getByRole('button', { name: 'Jour' }).click();
+  await page.getByRole('button', { name: 'Mois' }).click();
+  await page.getByRole('button', { name: 'Annee' }).click();
+  await page.getByRole('button', { name: 'Semaine' }).click();
+});

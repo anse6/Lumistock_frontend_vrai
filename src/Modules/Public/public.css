@@ -1,0 +1,83 @@
+/* Site public : mise en page inspirée des pages produit d'Odoo (fond blanc,
+   grands titres avec un mot surligné, annotations manuscrites, captures de
+   l'application au centre). Couleur de marque : purple-950, celle de
+   l'application. Les jetons sont redéfinis ici, sur .site-public, pour ne pas
+   changer les écrans de l'application qui utilisent aussi `marque`. */
+.site-public {
+  --color-marque: #3b0764; /* purple-950 */
+  --color-marque-fonce: #2a0548;
+  --color-marque-50: #faf5ff;
+  --color-marque-100: #f3e8ff;
+  --color-marque-200: #e9d5ff;
+  --color-marque-300: #d8b4fe;
+  --color-marque-600: #7e22ce;
+  font-family: var(--font-texte);
+  color: var(--color-texte);
+  -webkit-font-smoothing: antialiased;
+}
+.site-public h1,
+.site-public h2,
+.site-public h3 {
+  font-family: var(--font-titre);
+  color: var(--color-encre);
+  text-wrap: balance;
+}
+
+/* Annotations écrites à la main (police Caveat). */
+.site-public .font-main {
+  font-family: "Caveat", "Comic Sans MS", cursive;
+}
+
+/* Mot surligné d'un coup de pinceau, derrière le texte. */
+.surligne {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  isolation: isolate;
+}
+.surligne > svg {
+  position: absolute;
+  left: -0.12em;
+  right: -0.12em;
+  width: calc(100% + 0.24em);
+  z-index: -1;
+  pointer-events: none;
+}
+.surligne-pinceau > svg {
+  bottom: 0.02em;
+  height: 0.62em;
+}
+.surligne-trait > svg {
+  bottom: -0.22em;
+  height: 0.32em;
+}
+
+/* Apparition au défilement : 400 ms, décalage par élément via --delai.
+   Rien ne bouge si l'utilisateur préfère réduire les animations. */
+[data-apparition] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  transition-delay: var(--delai, 0ms);
+}
+[data-apparition][data-visible] {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-apparition] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+html:has(.site-public) {
+  scroll-behavior: smooth;
+  scroll-padding-top: 128px;
+}
+@media (prefers-reduced-motion: reduce) {
+  html:has(.site-public) {
+    scroll-behavior: auto;
+  }
+}

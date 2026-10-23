@@ -1,0 +1,2329 @@
+{
+  "common": {
+    "months": [
+      "1月",
+      "2月",
+      "3月",
+      "4月",
+      "5月",
+      "6月",
+      "7月",
+      "8月",
+      "9月",
+      "10月",
+      "11月",
+      "12月"
+    ],
+    "days": [
+      "周日",
+      "周一",
+      "周二",
+      "周三",
+      "周四",
+      "周五",
+      "周六"
+    ],
+    "roles": {
+      "admin": "管理员",
+      "manager": "经理",
+      "livreur": "仓库管理员",
+      "staff": "员工",
+      "caissier": "收银员"
+    }
+  },
+  "login": {
+    "title": "登录",
+    "subtitle": "进入您的控制面板",
+    "emailLabel": "电子邮箱",
+    "emailPlaceholder": "you@email.com",
+    "emailRequired": "请输入电子邮箱",
+    "emailInvalid": "电子邮箱无效",
+    "passwordLabel": "密码",
+    "passwordPlaceholder": "••••••••",
+    "passwordRequired": "请输入密码",
+    "forgotPassword": "忘记密码？",
+    "submitBtn": "登录",
+    "loading": "加载中...",
+    "messages": {
+      "success": "登录成功！正在跳转...",
+      "wrongEmail": "电子邮箱地址无效",
+      "wrongPassword": "密码错误",
+      "invalidCreds": "登录信息无效",
+      "notFound": "未找到用户",
+      "serverError": "服务器连接错误",
+      "unknownError": "发生未知错误"
+    },
+    "sidebar": {
+      "welcome": "欢迎使用 LUMISTOCK",
+      "description": "您的库存管理应用。",
+      "logoAlt": "标志",
+      "logoMobileAlt": "移动端标志",
+      "logoTabletAlt": "平板标志",
+      "messengerAlt": "消息"
+    }
+  },
+  "delivery": {
+    "title": "我的销售",
+    "myDeliveries": "我的销售",
+    "selectedPeriod": "所选期间",
+    "showAllHistory": "显示全部记录",
+    "day_format": "YYYY年M月D日",
+    "week_format": "{{start}} 至 {{end}}",
+    "month_format": "YYYY年M月",
+    "searchAndFilters": {
+      "placeholder": "搜索销售...",
+      "filterBtn": "筛选",
+      "trashTitle": "查看已取消的销售",
+      "trashBtn": "回收站",
+      "startDelivery": "开始销售",
+      "advancedFilters": "高级筛选",
+      "reset": "重置",
+      "statusLabel": "销售状态",
+      "allStatuses": "全部状态",
+      "statusInProgress": "进行中",
+      "statusDelivered": "已交付",
+      "paymentLabel": "付款状态",
+      "paymentPaid": "已付款",
+      "paymentUnpaid": "未付款",
+      "paymentPartial": "部分付款",
+      "minAmount": "最低金额",
+      "minPlaceholder": "最低",
+      "maxAmount": "最高金额",
+      "maxPlaceholder": "最高"
+    },
+    "stats": {
+      "articlesDelivered": "已交付商品",
+      "articlesSubtext": "交付总数量",
+      "totalAmount": "总金额",
+      "amountSubtext": "销售总价值"
+    },
+    "report": {
+      "detailsTab": "商品详情",
+      "historyTab": "变动记录"
+    },
+    "noOrders": "未找到销售",
+    "periods": {
+      "day": "日",
+      "week": "周",
+      "month": "月",
+      "all": "全部"
+    },
+    "messages": {
+      "successCancel": "销售已成功取消",
+      "errorCancel": "取消时出错",
+      "errorFetchCommand": "加载销售出错"
+    },
+    "ordersTable": {
+      "clientName": "客户名称",
+      "quantity": "数量",
+      "payment": "付款",
+      "amount": "金额",
+      "date": "日期",
+      "amountPaid": "已付",
+      "debt": "欠款",
+      "oldDebt": "旧欠款",
+      "return": "退货",
+      "status": "状态",
+      "action": "操作",
+      "paginationInfo": "显示第 {{start}}-{{end}} 条，共 {{total}} 条",
+      "actions": {
+        "showDetails": "查看详情",
+        "edit": "编辑",
+        "finalizePayment": "完成付款",
+        "refundClient": "退款给客户",
+        "returnItem": "退货",
+        "cancel": "取消销售"
+      },
+      "messages": {
+        "paymentSuccess": "付款已成功记录",
+        "paymentError": "付款时出错",
+        "refundSuccess": "已退款 {{amount}} CFA",
+        "noRefund": "退款时出错",
+        "returnSuccess": "退货已成功记录",
+        "returnError": "记录退货时出错",
+        "fetchDetailsError": "获取详情出错"
+      },
+      "paymentModal": {
+        "title": "完成付款",
+        "continueBtn": "继续",
+        "cancelBtn": "取消",
+        "orderLabel": "订单号",
+        "totalAmount": "商品总金额：",
+        "alreadyPaid": "已付：",
+        "remainingDue": "待付：",
+        "amountToCollect": "应收金额：",
+        "fullPaymentSuccess": "金额刚好：欠款已结清",
+        "remainingAfterPayment": "本次付款后剩余：",
+        "overpaymentWarning": "注意：金额超过待付金额",
+        "surplusText": "多出的",
+        "surplusSubtext": "将作为预付款记入。"
+      },
+      "confirmModal": {
+        "title": "付款确认",
+        "confirmBtn": "确认付款",
+        "backBtn": "返回",
+        "warningInfo": "此操作将为该销售记录一笔新付款。",
+        "clientLabel": "客户：",
+        "orderLabel": "订单：",
+        "remainingLabel": "待付：",
+        "amountLabel": "应收金额：",
+        "remainingAfterLabel": "新的待付金额：",
+        "fullPaymentLabel": "欠款将全部结清",
+        "overpaymentWarning": "含预付款的付款（多付）",
+        "debtCleared": "当前欠款已结清",
+        "surplusCredit": "预付款已记入客户账户"
+      },
+      "refundModal": {
+        "title": "客户退款",
+        "refundBtn": "退款 {{amount}} CFA",
+        "cancelBtn": "取消",
+        "orderLabel": "订单号",
+        "amountLabel": "退款金额：",
+        "warningText": "注意：此金额对应客户已付款的退回商品。"
+      },
+      "errorInvalidConditioningId": "包装编号无效"
+    },
+    "productSelection": {
+      "articles": "件商品",
+      "articlesPlural": "件商品",
+      "stock": "库存：",
+      "currency": "CFA",
+      "outOfStockMsg1": "{{name}} 已缺货",
+      "outOfStockMsg2": "缺货",
+      "addedToSelection": "{{name}} 已加入所选",
+      "prev": "上一页",
+      "next": "下一页",
+      "page": "页",
+      "searchPlaceholder": "搜索商品..."
+    },
+    "newDelivery": {
+      "allProducts": "全部商品",
+      "error": "错误：",
+      "errorFetch": "获取类别出错",
+      "sessionExpired": "会话已过期，请重新登录",
+      "title": "新建销售",
+      "breadcrumbDelivery": "销售",
+      "breadcrumbSelect": "选择商品",
+      "subtitle": "选择商品",
+      "itemsSelected": "已选 {{count}} 件商品",
+      "continueBtn": "继续销售",
+      "noProductSelected": "未找到商品",
+      "scanPlaceholder": "扫描商品..."
+    },
+    "deliveryConfig": {
+      "pageTitleNew": "销售设置",
+      "pageTitleEdit": "编辑销售",
+      "breadcrumbDelivery": "销售",
+      "breadcrumbSelect": "选择",
+      "breadcrumbConfig": "设置",
+      "breadcrumbEdit": "编辑",
+      "titleNew": "销售设置",
+      "titleEdit": "编辑销售 #{{id}}",
+      "sectionProducts": "已选商品",
+      "sectionPayment": "付款状态",
+      "sectionSummary": "销售摘要",
+      "clientLabel": "已选客户",
+      "clientSelectExisting": "选择现有客户",
+      "clientSelectPlaceholder": "选择客户...",
+      "clientLoading": "正在加载客户...",
+      "clientNotInList": "客户不在列表中？",
+      "clientAddBtn": "添加客户",
+      "clientAddError": "添加客户出错",
+      "clientFetchError": "加载客户出错",
+      "clientProfileTitle": "客户资料",
+      "clientNameLabel": "全名",
+      "clientNamePlaceholder": "姓名",
+      "clientEmailLabel": "电子邮箱",
+      "clientEmailPlaceholder": "邮箱",
+      "errorMissingId": "缺少销售编号",
+      "errorLoad": "加载销售出错",
+      "errorFallback": "发生错误",
+      "loading": "加载中...",
+      "error": "错误",
+      "btnBack": "返回",
+      "successTitle": "成功！",
+      "totalLabel": "销售合计：",
+      "actionBtnNew": "保存销售",
+      "actionBtnEdit": "更新销售",
+      "actionAddItems": "添加更多商品",
+      "productStock": "库存：",
+      "productPrice": "价格：",
+      "productUnits": "件",
+      "productRemove": "移除商品",
+      "productUnitShort": "件",
+      "productAddConditioning": "添加包装...",
+      "productAddBtn": "添加",
+      "productStockWarning": "注意：数量超过可用库存",
+      "paymentStatus": "付款状态",
+      "paymentUnpaid": "未付款（欠款）",
+      "paymentPaid": "全额付款（现金）",
+      "paymentAdvanced": "预付（部分付款）",
+      "paymentMethods": "支付方式",
+      "paymentChooseMethods": "选择支付方式...",
+      "paymentDetails": "付款详情",
+      "paymentAmount": "金额 -",
+      "paymentTotalPaid": "已付合计：",
+      "paymentOldDebtSetup": "结清旧欠款？",
+      "paymentOldDebtAmount": "旧欠款金额",
+      "paymentMethodCash": "现金",
+      "paymentMethodOM": "Orange Money",
+      "paymentMethodMomo": "Mobile Money",
+      "paymentMethodBank": "银行转账",
+      "actionErrorNoClient": "请选择客户",
+      "actionErrorNoProduct": "请至少选择一件商品",
+      "actionErrorNoQuantity": "请输入所选商品的数量",
+      "actionSuccessNew": "销售已成功保存",
+      "actionSuccessEdit": "销售已成功更新",
+      "actionErrorSave": "保存时出错",
+      "formActionCancel": "取消",
+      "formActionEdit": "编辑",
+      "formActionButton": "确认修改",
+      "productsNoTarget": "未选择商品",
+      "productsAddPrompt": "请向销售中添加商品"
+    },
+    "detailsModal": {
+      "printUnit": "单位",
+      "printWarehouse": "门店 / 仓库",
+      "title": "销售详情",
+      "print": "打印",
+      "clientInfo": "客户信息",
+      "name": "姓名",
+      "phone": "电话",
+      "email": "邮箱",
+      "city": "城市",
+      "neighborhood": "街区",
+      "notProvided": "未填写",
+      "orderDetails": "订单详情",
+      "date": "日期",
+      "items": "商品",
+      "payment": "付款",
+      "paymentMethod": "支付方式",
+      "financialSummary": "财务摘要",
+      "totalAmount": "总金额",
+      "discount": "折扣",
+      "remainingToPay": "待付金额",
+      "paid": "已付",
+      "balance": "余额",
+      "orderedItems": "所购商品",
+      "returns": "退货",
+      "movement": "变动",
+      "deliveryNotes": "销售备注",
+      "printInvoiceNum": "发票号",
+      "printDate": "日期",
+      "printClientDesc": "收货人",
+      "printRecipient": "姓名：",
+      "printPhone": "电话：",
+      "printAddress": "地点：",
+      "printStatus": "状态：",
+      "printItem": "品名",
+      "printQty": "数量",
+      "printTotal": "合计",
+      "printNote": "备注：",
+      "printSubtotal": "小计",
+      "printDiscount": "折扣",
+      "printAlreadyPaid": "已付",
+      "printRemaining": "待付金额",
+      "printPaid": "已付清",
+      "printFooter1": "感谢您的惠顾！",
+      "printFooter2": "Lumistock 管理软件"
+    },
+    "corbeilleModal": {
+      "title": "已取消的销售",
+      "subtitle": "查看您最近取消的订单。",
+      "fetchError": "加载回收站出错",
+      "restoreSuccess": "销售已成功恢复",
+      "restoreError": "恢复时出错",
+      "colIdDate": "编号 / 日期",
+      "colClient": "客户",
+      "colAmount": "总金额",
+      "colAction": "操作",
+      "restoreBtn": "恢复",
+      "closeBtn": "关闭",
+      "empty": "回收站为空"
+    },
+    "returnModal": {
+      "title": "商品退货",
+      "orderLabel": "订单号",
+      "reasonLabel": "退货原因",
+      "productsLabel": "相关商品",
+      "maxLabel": "最多",
+      "conditionedLabel": "是否包装？",
+      "conditioningIdLabel": "包装编号",
+      "conditioningIdPlaceholder": "批次编号",
+      "cancelBtn": "取消",
+      "confirmBtn": "确认退货",
+      "savingBtn": "保存中...",
+      "errorMissingReasonOrProduct": "请填写原因并至少选择一件商品",
+      "errorInvalidDeliveryPersonId": "仓库管理员编号无效",
+      "errorInvalidConditioningId": "包装编号无效"
+    }
+  },
+  "sidebar_manager": {
+    "accueil": "首页",
+    "products": "商品",
+    "ai_assistant": "AI 助手",
+    "customers": "客户",
+    "reports": "报表",
+    "accounting": "会计",
+    "charges": "支出",
+    "settings": "设置",
+    "logout": "退出登录"
+  },
+  "sidebar_livreur": {
+    "dashboard": "控制面板",
+    "delivery": "销售",
+    "accounting": "会计",
+    "settings": "设置",
+    "logout": "退出登录"
+  },
+  "profile": {
+    "pageTitle": "我的用户资料",
+    "back": "返回",
+    "statusActive": "已启用",
+    "statusInactive": "未启用",
+    "accountLabel": "账户",
+    "securityBtn": "安全 / 密码",
+    "accountDetails": "账户详情",
+    "firstName": "名",
+    "lastName": "姓",
+    "emailLabel": "登录邮箱",
+    "assignedRole": "分配的角色",
+    "registrationDate": "注册日期",
+    "errorInfoNote": "* 如果您发现个人信息有误，请联系管理员进行更正。",
+    "roleStaff": "销售员 / 外勤人员",
+    "roleAdmin": "系统管理员",
+    "roleManager": "库存经理",
+    "language": "显示语言",
+    "languageDesc": "选择您偏好的语言",
+    "errorLoad": "加载资料出错",
+    "passwordSuccess": "密码已成功更新",
+    "errorValidation": "验证错误",
+    "errorConnection": "连接错误",
+    "passwordModalTitle": "安全更新",
+    "oldPassword": "当前密码",
+    "requiredField": "验证所需",
+    "newCredentials": "新登录信息",
+    "newPassword": "新密码",
+    "newPasswordRequired": "请设置新密码",
+    "passwordMinLength": "至少 8 个字符，包含字母和数字",
+    "passwordMinPlaceholder": "至少 6 个字符",
+    "confirmPassword": "确认新密码",
+    "confirmationRequired": "需要确认",
+    "passwordMismatch": "两次输入的密码不一致",
+    "confirmPlaceholder": "与上方相同",
+    "cancelBtn": "取消",
+    "submitBtn": "确认",
+    "barcodeMode": "条码扫描模式",
+    "barcodeModeDesc": "针对 USB 扫描枪优化界面。"
+  },
+  "sidebar": {
+    "accueil": "首页",
+    "dashboard": "控制面板",
+    "delivery": "销售",
+    "products": "商品",
+    "ai_assistant": "AI 助手",
+    "customers": "客户",
+    "sub_boutique": "分店",
+    "reports": "报表",
+    "accounting": "会计",
+    "charges": "支出",
+    "messages": "客户消息",
+    "settings": "设置",
+    "support": "Lumistock 支持",
+    "logout": "退出登录",
+    "caisses": "收银台",
+    "sections": {
+      "ventes": "销售",
+      "stock": "库存",
+      "clients": "客户",
+      "finances": "财务",
+      "outils": "工具",
+      "administration": "管理",
+      "caisse": "收银",
+      "suivi": "统计",
+      "outilsCompte": "工具与账户"
+    },
+    "items": {
+      "nouvelleVente": "新建销售",
+      "approvisionnements": "进货",
+      "codesBarres": "条码",
+      "msgEnvoyer": "发送消息",
+      "msgPlanification": "自动与定时",
+      "msgHistorique": "发送记录",
+      "msgParametres": "设置与模板",
+      "fin_tableau": "控制面板",
+      "fin_resultat": "损益表",
+      "fin_tresorerie": "现金与增值税",
+      "fin_impots": "税费",
+      "fin_bilan": "资产负债表",
+      "fin_journal": "会计日记账",
+      "fin_fournisseurs": "供应商发票",
+      "fin_rapprochement": "银行对账",
+      "fin_immobilisations": "固定资产",
+      "fin_financements": "资本与借款",
+      "fin_cloture": "结账与规则",
+      "rap_ventes": "销售报表",
+      "rap_encaissements": "收款",
+      "rap_mouvements": "库存变动",
+      "rap_annuel": "年度变动",
+      "rap_inventaire": "盘点",
+      "par_profil": "我的资料",
+      "par_magasin": "店铺",
+      "par_acces": "访问与权限",
+      "par_preferences": "个性化",
+      "par_securite": "安全",
+      "mesVentes": "我的销售",
+      "maCaisse": "我的收银台",
+      "mesStatistiques": "我的统计",
+      "securite": "安全"
+    }
+  },
+  "admin": {
+    "accueil": {
+      "defaultUser": "管理员",
+      "badge": "管理空间",
+      "role": "管理员",
+      "hero": {
+        "badge": "中枢",
+        "title_prefix": "欢迎来到您的",
+        "title_main": "控制中心",
+        "subtitle": "{{name}}，在这里监督运营、分析经营业绩，精准掌控您的企业。",
+        "cta": "控制面板"
+      },
+      "modules": {
+        "title": "您的模块",
+        "dashboard": {
+          "title": "控制面板",
+          "desc": "企业全局视图与关键指标。"
+        },
+        "delivery": {
+          "title": "销售流程",
+          "desc": "统筹物流与发货。"
+        },
+        "stock": {
+          "title": "库存管理",
+          "desc": "精准库存，实时进货。"
+        },
+        "customers": {
+          "title": "客户管理",
+          "desc": "客户行为分析与忠诚度管理。"
+        },
+        "reports": {
+          "title": "报表与销售",
+          "desc": "业绩分析与详细统计。"
+        },
+        "accounting": {
+          "title": "会计",
+          "desc": "财务状况、损益表和净现金跟踪。"
+        }
+      },
+      "ia": {
+        "badge": "AI 助手",
+        "title": "与您的数据对话",
+        "desc": "借助控制面板内置的 AI，一键获取即时分析、发现异常并生成战略报表。",
+        "cta": "提问"
+      },
+      "footer": {
+        "system": "Lumistock 企业系统"
+      }
+    },
+    "dashboard": {
+      "success": "操作成功",
+      "info": "基本信息",
+      "actions": "操作",
+      "date": "日期",
+      "title": "控制面板",
+      "revenue": "总营业额",
+      "deliveries": "销售总数",
+      "clients": "客户总数",
+      "products": "商品总数",
+      "loading": "加载中...",
+      "no_data": "暂无数据",
+      "error": "发生错误",
+      "top_products": "热销商品",
+      "sold": "已售",
+      "of_total_revenue": "占总营业额",
+      "no_products_sold": "暂无商品售出",
+      "recent_deliveries": "最近销售",
+      "access_delivery_page": "前往销售页面",
+      "no_deliveries_recorded": "暂无销售记录",
+      "since_last_week": "较上周",
+      "revenue_total_stat": "总营业额",
+      "period_total": "期间合计",
+      "payment_volume": "金额：",
+      "payment_proportion": "占比：",
+      "pdf_col_product": "商品",
+      "pdf_col_sales": "销售（%）",
+      "top_clients": "主要客户",
+      "top_debtors": "主要欠款客户",
+      "top_suppliers": "主要供应商",
+      "table": {
+        "date": "下单日期",
+        "client": "客户",
+        "quantity": "数量",
+        "payment": "付款",
+        "amount": "金额",
+        "status": "状态"
+      },
+      "scroll_down": "向下滚动",
+      "revenue_title": "营业额",
+      "returns_title": "退款",
+      "risk_evolution": "风险变化",
+      "debt_evolution": "客户欠款变化",
+      "payment_distribution": "付款分布",
+      "total_period": "期间合计",
+      "total_debt": "剩余欠款总额",
+      "total_paid": "已付总额",
+      "total_delivery_amount": "销售总额",
+      "loading_revenue": "正在加载营业额...",
+      "loading_returns": "正在加载退货...",
+      "loading_payments": "正在加载付款...",
+      "loading_stats": "正在加载统计...",
+      "periods": {
+        "day": "日",
+        "week": "周",
+        "month": "月",
+        "year": "年"
+      },
+      "stats": {
+        "total": "合计",
+        "paid": "已付款",
+        "unpaid": "未付款",
+        "partial": "部分付款",
+        "debt": "欠款",
+        "deliveries": "销售"
+      },
+      "retry": "重试",
+      "location": "位置",
+      "supplier_products": "供货商品数量",
+      "ref": "编号",
+      "risk": {
+        "low": "低",
+        "medium": "中",
+        "high": "高"
+      },
+      "tooltips": {
+        "location": "位置",
+        "supplier_products": "供货商品数量"
+      },
+      "out_of": "/",
+      "delivery_status": {
+        "delivered": "已交付",
+        "in_progress": "进行中",
+        "cancelled": "已取消"
+      },
+      "status_labels": {
+        "payé": "已付款",
+        "payée": "已付款",
+        "non payé": "未付款",
+        "partiel": "部分",
+        "partiellement payé": "部分付款",
+        "livré": "已交付",
+        "livrée": "已交付",
+        "en cours": "进行中",
+        "annulé": "已取消",
+        "annulée": "已取消"
+      }
+    },
+    "users": {
+      "title": "仓库管理员管理",
+      "search": "搜索",
+      "addBtn": "添加仓库管理员",
+      "table": {
+        "shop": "仓库管理员",
+        "name": "姓名",
+        "email": "邮箱",
+        "role": "角色",
+        "status": "状态",
+        "date": "创建日期",
+        "action": "操作",
+        "active": "已启用",
+        "inactive": "未启用"
+      },
+      "actions": {
+        "edit": "编辑",
+        "resetPassword": "重置密码",
+        "deactivate": "停用",
+        "activate": "启用",
+        "delete": "删除",
+        "viewDetails": "查看详情"
+      },
+      "deleteModal": {
+        "title": "注意！",
+        "message": "删除用户后无法恢复",
+        "deleteBtn": "删除",
+        "cancelBtn": "取消",
+        "confirm": "确定要删除用户 {{name}} {{firstName}} 吗？",
+        "delete": "删除"
+      },
+      "messages": {
+        "successEdit": "用户已成功更新",
+        "successReset": "密码已成功重置",
+        "successActivate": "用户已成功启用",
+        "successDeactivate": "用户已成功停用",
+        "successDelete": "用户已成功删除",
+        "error": "发生错误",
+        "tokenError": "会话已过期，请重新登录。",
+        "fetchError": "无法加载用户。",
+        "unknownError": "发生未知错误"
+      },
+      "modals": {
+        "edit": {
+          "title": "编辑用户",
+          "name": "姓",
+          "firstName": "名",
+          "email": "邮箱",
+          "shopName": "仓库管理员名称",
+          "shopPlaceholder": "输入仓库管理员名称",
+          "cancel": "取消",
+          "save": "保存"
+        },
+        "delete": {
+          "title": "删除用户",
+          "confirm": "确定要删除用户 {{name}} {{firstName}} 吗？",
+          "cancel": "取消",
+          "delete": "删除"
+        },
+        "resetPassword": {
+          "title": "重置 {{name}} {{firstName}} 的密码",
+          "newPassword": "新密码",
+          "description": "系统将生成一个随机新密码并发送至 {{email}}，旧密码将失效。",
+          "cancel": "取消",
+          "validate": "发送新密码"
+        }
+      },
+      "add": {
+        "title": "添加账户",
+        "breadcrumb": "用户",
+        "typeSelection": {
+          "title": "账户类型",
+          "subtitle": "选择要创建的用户类型",
+          "back": "返回",
+          "shop": {
+            "title": "仓库管理员",
+            "description": "为新的仓库管理员创建账户"
+          },
+          "manager": {
+            "title": "经理",
+            "description": "创建权限受限的经理账户"
+          },
+          "caissier": {
+            "title": "收银员",
+            "description": "在柜台销售，只能看到自己的销售"
+          }
+        },
+        "form": {
+          "titleShop": "新仓库管理员",
+          "titleManager": "新经理",
+          "subtitleShop": "填写仓库管理员信息",
+          "subtitleManager": "填写经理信息",
+          "name": "姓",
+          "nameRequired": "请填写姓",
+          "namePlaceholder": "输入姓",
+          "firstName": "名",
+          "firstNameRequired": "请填写名",
+          "firstNamePlaceholder": "输入名",
+          "email": "邮箱",
+          "emailRequired": "请填写邮箱",
+          "emailInvalid": "邮箱无效",
+          "password": "密码",
+          "passwordRequired": "请填写密码",
+          "passwordMin": "密码至少需要 6 个字符",
+          "passwordPlaceholder": "至少 6 个字符",
+          "shopName": "仓库管理员名称",
+          "shopNameRequired": "请填写名称",
+          "shopNamePlaceholder": "输入仓库管理员或店铺名称",
+          "changeType": "更改类型",
+          "prev": "上一步",
+          "save": "添加{{role}}",
+          "roleLivreur": "仓库管理员",
+          "roleManager": "经理",
+          "success": "已添加{{role}}：设置密码的邀请链接已通过邮件发送",
+          "invitationHint": "用户将通过邮件收到安全链接，自行设置密码。",
+          "errorCreation": "创建用户出错",
+          "sessionExpired": "您的会话已过期，请重新登录",
+          "errorAuth": "身份验证错误",
+          "errorNetwork": "服务器连接错误",
+          "readError": "读取服务器响应出错",
+          "roleCaissier": "收银员",
+          "titleCaissier": "新收银员",
+          "subtitleCaissier": "收银员将通过邮件收到设置密码的链接，只能看到自己的销售、收银台和统计。"
+        }
+      }
+    },
+    "products": {
+      "title": "商品",
+      "new_product": "新商品",
+      "edit_product": "编辑商品",
+      "product_name": "商品名称",
+      "description": "描述",
+      "category": "类别",
+      "supplier": "供应商",
+      "unit": "销售单位",
+      "initial_quantity": "初始数量",
+      "unit_price": "单价",
+      "purchase_price": "进价",
+      "stock_value": "库存价值",
+      "total_products": "商品总数",
+      "purchase_value": "进货总价值",
+      "sale_value": "销售总价值",
+      "different_references": "种不同商品",
+      "search_placeholder": "搜索商品...",
+      "create_btn": "创建商品",
+      "import_excel": "导入 Excel",
+      "export_excel": "导出 Excel",
+      "trash": "回收站",
+      "filters": "筛选",
+      "status": {
+        "all": "全部状态",
+        "in_stock": "有货",
+        "out_of_stock": "缺货"
+      },
+      "categories": {
+        "all": "全部类别",
+        "new": "新类别"
+      },
+      "packaging": {
+        "title": "包装",
+        "add_btn": "添加包装",
+        "name": "包装名称",
+        "factor": "单位数量",
+        "total_price": "总价",
+        "none": "未添加包装"
+      },
+      "image": {
+        "title": "商品图片",
+        "upload_btn": "上传图片",
+        "suggestions": "推荐",
+        "none_suggestion": "暂无推荐",
+        "required": "需要上传图片",
+        "tooltip_suggestions": "此类商品常用的图片",
+        "barcode": "条码",
+        "generateBarcode": "生成内部条码"
+      },
+      "delete_modal": {
+        "title": "确认删除",
+        "warning": "确定要删除此项吗？此操作无法撤销。",
+        "confirm_btn": "删除",
+        "cancel_btn": "取消",
+        "deleting": "正在删除...",
+        "success_title": "删除成功",
+        "success_message": "该项已成功删除",
+        "close_btn": "关闭"
+      },
+      "form": {
+        "placeholder_name": "商品名称",
+        "placeholder_desc": "商品详情、技术规格...",
+        "choose_category": "选择类别",
+        "new_category": "新类别",
+        "bag": "袋",
+        "kilogram": "千克（kg）",
+        "carton": "箱",
+        "bottle": "瓶",
+        "liter": "升（L）",
+        "gram": "克（g）",
+        "packet": "包",
+        "placeholder_carton": "例如：箱",
+        "placeholder_cat_name": "食品、饮料..."
+      },
+      "code_id": "编码",
+      "table": {
+        "columns": {
+          "alert": "库存预警",
+          "image": "图片",
+          "name": "名称",
+          "description": "描述",
+          "category": "类别",
+          "remaining": "剩余",
+          "price_sale": "售价",
+          "price_purchase": "进价",
+          "status": "状态",
+          "action": "操作"
+        },
+        "alerts": {
+          "low_stock_title": "库存不足（< 30）",
+          "low_stock_tag": "库存不足",
+          "ok_stock_title": "库存充足",
+          "ok_stock_tag": "库存正常"
+        },
+        "actions": {
+          "edit": "编辑",
+          "details": "查看详情",
+          "expired": "登记损耗",
+          "provision": "补货",
+          "delete": "删除"
+        },
+        "empty": {
+          "title": "暂无商品",
+          "subtitle": "请添加商品"
+        }
+      },
+      "provision_modal": {
+        "title": "商品补货",
+        "ok_btn": "补货",
+        "cancel_btn": "取消",
+        "product_id": "商品编号：",
+        "quantity_label": "补货数量：",
+        "quantity_placeholder": "输入数量"
+      },
+      "messages": {
+        "invalid_quantity": "请输入有效数量（大于 0）。",
+        "auth_required": "需要登录，请先登录。",
+        "success_provision": "商品补货成功。",
+        "error_unknown": "发生未知错误。",
+        "error_server": "无法连接服务器，请重试。"
+      },
+      "corbeille": {
+        "title": "商品回收站",
+        "subtitle": "已删除的商品将在保留期结束后彻底清除。",
+        "empty": "商品回收站为空",
+        "restore": "恢复",
+        "deleteDefinitive": "永久删除",
+        "successDeleteDefinitive": "商品已永久删除",
+        "failDeleteDefinitive": "永久删除失败",
+        "confirmDeleteTitle": "永久删除",
+        "confirmDeleteMessage": "确定要永久删除此商品吗？此操作无法撤销。",
+        "table": {
+          "product": "商品",
+          "quantity": "数量",
+          "price": "价格（转售）",
+          "restore": "恢复",
+          "deleteDefinitive": "永久删除",
+          "successDeleteDefinitive": "商品已永久删除",
+          "failDeleteDefinitive": "永久删除失败",
+          "confirmDeleteTitle": "永久删除",
+          "confirmDeleteMessage": "确定要永久删除此商品吗？此操作无法撤销。",
+          "messages": {
+            "loadError": "无法加载回收站。",
+            "restoreSuccess": "商品已成功恢复",
+            "restoreError": "恢复失败。"
+          },
+          "action": "操作"
+        },
+        "messages": {
+          "loadError": "无法加载回收站。",
+          "restoreSuccess": "商品已成功恢复",
+          "restoreError": "恢复失败。"
+        }
+      },
+      "quantity_instore": "库存数量",
+      "reports": {
+        "table": {
+          "total": "合计"
+        }
+      }
+    },
+    "supplies": {
+      "title": "进货",
+      "total_quantity": "总数量",
+      "items_entered": "入库商品",
+      "total_amount": "总金额",
+      "budget_invested": "投入预算",
+      "select_products": "选择商品",
+      "deliverer": "仓库管理员",
+      "select_deliverer": "选择仓库管理员",
+      "new_supply": "新进货",
+      "success": "进货已成功完成",
+      "error": "进货时出错",
+      "confirm_title": "确认进货",
+      "summary": "进货摘要",
+      "allProducts": "全部商品",
+      "itemsCount": "件",
+      "table": {
+        "columns": {
+          "id": "编号",
+          "deliverer": "仓库管理员姓名",
+          "quantity": "数量",
+          "stock_total": "总库存",
+          "amount": "金额",
+          "date": "日期",
+          "action": "操作"
+        },
+        "actions": {
+          "details": "查看详情",
+          "delete": "删除"
+        },
+        "empty": {
+          "title": "暂无进货",
+          "subtitle": "请添加进货"
+        }
+      },
+      "details": {
+        "title": "进货详情",
+        "reference": "单号",
+        "magasinier": "仓库管理员",
+        "total_amount": "总金额",
+        "qty_supplied": "进货数量",
+        "stock_total_label": "总库存",
+        "date_label": "进货日期",
+        "product_details_title": "商品明细（{{count}}）",
+        "summary": "摘要",
+        "items_plural": "件",
+        "items_singular": "件",
+        "download_invoice": "下载发票",
+        "columns": {
+          "product": "商品",
+          "qty_supply": "进货数量",
+          "stock_deliverer": "仓库管理员库存",
+          "price_purchase": "进价",
+          "price_sale": "售价",
+          "total": "合计"
+        }
+      },
+      "messages": {
+        "success": "进货成功",
+        "error": "进货时出错",
+        "delete_success": "进货已成功删除",
+        "delete_error": "删除时出错",
+        "load_error": "加载详情出错",
+        "not_auth": "未登录",
+        "generating_pdf": "正在生成发票...",
+        "pdf_success": "发票已成功下载",
+        "pdf_error": "生成发票出错"
+      },
+      "units": {
+        "simple": "单件：",
+        "total": "合计："
+      },
+      "filters": {
+        "less_than_100k": "少于 100,000",
+        "between_100k_500k": "100,000 - 500,000",
+        "more_than_500k": "多于 500,000"
+      },
+      "confirm_delete": {
+        "title": "确认删除",
+        "content": "确定要删除此进货记录吗？"
+      },
+      "corbeille": {
+        "title": "进货回收站",
+        "subtitle": "已删除的进货记录会暂时保留。",
+        "empty": "进货回收站为空",
+        "restore": "恢复",
+        "deleteDefinitive": "永久删除",
+        "successDeleteDefinitive": "进货记录已永久删除",
+        "failDeleteDefinitive": "永久删除失败",
+        "confirmDeleteTitle": "永久删除",
+        "confirmDeleteMessage": "确定要永久删除此进货记录吗？此操作无法撤销。",
+        "messages": {
+          "loadError": "无法加载回收站。",
+          "restoreSuccess": "进货记录已成功恢复",
+          "restoreError": "恢复失败。"
+        }
+      }
+    },
+    "ia": {
+      "title": "AI 助手",
+      "header": {
+        "newChat": "新对话",
+        "subtitle": "询问您的销售、库存和客户情况",
+        "period": "最近 30 天的数据",
+        "analysis": "分析我的业务"
+      },
+      "sidebar": {
+        "newChat": "新对话",
+        "search": "搜索对话…",
+        "noChat": "暂无对话",
+        "startChat": "向助手提出您的第一个问题",
+        "noResult": "未找到对话",
+        "rename": "重命名",
+        "delete": "删除",
+        "clearAll": "清空所有对话",
+        "groups": {
+          "today": "今天",
+          "yesterday": "昨天",
+          "week": "最近 7 天",
+          "older": "更早"
+        }
+      },
+      "welcome": {
+        "hello": "您好，{{name}} 👋",
+        "helloNoName": "您好 👋",
+        "title": "您想了解店铺的哪些情况？",
+        "subtitle": "用您自己的话提问：助手会根据您的销售、库存、客户和财务数据作答。",
+        "analysisBadge": "AI 分析",
+        "analysisTitle": "业务一览",
+        "analysisText": "用通俗的语言说明店铺现状，以及本周的优先事项。",
+        "analysisButton": "开始分析",
+        "suggestionsTitle": "热门问题",
+        "admin": {
+          "stock": {
+            "cat": "库存",
+            "q": "哪些商品快要缺货，我应该订多少？"
+          },
+          "sales": {
+            "cat": "销售",
+            "q": "我最畅销的商品有哪些，利润率如何？"
+          },
+          "debts": {
+            "cat": "客户",
+            "q": "哪些客户欠我钱，应该先催谁？"
+          },
+          "margin": {
+            "cat": "利润",
+            "q": "哪些商品我在零利润或亏本销售？"
+          },
+          "sleeping": {
+            "cat": "滞销库存",
+            "q": "哪些库存卖不动，怎样清理？"
+          },
+          "team": {
+            "cat": "团队",
+            "q": "我团队成员的销售情况对比如何？"
+          }
+        },
+        "seller": {
+          "sales": {
+            "cat": "我的销售",
+            "q": "我本月卖了多少、收了多少？"
+          },
+          "debts": {
+            "cat": "跟进",
+            "q": "今天我应该跟进哪些客户？"
+          },
+          "stock": {
+            "cat": "我的库存",
+            "q": "我手上还剩多少库存？"
+          },
+          "push": {
+            "cat": "建议",
+            "q": "我应该优先向客户推荐哪些商品？"
+          }
+        },
+        "cashier": {
+          "jour": {
+            "cat": "我的今天",
+            "q": "我今天卖了多少、收了多少？"
+          },
+          "caisse": {
+            "cat": "我的收银台",
+            "q": "我的收银台现在应该有多少现金？"
+          },
+          "debts": {
+            "cat": "跟进",
+            "q": "哪些客户还欠我钱？"
+          },
+          "push": {
+            "cat": "建议",
+            "q": "哪些商品在我的收银台卖得最好？"
+          }
+        }
+      },
+      "chat": {
+        "you": "您",
+        "aiName": "Lumistock 助手",
+        "typing": "助手正在分析您的数据…",
+        "placeholder": "询问销售、库存、客户…",
+        "hint": "回车发送 · Shift + 回车换行",
+        "disclaimer": "回答基于您店铺的数据，重要数字请再次核对。",
+        "send": "发送",
+        "copy": "复制",
+        "copied": "已复制",
+        "retry": "重试",
+        "loadingConv": "正在加载对话…"
+      },
+      "insights": {
+        "title": "业务分析",
+        "subtitle": "最近 30 天的销售、库存和客户",
+        "loading": "分析中，需要几秒钟…",
+        "refresh": "刷新",
+        "generatedAt": "生成于 {{time}}",
+        "discuss": "与助手讨论",
+        "discussPrompt": "请解释本周的优先事项以及如何落实。",
+        "error": "无法完成分析，请稍后重试。"
+      },
+      "modals": {
+        "deleteTitle": "删除此对话？",
+        "deleteContent": "此操作无法撤销。",
+        "cancel": "取消",
+        "delete": "删除",
+        "clearTitle": "清空所有对话？",
+        "clearContent": "您与助手的所有对话都将被删除，此操作无法撤销。",
+        "clear": "全部清空"
+      },
+      "messages": {
+        "loadError": "无法加载对话",
+        "loadConvError": "无法加载该对话",
+        "renameSuccess": "对话已重命名",
+        "renameError": "无法重命名对话",
+        "deleteSuccess": "对话已删除",
+        "deleteError": "无法删除对话",
+        "clearSuccess": "所有对话已清空",
+        "clearError": "无法清空对话",
+        "commError": "助手无法回答，请检查网络后重试。",
+        "aiNoResponse": "未能获得回答。"
+      }
+    },
+    "deliveries": {
+      "new": {
+        "breadcrumb": "新建销售",
+        "title": "销售",
+        "allProducts": "全部商品",
+        "sessionExpired": "会话已过期，请重新登录",
+        "fetchingCategoriesError": "获取类别出错",
+        "selectedCount": "已选 {{count}} 件商品",
+        "noSelectedProducts": "未选择商品"
+      },
+      "config": {
+        "title": "销售设置",
+        "sections": {
+          "products": "已选商品",
+          "payment": "付款状态",
+          "summary": "订单摘要"
+        },
+        "breadcrumb": "设置",
+        "client": {
+          "form": {
+            "uploadPrompt": "添加客户资料",
+            "phone": "电话号码",
+            "city": "城市",
+            "district": "街区",
+            "cancel": "取消",
+            "submit": "保存",
+            "errorFileType": "只允许 JPG 或 PNG 图片。",
+            "errorFileSize": "图片必须小于 2 MB。"
+          },
+          "product": {
+            "unknown": "未知商品",
+            "unit": "单位"
+          }
+        }
+      },
+      "stats": {
+        "title": "销售",
+        "total": "订单合计",
+        "deliveredArticles": "已交付商品",
+        "productValue": "商品价值",
+        "selectedPeriod": "所选期间",
+        "showAllHistory": "显示全部记录"
+      },
+      "filters": {
+        "title": "高级筛选",
+        "btn": "筛选",
+        "reset": "重置",
+        "period": "自定义期间",
+        "start": "开始",
+        "end": "结束",
+        "status": "销售状态",
+        "payment": "付款状态",
+        "driver": "销售员姓名",
+        "driverPlaceholder": "例如：张三",
+        "minAmount": "最低（CFA）",
+        "maxAmount": "最高（CFA）",
+        "allStatus": "全部状态",
+        "allPayments": "全部付款",
+        "inProgress": "进行中",
+        "delivered": "已交付",
+        "paid": "已付款",
+        "unpaid": "未付款",
+        "partial": "部分付款"
+      },
+      "table": {
+        "clientName": "客户名称",
+        "quantity": "数量",
+        "payment": "付款",
+        "amount": "金额",
+        "date": "日期",
+        "paidAmount": "已付金额",
+        "debt": "欠款",
+        "oldDebt": "旧欠款",
+        "return": "退货",
+        "status": "状态",
+        "action": "操作",
+        "viewDetails": "订单摘要",
+        "edit": "编辑",
+        "finishPayment": "完成付款",
+        "refund": "退款给客户",
+        "makeReturn": "办理退货",
+        "cancel": "取消"
+      },
+      "detail": {
+        "title": "销售详情",
+        "orderId": "订单编号",
+        "clientInfo": "客户信息",
+        "financialSummary": "财务摘要",
+        "orderedProducts": "所购商品",
+        "returns": "退货",
+        "orderHistory": "订单记录",
+        "totalAmount": "总金额",
+        "amountPaid": "已付金额",
+        "amountRemaining": "剩余金额",
+        "returnReason": "退货原因",
+        "returnedProducts": "退回商品",
+        "orderDate": "下单日期",
+        "createdAt": "创建于",
+        "lastModified": "最后修改",
+        "totalQuantity": "商品总数量",
+        "loading": "正在加载详情...",
+        "notFound": "未找到销售",
+        "notFoundDesc": "无法获取此销售的详情。",
+        "errorTitle": "加载错误",
+        "retry": "重试",
+        "relicat": "余款",
+        "ristourne": "返利"
+      },
+      "modals": {
+        "delete": {
+          "title": "注意！",
+          "message": "删除销售后无法恢复。",
+          "confirm": "删除",
+          "cancel": "取消",
+          "deleting": "正在删除..."
+        },
+        "detail": {
+          "title": "销售",
+          "print": "打印",
+          "clientSection": "客户信息",
+          "orderSection": "订单详情",
+          "financialSection": "财务摘要",
+          "itemsSection": "所购商品",
+          "notesSection": "销售备注",
+          "returnsSection": "退货",
+          "noPhone": "未填写",
+          "noEmail": "无",
+          "articles": "商品",
+          "totalAmount": "总金额",
+          "discount": "折扣",
+          "remaining": "待付金额",
+          "paid": "已付",
+          "reliquat": "余额",
+          "paymentMethod": "支付方式"
+        },
+        "corbeille": {
+          "title": "销售回收站",
+          "description": "已删除的项目将在 30 天后彻底清除。",
+          "empty": "回收站为空",
+          "close": "关闭",
+          "restore": "恢复",
+          "idDate": "编号 / 日期",
+          "client": "客户",
+          "driver": "销售员",
+          "amount": "金额",
+          "action": "操作",
+          "notAssigned": "未分配",
+          "successRestore": "销售已成功恢复",
+          "errorRestore": "无法加载回收站。",
+          "failRestore": "恢复失败。",
+          "deleteDefinitive": "永久删除",
+          "successDeleteDefinitive": "销售已永久删除",
+          "failDeleteDefinitive": "永久删除失败",
+          "confirmDeleteTitle": "永久删除",
+          "confirmDeleteMessage": "确定要永久删除此销售吗？此操作无法撤销。"
+        },
+        "payment": {
+          "title": "付款详情",
+          "totalAmount": "总金额",
+          "paidAmount": "已付金额",
+          "remainingDebt": "剩余欠款",
+          "amountToCollect": "应收金额",
+          "fullPayment": "金额刚好：欠款已结清",
+          "partialPayment": "部分付款：剩余 {{amount}}",
+          "overpayment": "多付（预付款）",
+          "overpaymentInfo": "多出的 {{amount}} 将作为预付款记入。",
+          "confirmTitle": "确认付款",
+          "confirmWarning": "此操作无法撤销，确认收款吗？",
+          "yesConfirm": "是，确认",
+          "confirmDebtCleared": "当前欠款已结清",
+          "confirmSurplusCredit": "将预付款记入客户账户",
+          "success": "付款已成功记录",
+          "error": "付款时出错"
+        },
+        "return": {
+          "title": "办理退货",
+          "orderLabel": "订单号",
+          "motif": "退货原因",
+          "motifPlaceholder": "请描述退货原因...",
+          "productsTitle": "退回商品",
+          "maxQty": "最多：{{count}} 件",
+          "maxConditioning": "最多：{{count}} {{name}}",
+          "infoTitle": "说明",
+          "infoConditioning": "按包装：整箱/整袋退回（例如：1 = 1 整箱）",
+          "infoUnit": "按单件：退回散件（例如：5 = 箱中的 5 件）",
+          "infoToggle": "点击按钮切换模式",
+          "byUnit": "按单件",
+          "byConditioning": "按包装",
+          "success": "退货已成功记录",
+          "error": "记录退货时出错",
+          "confirm": "确认退货",
+          "recording": "正在记录..."
+        }
+      },
+      "common": {
+        "packaging": "包装",
+        "factor": "系数",
+        "conditioned": "已包装",
+        "discount": "折扣",
+        "yes": "是",
+        "no": "否",
+        "unknown": "未知"
+      },
+      "product": {
+        "stock": "库存",
+        "price": "价格",
+        "units": "件",
+        "unknown": "未知商品",
+        "remove": "移除商品",
+        "addConditioning": "添加包装",
+        "add": "添加",
+        "insufficientStock": "库存不足以满足此数量"
+      },
+      "payment": {
+        "status": {
+          "label": "付款状态",
+          "none": "未付款",
+          "total": "已付款",
+          "partial": "部分付款"
+        },
+        "oldDebt": {
+          "toggle": "包含旧欠款？",
+          "amountLabel": "旧欠款金额",
+          "placeholder": "输入金额"
+        },
+        "methods": {
+          "label": "支付方式",
+          "placeholder": "选择一种或多种方式",
+          "cash": "现金",
+          "om": "Orange Money",
+          "momo": "MTN MoMo",
+          "bancaire": "银行转账"
+        },
+        "details": {
+          "title": "付款详情",
+          "amountLabel": "金额（{{method}}）",
+          "totalPaid": "已付合计"
+        }
+      },
+      "client": {
+        "label": "客户",
+        "selectExisting": "选择现有客户",
+        "placeholder": "选择客户",
+        "addPrompt": "新客户？",
+        "form": {
+          "title": "客户资料",
+          "name": "全名",
+          "email": "电子邮箱",
+          "initialAmount": "初始金额",
+          "namePlaceholder": "输入全名",
+          "emailPlaceholder": "you@email.com"
+        },
+        "fetchError": "加载客户出错",
+        "addButton": "添加客户",
+        "addError": "添加客户出错"
+      },
+      "actions": {
+        "start": "开始销售",
+        "trash": "回收站",
+        "trashTitle": "打开回收站",
+        "validation": {
+          "selectClient": "请选择客户",
+          "selectProduct": "请至少选择一件商品",
+          "specifyQuantity": "请填写商品数量"
+        },
+        "messages": {
+          "updateSuccess": "销售已成功更新",
+          "createSuccess": "销售已成功创建",
+          "error": "保存时出错"
+        },
+        "update": "更新销售",
+        "save": "收款并确认",
+        "addItems": "返回添加商品"
+      },
+      "flow": {
+        "continue": "继续"
+      },
+      "edit": {
+        "missingId": "缺少销售编号",
+        "loadError": "加载销售详情出错",
+        "loading": "正在加载销售详情...",
+        "backToList": "返回列表",
+        "title": "编辑销售",
+        "titleWithId": "编辑销售 #{{id}}",
+        "breadcrumb": {
+          "delivery": "销售",
+          "edit": "编辑",
+          "config": "设置"
+        }
+      },
+      "search": {
+        "placeholder": "按编号、客户名称或电话搜索"
+      },
+      "invoice": {
+        "title": "发票",
+        "number": "发票号",
+        "date": "销售日期",
+        "clientSection": "客户与收货地址",
+        "recipient": "收货人",
+        "phone": "电话",
+        "address": "地址",
+        "status": "状态",
+        "designation": "品名",
+        "qty": "数量",
+        "total": "合计",
+        "subtotal": "出厂小计",
+        "discounts": "折扣",
+        "alreadyPaid": "已付",
+        "remaining": "应付余额",
+        "paidStamp": "已付清",
+        "footer": "感谢您的惠顾！所售商品 24 小时后不退不换。",
+        "platform": "Lumistock 平台"
+      },
+      "messages": {
+        "deleteSuccess": "销售已成功删除",
+        "deleteError": "删除销售出错",
+        "tokenError": "会话已过期，请重新登录",
+        "fetchError": "加载销售出错"
+      }
+    },
+    "table": {
+      "clientName": "客户名称",
+      "quantity": "数量",
+      "payment": "付款",
+      "amount": "金额",
+      "date": "日期",
+      "paidAmount": "已付金额",
+      "debt": "欠款",
+      "oldDebt": "旧欠款",
+      "return": "退货",
+      "status": "状态",
+      "action": "操作",
+      "viewDetails": "查看详情",
+      "edit": "编辑",
+      "finishPayment": "完成付款",
+      "refund": "退款给客户",
+      "makeReturn": "办理退货",
+      "cancel": "取消",
+      "deb": "欠款",
+      "paginationInfo": "显示第 {{start}} 至 {{end}} 条，共 {{total}} 条"
+    },
+    "customers": {
+      "title": "客户",
+      "tabs": {
+        "active": "活跃客户",
+        "inactive": "非活跃客户",
+        "debts": "客户欠款"
+      },
+      "header": {
+        "searchPlaceholder": "按姓名、电话、街区搜索...",
+        "filter": "筛选",
+        "trash": "回收站",
+        "addClient": "添加客户",
+        "advancedFilters": "高级筛选",
+        "city": "城市",
+        "district": "街区",
+        "minAmount": "最低金额（CFA）",
+        "maxAmount": "最高金额（CFA）",
+        "minDeliveries": "最少销售",
+        "maxDeliveries": "最多销售",
+        "startDate": "开始日期",
+        "endDate": "结束日期",
+        "clearFilters": "清除筛选",
+        "apply": "应用",
+        "export": "导出"
+      },
+      "table": {
+        "name": "姓名",
+        "phone": "电话",
+        "address": "地址",
+        "cashAmount": "账户余额",
+        "createdAt": "创建日期",
+        "action": "操作",
+        "edit": "编辑",
+        "addToCash": "充值",
+        "sendMessage": "发送消息",
+        "clientDetails": "客户详情",
+        "delete": "删除",
+        "restore": "恢复",
+        "noData": "未找到客户",
+        "inactiveList": "客户列表",
+        "columns": {
+          "id": "客户编号",
+          "name": "姓名",
+          "phone": "电话",
+          "address": "地址",
+          "deliveries": "销售",
+          "amount": "金额",
+          "date": "日期",
+          "actions": "操作"
+        },
+        "pagination": {
+          "info": "显示第 {{start}} 至 {{end}} 条，共 {{total}} 条",
+          "previous": "上一页",
+          "next": "下一页"
+        }
+      },
+      "details": {
+        "title": "客户详情",
+        "history": "销售记录",
+        "noDeliveries": "该客户暂无销售记录",
+        "totalSpent": "消费总额",
+        "cash": "账户余额",
+        "numDeliveries": "销售次数",
+        "date": "日期",
+        "products": "商品",
+        "amount": "金额",
+        "status": "状态",
+        "delivered": "已交付",
+        "inProgress": "进行中",
+        "paid": "已付款",
+        "unpaid": "未付款",
+        "total": "合计"
+      },
+      "trash": {
+        "title": "客户回收站",
+        "description": "已删除的客户将在 30 天后彻底清除。",
+        "empty": "客户回收站为空",
+        "restore": "恢复",
+        "location": "位置",
+        "client": "客户"
+      },
+      "add": {
+        "breadcrumb": "新客户",
+        "title": "新客户",
+        "profileSection": "客户资料",
+        "uploadBtn": "保存",
+        "changePhoto": "更换照片",
+        "uploadPrompt": "添加客户资料",
+        "fullName": "全名",
+        "email": "电子邮箱",
+        "phone": "电话号码",
+        "cashAmount": "账户余额",
+        "city": "城市",
+        "district": "街区",
+        "cancel": "取消",
+        "save": "保存",
+        "placeholders": {
+          "fullName": "姓名",
+          "email": "邮箱",
+          "phone": "xx xx xx xx",
+          "cashAmount": " 0000",
+          "city": "城市",
+          "district": "街区"
+        },
+        "validation": {
+          "nameRequired": "请填写客户姓名",
+          "invalidEmail": "邮箱格式无效",
+          "phonePattern": "号码以 6 开头，后面需有 8 位数字（共 9 位）",
+          "tokenMissing": "缺少身份验证令牌",
+          "authRequired": "您必须登录才能访问此页面",
+          "error": "发生错误"
+        },
+        "messages": {
+          "success": "客户已成功创建。",
+          "successTitle": "成功！",
+          "successExport": "导出成功！",
+          "errorExport": "导出时出错"
+        }
+      },
+      "modals": {
+        "edit": {
+          "title": "编辑客户",
+          "success": "更新成功",
+          "successMsg": "客户 {{name}} 的信息已成功更新",
+          "close": "关闭",
+          "submitting": "更新中...",
+          "update": "更新",
+          "confirm": "确定要修改客户 {{name}} 吗？",
+          "error": "修改时出错"
+        },
+        "delete": {
+          "title": "删除客户",
+          "confirmTitle": "确定要删除该客户吗：",
+          "success": "删除成功",
+          "successMsg": "客户 {{name}} 已成功删除",
+          "deleting": "正在删除...",
+          "error": "删除时出错",
+          "warningTitle": "注意：",
+          "warningMsg": "此操作无法撤销，该客户的所有数据将被永久删除。"
+        },
+        "restore": {
+          "title": "恢复客户",
+          "confirm": "要恢复客户 {{name}} 吗？",
+          "success": "客户已成功恢复",
+          "error": "恢复时出错"
+        },
+        "addToCash": {
+          "title": "充值",
+          "amount": "充值金额",
+          "save": "确认付款",
+          "success": "金额已成功充入",
+          "successMsg": "已向 {{name}} 的账户余额充入 {{amount}} CFA。",
+          "error": "充值时出错",
+          "errorInvalid": "请输入大于 0 的有效金额。"
+        },
+        "withdrawFromCash": {
+          "title": "从余额中取出",
+          "amount": "取出金额",
+          "save": "确认取出",
+          "success": "金额已成功取出",
+          "successMsg": "已从 {{name}} 的账户余额中取出 {{amount}} CFA。",
+          "error": "取出时出错",
+          "errorInvalid": "请输入大于 0 的有效金额。",
+          "insufficientFunds": "余额不足。"
+        }
+      },
+      "pagination": {
+        "info": "显示第 {{start}} 至 {{end}} 条，共 {{total}} 条",
+        "previous": "上一页",
+        "next": "下一页"
+      },
+      "debt": {
+        "pageTitle": "客户欠款",
+        "breadcrumb": [
+          "控制面板",
+          "欠款管理"
+        ],
+        "header": {
+          "title": "客户欠款跟踪",
+          "subtitle": "按客户查看和管理未付款项"
+        },
+        "stats": {
+          "totalDebt": "欠款总额",
+          "totalDebtDesc": "剩余待付总额",
+          "debtorsCount": "欠款客户数",
+          "debtorsCountDesc": "有未付账单的人数",
+          "averageDebt": "平均欠款",
+          "clients": "位客户"
+        },
+        "filters": {
+          "searchPlaceholder": "搜索客户...",
+          "allCities": "全部城市",
+          "allDeliveryPersons": "全部仓库管理员"
+        },
+        "table": {
+          "listTitle": "欠款客户列表",
+          "resultsFound": "条结果",
+          "columns": {
+            "client": "客户",
+            "phone": "电话",
+            "location": "位置",
+            "deliveryPerson": "仓库管理员",
+            "nbDeliveries": "销售次数",
+            "totalAmount": "总金额",
+            "paidAmount": "已付金额",
+            "debt": "欠款",
+            "action": "操作",
+            "details": "详情"
+          }
+        },
+        "modal": {
+          "title": "欠款详情：",
+          "loading": "正在加载数据...",
+          "date": "日期：",
+          "remainder": "剩余：",
+          "productsDelivered": "已交付商品：",
+          "oldDebtIncluded": "旧欠款：",
+          "totalDue": "应付总额：",
+          "paid": "已付：",
+          "remainingToPay": "待付：",
+          "productDetails": "商品明细",
+          "qty": "数量：",
+          "amountToPay": "付款金额",
+          "payButton": "付款"
+        },
+        "messages": {
+          "loadErrorTitle": "加载错误",
+          "loadErrorDesc": "无法获取客户欠款数据。",
+          "errorDebtDetails": "加载欠款详情出错。",
+          "validAmountWarning": "请输入有效金额",
+          "paymentSuccess": "部分付款已成功记录",
+          "paymentError": "部分付款时出错",
+          "fieldRequired": "此项为必填",
+          "amountMustBeLessOrEqual": "金额必须小于或等于 {{amount}}"
+        }
+      }
+    },
+    "reports": {
+      "table": {
+        "total": "合计"
+      }
+    },
+    "charges": {
+      "title": "支出日记账",
+      "subtitle": "查看和管理日常支出",
+      "searchPlaceholder": "搜索支出...",
+      "newExpense": "新增支出",
+      "filteredExpenses": "筛选后的支出",
+      "operationsFound": "条记录",
+      "category": "类别",
+      "period": "期间",
+      "reset": "重置",
+      "totalCharges": "共 {{total}} 笔支出",
+      "columns": {
+        "designation": "名称",
+        "category": "类别",
+        "amount": "金额",
+        "date": "日期",
+        "actions": "操作"
+      },
+      "messages": {
+        "errorLoading": "无法加载支出",
+        "successUpdate": "支出已更新",
+        "successCreate": "已保存 {{count}} 笔支出",
+        "actionFailed": "操作失败",
+        "successDelete": "支出已删除",
+        "errorDelete": "无法删除支出",
+        "error": "错误",
+        "success": "成功"
+      },
+      "confirmDelete": "删除此支出？",
+      "yes": "是",
+      "no": "否",
+      "modal": {
+        "titleEdit": "编辑支出",
+        "titleAdd": "登记支出",
+        "save": "保存",
+        "validate": "确认",
+        "cancel": "取消",
+        "name": "名称",
+        "namePlaceholder": "例如：店铺租金",
+        "amount": "金额",
+        "amountPlaceholder": "价格",
+        "category": "类别",
+        "categoryPlaceholder": "类别",
+        "date": "日期",
+        "description": "描述",
+        "descPlaceholder": "详情（可选）",
+        "addAnother": "再添加一行支出",
+        "required": "必填",
+        "nameRequired": "请填写名称",
+        "amountRequired": "请填写金额"
+      },
+      "categories": {
+        "salaire": "工资",
+        "loyer": "租金",
+        "electricite": "电费",
+        "transport": "交通",
+        "autre": "其他"
+      }
+    },
+    "parameters": {
+      "title": "系统设置",
+      "back": "返回",
+      "status": {
+        "active": "已启用",
+        "inactive": "未启用"
+      },
+      "role": "主要负责人",
+      "changePassword": "修改密码",
+      "tabs": {
+        "profile": "公司资料",
+        "customization": "个性化"
+      },
+      "profile": {
+        "titleInfo": "基本信息",
+        "email": "店铺邮箱",
+        "address": "地址",
+        "contact": "联系方式",
+        "website": "网站",
+        "activity": "经营范围",
+        "memberSince": "加入时间",
+        "unspecified": "未填写",
+        "titleLicence": "许可容量",
+        "maxManagers": "经理上限",
+        "maxLivreurs": "仓库管理员上限"
+      },
+      "customization": {
+        "title": "应用外观",
+        "description": "自定义界面主色，使其符合您的品牌形象。",
+        "primaryColor": "主色",
+        "primaryColorDesc": "按钮、活动图标和链接",
+        "success": "主题已更新",
+        "language": "系统语言",
+        "languageDesc": "选择界面的显示语言",
+        "showOldDebt": "在销售界面显示客户欠款",
+        "showOldDebtDesc": "显示客户已欠的金额（使用 Lumistock 之前的欠款和未付销售），并可登记付款"
+      },
+      "passwordModal": {
+        "title": "修改密码",
+        "oldPassword": "旧密码",
+        "oldPasswordReq": "请输入旧密码",
+        "newPassword": "新密码",
+        "newPasswordReq": "请输入新密码",
+        "newPasswordMin": "至少 8 个字符，包含字母和数字",
+        "confirmPassword": "确认新密码",
+        "confirmPasswordReq": "请确认新密码",
+        "matchError": "两次输入的密码不一致",
+        "cancel": "取消",
+        "update": "更新",
+        "success": "密码已成功更新",
+        "error": "修改时出错",
+        "connError": "连接错误"
+      },
+      "messages": {
+        "loadError": "数据加载错误"
+      }
+    }
+  },
+  "parameters": {
+    "title": "系统设置",
+    "back": "返回",
+    "status": {
+      "active": "已启用",
+      "inactive": "未启用"
+    },
+    "role": "主要负责人",
+    "changePassword": "修改密码",
+    "tabs": {
+      "profile": "公司资料",
+      "customization": "个性化"
+    },
+    "profile": {
+      "titleInfo": "基本信息",
+      "email": "店铺邮箱",
+      "address": "地址",
+      "contact": "联系方式",
+      "website": "网站",
+      "activity": "经营范围",
+      "memberSince": "加入时间",
+      "unspecified": "未填写",
+      "titleLicence": "许可容量",
+      "maxManagers": "经理上限",
+      "maxLivreurs": "仓库管理员上限"
+    },
+    "customization": {
+      "title": "应用外观",
+      "description": "自定义界面主色，使其符合您的品牌形象。",
+      "primaryColor": "主色",
+      "primaryColorDesc": "按钮、活动图标和链接",
+      "success": "主题已更新",
+      "language": "系统语言",
+      "languageDesc": "选择界面的显示语言"
+    },
+    "passwordModal": {
+      "title": "修改密码",
+      "oldPassword": "旧密码",
+      "oldPasswordReq": "请输入旧密码",
+      "newPassword": "新密码",
+      "newPasswordReq": "请输入新密码",
+      "newPasswordMin": "至少 8 个字符，包含字母和数字",
+      "confirmPassword": "确认新密码",
+      "confirmPasswordReq": "请确认新密码",
+      "matchError": "两次输入的密码不一致",
+      "cancel": "取消",
+      "update": "更新",
+      "success": "密码已成功更新",
+      "error": "修改时出错",
+      "connError": "连接错误"
+    },
+    "messages": {
+      "loadError": "数据加载错误"
+    }
+  },
+  "reports": {
+    "paymentFiltering": {
+      "pageTitle": "按支付方式查看收款",
+      "methods": {
+        "cash": "现金",
+        "om": "Orange Money",
+        "momo": "MTN Mobile Money",
+        "bancaire": "银行转账",
+        "title": "支付方式"
+      },
+      "periods": {
+        "all": "全部记录",
+        "today": "今天",
+        "week": "本周",
+        "month": "本月",
+        "year": "今年",
+        "title": "期间"
+      },
+      "table": {
+        "client": "客户",
+        "totalAmount": "总金额",
+        "paymentStatus": "付款状态",
+        "unknown": "未知",
+        "noPhone": "无电话"
+      },
+      "total": "合计",
+      "detailsTitle": "销售详情"
+    },
+    "pageTitle": "报表与活动",
+    "tabs": {
+      "deliveryReport": "销售报表",
+      "paymentTracking": "收款跟踪",
+      "productMovements": "库存变动"
+    },
+    "movements": {
+      "title": "库存变动报表",
+      "subtitle": "跟踪仓库的入库和出库",
+      "filters": {
+        "year": "年份",
+        "type": "操作类型"
+      },
+      "table": {
+        "product": "商品",
+        "type": "操作",
+        "qty": "数量",
+        "date": "日期 / 时间",
+        "actor": "操作人",
+        "details": "详情"
+      },
+      "types": {
+        "all": "全部类型",
+        "vente": "销售",
+        "approvisionnement_magasin": "进货",
+        "approvisionnement_livreur": "仓库管理员进货",
+        "produit_perime": "过期商品",
+        "retour_produit": "商品退货",
+        "livraison": "销售",
+        "retour_stock_magasin": "退回仓库",
+        "retour_produit_dans_stock_livreur": "退回仓库管理员库存",
+        "modification_produit": "商品修改",
+        "modification_approvisionnement_ajout": "进货修改（增加）",
+        "annulation_approvisionnement": "取消进货",
+        "restauration_approvisionnement": "恢复进货",
+        "retour_dans_stock_magasin": "退回仓库"
+      },
+      "modal": {
+        "title": "变动详情",
+        "productInfo": "商品信息",
+        "movementInfo": "变动明细",
+        "actorInfo": "负责人"
+      }
+    },
+    "header": {
+      "title": "销售报表",
+      "subtitle": "查看并打印销售报表"
+    },
+    "filters": {
+      "perDay": "按日",
+      "perWeek": "按周",
+      "perMonth": "按月",
+      "perYear": "按年"
+    },
+    "actions": {
+      "print": "打印"
+    },
+    "stats": {
+      "revenue": "营业额",
+      "productsDelivered": "已售商品",
+      "deliveryCount": "销售笔数"
+    },
+    "print": {
+      "title": "销售报表",
+      "period": "期间：",
+      "generatedOn": "生成日期",
+      "weekOf": "周起始",
+      "totalRevenue": "总营业额",
+      "totalQuantity": "总数量",
+      "deliveries": "销售",
+      "units": "件",
+      "records": "条记录",
+      "signatureManager": "经理签字",
+      "companyStamp": "公司盖章"
+    },
+    "table": {
+      "date": "日期",
+      "client": "客户",
+      "deliveryPerson": "销售员",
+      "product": "商品",
+      "qty": "数量",
+      "unitPrice": "单价",
+      "total": "合计",
+      "status": "状态",
+      "totalRows": "共 {{total}} 行"
+    },
+    "messages": {
+      "fetchError": "获取报表出错"
+    }
+  },
+  "users": {
+    "paginationInfo": "显示第 {{start}} 至 {{end}} 条，共 {{total}} 条"
+  },
+  "finance": {
+    "pageTitle": "财务管理",
+    "header": {
+      "title": "财务面板",
+      "subtitle": "分析并管理您的财务资源"
+    },
+    "tabs": {
+      "profitLoss": "库存财务分析",
+      "reporting": "现金流",
+      "assets": "固定资产"
+    },
+    "profitloss": {
+      "revenue": "营业额",
+      "totalSales": "销售总额",
+      "totalCharges": "费用总额",
+      "cumulativeExpenses": "累计支出",
+      "netProfit": "净利润",
+      "netProfitability": "净利润率",
+      "margin": "利润率",
+      "financialDistribution": "财务分布",
+      "marginAnalysis": "毛利分析",
+      "revenueComposition": "营业额构成",
+      "totalPurchaseCost": "采购成本（合计）",
+      "grossProfit": "毛利",
+      "grossMarginPercent": "毛利率 %"
+    },
+    "reporting": {
+      "reportPeriod": "报表期间",
+      "initialBalance": "期初余额（现金）",
+      "generateReports": "生成报表",
+      "pnlTitle": "损益表",
+      "pnlSubtitle": "经营毛业绩",
+      "netProfitPeriod": "本期净利润",
+      "financialDetails": "财务明细",
+      "sales": "销售",
+      "stockPurchases": "进货采购",
+      "expenses": "支出（费用）",
+      "depreciation": "折旧",
+      "cashFlowTitle": "现金流",
+      "cashFlowSubtitle": "实际流动资金管理",
+      "openingBalance": "期初余额",
+      "netEntries": "净流入",
+      "totalExits": "总流出",
+      "projectedClosing": "预计期末余额",
+      "action": "操作"
+    },
+    "assets": {
+      "totalAssets": "固定资产",
+      "totalAcquisition": "购置总价值",
+      "monthlyDepreciation": "月折旧",
+      "estimatedDepreciation": "估算月折旧",
+      "assetRegister": "资产登记簿",
+      "assetTracking": "跟踪固定资产及折旧",
+      "newAsset": "新资产",
+      "columns": {
+        "equipmentName": "设备名称",
+        "purchaseValue": "购置价值",
+        "lifespan": "使用年限（年）",
+        "monthlyDeprec": "月折旧",
+        "purchaseDate": "购置日期",
+        "actions": "操作",
+        "years": "年"
+      },
+      "confirmDelete": "删除此资产？",
+      "delete": "删除",
+      "cancel": "取消",
+      "modal": {
+        "editTitle": "编辑资产",
+        "addTitle": "登记新设备",
+        "save": "保存",
+        "name": "设备名称",
+        "namePlaceholder": "例如：Dell XPS 电脑",
+        "purchaseValue": "购置价值",
+        "lifespan": "使用年限（年）",
+        "category": "类别",
+        "categoryPlaceholder": "选择类别",
+        "date": "购置日期",
+        "required": "必填"
+      },
+      "categories": {
+        "informatique": "IT 设备",
+        "mobilier": "家具",
+        "vehicule": "车辆",
+        "equipement": "设备",
+        "autre": "其他"
+      },
+      "messages": {
+        "errorLoading": "无法加载资产",
+        "successUpdate": "资产已更新",
+        "successCreate": "资产已登记",
+        "actionFailed": "操作失败",
+        "successDelete": "资产已删除",
+        "errorDelete": "无法删除资产",
+        "error": "错误",
+        "success": "成功"
+      }
+    }
+  },
+  "inventory": {
+    "pageTitle": "商品库存",
+    "stats": {
+      "totalQuantity": "库存数量",
+      "articles": "件",
+      "references": "个有效商品",
+      "totalValue": "库存总价值",
+      "valuationDesc": "按当前售价估值"
+    },
+    "filters": {
+      "search": "搜索",
+      "export": "导出",
+      "filter": "筛选",
+      "title": "筛选条件",
+      "category": "类别",
+      "allCategories": "全部类别",
+      "availability": "库存状态",
+      "allProducts": "全部商品",
+      "inStock": "有货",
+      "outOfStock": "缺货",
+      "reset": "重置",
+      "apply": "应用筛选"
+    },
+    "table": {
+      "noData": "未找到商品",
+      "adjustFilters": "请调整筛选条件或重新搜索",
+      "emptyInventory": "库存中暂无商品",
+      "columns": {
+        "alert": "库存预警",
+        "image": "图片",
+        "name": "名称",
+        "category": "类别",
+        "initialQty": "初始库存",
+        "currentQty": "当前库存",
+        "priceUnit": "单价",
+        "status": "状态",
+        "actions": "操作"
+      },
+      "alerts": {
+        "lowStock": "库存不足",
+        "stockOk": "库存正常",
+        "lowStockTooltip": "库存不足（< 30）",
+        "stockOkTooltip": "库存充足"
+      },
+      "actionLabels": {
+        "details": "查看详情",
+        "return": "退回门店"
+      }
+    },
+    "details": {
+      "title": "商品详情",
+      "livreurTitle": "详情（仓库管理员）",
+      "back": "返回",
+      "breadcrumb": "商品",
+      "loading": "正在加载详情...",
+      "notFound": "未找到商品",
+      "tabs": {
+        "info": "信息",
+        "history": "我的销售与出库"
+      },
+      "info": {
+        "id": "商品编号",
+        "status": "库存状态",
+        "store": "来源门店",
+        "unit": "计量单位",
+        "description": "描述",
+        "noCategory": "无类别",
+        "noDesc": "此商品暂无描述。",
+        "pricingByPack": "按包装定价",
+        "available": "有货",
+        "outOfStock": "缺货",
+        "created": "创建于",
+        "price": "售价",
+        "stock": "您的当前库存",
+        "value": "您的库存价值",
+        "zoom": "放大"
+      },
+      "history": {
+        "columns": {
+          "date": "日期",
+          "movement": "变动",
+          "quantity": "数量",
+          "author": "操作人"
+        },
+        "me": "我",
+        "empty": "您暂无销售或出库记录。"
+      },
+      "error": "错误",
+      "loadingErrorDesc": "无法加载商品详情"
+    },
+    "returnModal": {
+      "title": "退回门店",
+      "cancel": "取消",
+      "confirm": "确认退回",
+      "qtyLabel": "退回数量：",
+      "placeholder": "输入数量",
+      "note": "注意：此数量将从您的库存中扣除并退回总店。",
+      "currentStock": "当前库存：{{count}}"
+    },
+    "messages": {
+      "unexpectedError": "发生意外错误。"
+    }
+  },
+  "public": {
+    "navbar": {
+      "features": "功能",
+      "ai": "AI 与数据",
+      "login": "登录",
+      "getStarted": "开始使用",
+      "createStore": "创建店铺"
+    },
+    "hero": {
+      "badge": "物流标杆 v2.0",
+      "titlePart1": "精准管理您的",
+      "titlePart2": "店铺",
+      "titlePart3": "。",
+      "subtitle": "Lumistock 将库存、销售和会计集中在一个快速统一的界面中。借助人工智能实现利润最大化。",
+      "cta": "免费开始",
+      "demo": "面板演示",
+      "stats": {
+        "activeStores": "活跃店铺",
+        "uptime": "系统可用率"
+      }
+    },
+    "features": {
+      "badge": "强大而简单",
+      "title": "赢得市场所需的一切。",
+      "items": {
+        "stock": {
+          "title": "库存管理",
+          "desc": "实时跟踪出入库，缺货自动提醒。"
+        },
+        "delivery": {
+          "title": "销售跟踪",
+          "desc": "精准安排您的线路和销售。"
+        },
+        "customers": {
+          "title": "客户管理",
+          "desc": "分析客户行为，回馈最有价值的客户。"
+        },
+        "accounting": {
+          "title": "会计与现金流",
+          "desc": "一键生成资产负债表和损益表，并跟踪现金流。"
+        },
+        "reports": {
+          "title": "高级报表",
+          "desc": "可视化统计，基于数据做决策。"
+        },
+        "multiStore": {
+          "title": "多店铺",
+          "desc": "用一个管理员账户管理多个销售点。"
+        }
+      }
+    },
+    "ai": {
+      "badge": "人工智能",
+      "title": "与您的数据对话。",
+      "subtitle": "内置 AI 分析您的销售并发现机会。用自然语言提问，即时获得战略性回答。",
+      "items": [
+        "自动预测缺货",
+        "按商品分析盈利能力",
+        "检测财务异常"
+      ],
+      "assistant": "Lumistock 助手",
+      "status": "在线分析中",
+      "chat": {
+        "question": "“本月哪些商品最赚钱？”",
+        "answer": "根据您的报表，**白糖**贡献了 40% 的毛利。预计下周需求将增长 5%。"
+      }
+    },
+    "cta": {
+      "title": "准备好让业务焕然一新了吗？",
+      "button": "创建我的账户",
+      "note": "2 分钟完成设置 • 无需信用卡"
+    },
+    "footer": {
+      "desc": "新一代物流平台，助力企业实现卓越运营和可持续增长。",
+      "columns": {
+        "platform": "平台",
+        "company": "公司",
+        "contact": "联系"
+      },
+      "links": {
+        "about": "关于我们",
+        "blog": "博客",
+        "careers": "招聘",
+        "legal": "法律声明",
+        "privacy": "隐私"
+      },
+      "tagline": "LUMISTOCK ENTERPRISE — 为卓越而设计"
+    }
+  },
+  "logout_confirm": {
+    "titre": "退出登录？",
+    "texte": "您将在此设备上退出登录。再次进入时需要重新输入邮箱和密码。",
+    "partout": "同时退出我所有其他设备",
+    "confirmer": "退出登录",
+    "annuler": "取消"
+  }
+}

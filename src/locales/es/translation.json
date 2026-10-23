@@ -1,0 +1,2329 @@
+{
+  "common": {
+    "months": [
+      "Ene",
+      "Feb",
+      "Mar",
+      "Abr",
+      "May",
+      "Jun",
+      "Jul",
+      "Ago",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dic"
+    ],
+    "days": [
+      "Dom",
+      "Lun",
+      "Mar",
+      "Mié",
+      "Jue",
+      "Vie",
+      "Sáb"
+    ],
+    "roles": {
+      "admin": "Administrador",
+      "manager": "Gerente",
+      "livreur": "Almacenero",
+      "staff": "Personal",
+      "caissier": "Cajero"
+    }
+  },
+  "login": {
+    "title": "Iniciar sesión",
+    "subtitle": "Accede a tu panel",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "tu@correo.com",
+    "emailRequired": "Introduce tu correo electrónico",
+    "emailInvalid": "Correo electrónico no válido",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "••••••••",
+    "passwordRequired": "Introduce tu contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "submitBtn": "Iniciar sesión",
+    "loading": "Cargando...",
+    "messages": {
+      "success": "¡Inicio de sesión correcto! Redirigiendo...",
+      "wrongEmail": "Dirección de correo no válida",
+      "wrongPassword": "Contraseña incorrecta",
+      "invalidCreds": "Credenciales no válidas",
+      "notFound": "Usuario no encontrado",
+      "serverError": "Error de conexión con el servidor",
+      "unknownError": "Se produjo un error desconocido"
+    },
+    "sidebar": {
+      "welcome": "Bienvenido a LUMISTOCK",
+      "description": "Tu aplicación de gestión de inventario.",
+      "logoAlt": "Logotipo",
+      "logoMobileAlt": "Logotipo móvil",
+      "logoTabletAlt": "Logotipo tableta",
+      "messengerAlt": "Mensajería"
+    }
+  },
+  "delivery": {
+    "title": "Mis ventas",
+    "myDeliveries": "Mis ventas",
+    "selectedPeriod": "Periodo seleccionado",
+    "showAllHistory": "Mostrando todo el historial",
+    "day_format": "DD [de] MMMM [de] YYYY",
+    "week_format": "Del {{start}} al {{end}}",
+    "month_format": "MMMM [de] YYYY",
+    "searchAndFilters": {
+      "placeholder": "Buscar una venta...",
+      "filterBtn": "Filtros",
+      "trashTitle": "Ver ventas anuladas",
+      "trashBtn": "Papelera",
+      "startDelivery": "Iniciar una venta",
+      "advancedFilters": "Filtros avanzados",
+      "reset": "Restablecer",
+      "statusLabel": "Estado de la venta",
+      "allStatuses": "Todos los estados",
+      "statusInProgress": "En curso",
+      "statusDelivered": "Entregada",
+      "paymentLabel": "Estado del pago",
+      "paymentPaid": "Pagada",
+      "paymentUnpaid": "No pagada",
+      "paymentPartial": "Parcial",
+      "minAmount": "Importe mínimo",
+      "minPlaceholder": "Mín.",
+      "maxAmount": "Importe máximo",
+      "maxPlaceholder": "Máx."
+    },
+    "stats": {
+      "articlesDelivered": "Artículos entregados",
+      "articlesSubtext": "Cantidad total entregada",
+      "totalAmount": "Importe total",
+      "amountSubtext": "Valor total de las ventas"
+    },
+    "report": {
+      "detailsTab": "Detalles del producto",
+      "historyTab": "Historial de movimientos"
+    },
+    "noOrders": "No se encontraron ventas",
+    "periods": {
+      "day": "Día",
+      "week": "Semana",
+      "month": "Mes",
+      "all": "Todo"
+    },
+    "messages": {
+      "successCancel": "Venta anulada correctamente",
+      "errorCancel": "Error al anular",
+      "errorFetchCommand": "Error al cargar las ventas"
+    },
+    "ordersTable": {
+      "clientName": "Cliente",
+      "quantity": "Cant.",
+      "payment": "Pago",
+      "amount": "Importe",
+      "date": "Fecha",
+      "amountPaid": "Pagado",
+      "debt": "Deuda",
+      "oldDebt": "Deuda anterior",
+      "return": "Devolución",
+      "status": "Estado",
+      "action": "Acción",
+      "paginationInfo": "Mostrando {{start}}-{{end}} de {{total}} elementos",
+      "actions": {
+        "showDetails": "Ver detalles",
+        "edit": "Editar",
+        "finalizePayment": "Completar el pago",
+        "refundClient": "Reembolsar al cliente",
+        "returnItem": "Devolver artículo",
+        "cancel": "Anular la venta"
+      },
+      "messages": {
+        "paymentSuccess": "Pago registrado correctamente",
+        "paymentError": "Error durante el pago",
+        "refundSuccess": "Reembolso de {{amount}} CFA realizado",
+        "noRefund": "Error durante el reembolso",
+        "returnSuccess": "Devolución registrada correctamente",
+        "returnError": "Error al registrar la devolución",
+        "fetchDetailsError": "Error al obtener los detalles"
+      },
+      "paymentModal": {
+        "title": "Completar el pago",
+        "continueBtn": "Continuar",
+        "cancelBtn": "Cancelar",
+        "orderLabel": "Pedido n.º",
+        "totalAmount": "Importe total de los productos:",
+        "alreadyPaid": "Ya pagado:",
+        "remainingDue": "Pendiente:",
+        "amountToCollect": "Importe a cobrar:",
+        "fullPaymentSuccess": "Pago exacto: deuda saldada",
+        "remainingAfterPayment": "Pendiente tras este pago:",
+        "overpaymentWarning": "Atención: el importe supera lo pendiente",
+        "surplusText": "Un excedente de",
+        "surplusSubtext": "se añadirá como anticipo."
+      },
+      "confirmModal": {
+        "title": "Confirmación del pago",
+        "confirmBtn": "Confirmar el pago",
+        "backBtn": "Volver",
+        "warningInfo": "Esta acción registrará un nuevo pago para esta venta.",
+        "clientLabel": "Cliente:",
+        "orderLabel": "Pedido:",
+        "remainingLabel": "Pendiente:",
+        "amountLabel": "Importe a cobrar:",
+        "remainingAfterLabel": "Nuevo pendiente:",
+        "fullPaymentLabel": "La deuda quedará totalmente saldada",
+        "overpaymentWarning": "Pago con anticipo (pago excesivo)",
+        "debtCleared": "Deuda actual saldada",
+        "surplusCredit": "Anticipo abonado al cliente"
+      },
+      "refundModal": {
+        "title": "Reembolso al cliente",
+        "refundBtn": "Reembolsar {{amount}} CFA",
+        "cancelBtn": "Cancelar",
+        "orderLabel": "Pedido n.º",
+        "amountLabel": "Importe a reembolsar:",
+        "warningText": "Nota: este importe corresponde a productos devueltos que el cliente ya había pagado."
+      },
+      "errorInvalidConditioningId": "ID de embalaje no válido"
+    },
+    "productSelection": {
+      "articles": "artículo",
+      "articlesPlural": "artículos",
+      "stock": "En stock:",
+      "currency": "CFA",
+      "outOfStockMsg1": "{{name}} está agotado",
+      "outOfStockMsg2": "Agotado",
+      "addedToSelection": "{{name}} añadido a la selección",
+      "prev": "Anterior",
+      "next": "Siguiente",
+      "page": "Página",
+      "searchPlaceholder": "Buscar un producto..."
+    },
+    "newDelivery": {
+      "allProducts": "Todos los productos",
+      "error": "Error:",
+      "errorFetch": "Error al obtener las categorías",
+      "sessionExpired": "Sesión caducada, vuelve a iniciar sesión",
+      "title": "Nueva venta",
+      "breadcrumbDelivery": "Venta",
+      "breadcrumbSelect": "Selección de productos",
+      "subtitle": "Selecciona los productos",
+      "itemsSelected": "{{count}} artículos seleccionados",
+      "continueBtn": "Continuar la venta",
+      "noProductSelected": "No se encontraron productos",
+      "scanPlaceholder": "Escanear un producto..."
+    },
+    "deliveryConfig": {
+      "pageTitleNew": "Configuración de la venta",
+      "pageTitleEdit": "Editar la venta",
+      "breadcrumbDelivery": "Ventas",
+      "breadcrumbSelect": "Selección",
+      "breadcrumbConfig": "Configuración",
+      "breadcrumbEdit": "Edición",
+      "titleNew": "Configuración de la venta",
+      "titleEdit": "Editar la venta n.º {{id}}",
+      "sectionProducts": "Productos seleccionados",
+      "sectionPayment": "Estado del pago",
+      "sectionSummary": "Resumen de la venta",
+      "clientLabel": "Cliente seleccionado",
+      "clientSelectExisting": "Selecciona un cliente existente",
+      "clientSelectPlaceholder": "Elige un cliente...",
+      "clientLoading": "Cargando clientes...",
+      "clientNotInList": "¿El cliente no está en la lista?",
+      "clientAddBtn": "Añadir un cliente",
+      "clientAddError": "Error al añadir el cliente",
+      "clientFetchError": "Error al cargar los clientes",
+      "clientProfileTitle": "Perfil del cliente",
+      "clientNameLabel": "Nombre completo",
+      "clientNamePlaceholder": "Nombre",
+      "clientEmailLabel": "Correo electrónico",
+      "clientEmailPlaceholder": "Correo",
+      "errorMissingId": "Falta el ID de la venta",
+      "errorLoad": "Error al cargar la venta",
+      "errorFallback": "Se produjo un error",
+      "loading": "Cargando...",
+      "error": "Error",
+      "btnBack": "Volver",
+      "successTitle": "¡Listo!",
+      "totalLabel": "Total de la venta:",
+      "actionBtnNew": "Guardar la venta",
+      "actionBtnEdit": "Actualizar la venta",
+      "actionAddItems": "Añadir más artículos",
+      "productStock": "Stock:",
+      "productPrice": "Precio:",
+      "productUnits": "UNIDADES",
+      "productRemove": "Quitar el producto",
+      "productUnitShort": "u",
+      "productAddConditioning": "Añadir un embalaje...",
+      "productAddBtn": "Añadir",
+      "productStockWarning": "Atención: la cantidad supera el stock disponible",
+      "paymentStatus": "Estado del pago",
+      "paymentUnpaid": "No pagada (deuda)",
+      "paymentPaid": "Pagada por completo (efectivo)",
+      "paymentAdvanced": "Anticipo (pago parcial)",
+      "paymentMethods": "Métodos de pago",
+      "paymentChooseMethods": "Elige los métodos...",
+      "paymentDetails": "Detalles del pago",
+      "paymentAmount": "Importe en",
+      "paymentTotalPaid": "Total pagado:",
+      "paymentOldDebtSetup": "¿Saldar una deuda anterior?",
+      "paymentOldDebtAmount": "Importe de la deuda anterior",
+      "paymentMethodCash": "Efectivo",
+      "paymentMethodOM": "Orange Money",
+      "paymentMethodMomo": "Mobile Money",
+      "paymentMethodBank": "Transferencia bancaria",
+      "actionErrorNoClient": "Selecciona un cliente",
+      "actionErrorNoProduct": "Selecciona al menos un producto",
+      "actionErrorNoQuantity": "Introduce las cantidades de los productos seleccionados",
+      "actionSuccessNew": "Venta guardada correctamente",
+      "actionSuccessEdit": "Venta actualizada correctamente",
+      "actionErrorSave": "Error al guardar",
+      "formActionCancel": "Cancelar",
+      "formActionEdit": "Editar",
+      "formActionButton": "Confirmar la modificación",
+      "productsNoTarget": "Ningún producto seleccionado",
+      "productsAddPrompt": "Añade artículos a tu venta"
+    },
+    "detailsModal": {
+      "printUnit": "Unidad",
+      "printWarehouse": "Tienda / Almacén",
+      "title": "Detalles de la venta",
+      "print": "Imprimir",
+      "clientInfo": "Información del cliente",
+      "name": "Nombre",
+      "phone": "Teléfono",
+      "email": "Correo",
+      "city": "Ciudad",
+      "neighborhood": "Barrio",
+      "notProvided": "No indicado",
+      "orderDetails": "Detalles del pedido",
+      "date": "Fecha",
+      "items": "Artículos",
+      "payment": "Pago",
+      "paymentMethod": "Método de pago",
+      "financialSummary": "Resumen financiero",
+      "totalAmount": "Importe total",
+      "discount": "Descuento",
+      "remainingToPay": "Pendiente de pago",
+      "paid": "Pagado",
+      "balance": "Saldo",
+      "orderedItems": "Artículos pedidos",
+      "returns": "Devoluciones",
+      "movement": "Movimiento",
+      "deliveryNotes": "Notas de la venta",
+      "printInvoiceNum": "Factura n.º",
+      "printDate": "Fecha",
+      "printClientDesc": "Destinatario",
+      "printRecipient": "Nombre:",
+      "printPhone": "Teléfono:",
+      "printAddress": "Lugar:",
+      "printStatus": "Estado:",
+      "printItem": "Descripción",
+      "printQty": "Cant.",
+      "printTotal": "Total",
+      "printNote": "Nota:",
+      "printSubtotal": "Subtotal",
+      "printDiscount": "Descuento",
+      "printAlreadyPaid": "Ya pagado",
+      "printRemaining": "Pendiente de pago",
+      "printPaid": "PAGADO",
+      "printFooter1": "¡Gracias por su compra!",
+      "printFooter2": "Software de gestión Lumistock"
+    },
+    "corbeilleModal": {
+      "title": "Ventas anuladas",
+      "subtitle": "Consulta los pedidos anulados recientemente.",
+      "fetchError": "Error al cargar la papelera",
+      "restoreSuccess": "Venta restaurada correctamente",
+      "restoreError": "Error al restaurar",
+      "colIdDate": "ID / Fecha",
+      "colClient": "Cliente",
+      "colAmount": "Importe total",
+      "colAction": "Acción",
+      "restoreBtn": "Restaurar",
+      "closeBtn": "Cerrar",
+      "empty": "Tu papelera está vacía"
+    },
+    "returnModal": {
+      "title": "Devolución de producto",
+      "orderLabel": "Pedido n.º",
+      "reasonLabel": "Motivo de la devolución",
+      "productsLabel": "Productos afectados",
+      "maxLabel": "máx.",
+      "conditionedLabel": "¿Embalado?",
+      "conditioningIdLabel": "ID de embalaje",
+      "conditioningIdPlaceholder": "ID del lote",
+      "cancelBtn": "Cancelar",
+      "confirmBtn": "Confirmar la devolución",
+      "savingBtn": "Guardando...",
+      "errorMissingReasonOrProduct": "Indica un motivo y al menos un producto",
+      "errorInvalidDeliveryPersonId": "ID de almacenero no válido",
+      "errorInvalidConditioningId": "ID de embalaje no válido"
+    }
+  },
+  "sidebar_manager": {
+    "accueil": "Inicio",
+    "products": "Productos",
+    "ai_assistant": "Asistente IA",
+    "customers": "Clientes",
+    "reports": "Informes",
+    "accounting": "Contabilidad",
+    "charges": "Gastos",
+    "settings": "Ajustes",
+    "logout": "Cerrar sesión"
+  },
+  "sidebar_livreur": {
+    "dashboard": "Panel",
+    "delivery": "Venta",
+    "accounting": "Contabilidad",
+    "settings": "Ajustes",
+    "logout": "Cerrar sesión"
+  },
+  "profile": {
+    "pageTitle": "Mi perfil de usuario",
+    "back": "Volver",
+    "statusActive": "Activo",
+    "statusInactive": "Inactivo",
+    "accountLabel": "Cuenta",
+    "securityBtn": "Seguridad / Contraseña",
+    "accountDetails": "Detalles de la cuenta",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "emailLabel": "Correo de acceso",
+    "assignedRole": "Rol asignado",
+    "registrationDate": "Fecha de registro",
+    "errorInfoNote": "* Si observas algún error en tus datos personales, contacta con tu administrador para corregirlo.",
+    "roleStaff": "Agente de ventas / Agente de campo",
+    "roleAdmin": "Administrador del sistema",
+    "roleManager": "Responsable de inventario",
+    "language": "Idioma de visualización",
+    "languageDesc": "Selecciona tu idioma preferido",
+    "errorLoad": "Error al cargar el perfil",
+    "passwordSuccess": "Contraseña actualizada correctamente",
+    "errorValidation": "Error de validación",
+    "errorConnection": "Error de conexión",
+    "passwordModalTitle": "Actualización de seguridad",
+    "oldPassword": "Contraseña actual",
+    "requiredField": "Necesario para validar",
+    "newCredentials": "NUEVAS CREDENCIALES",
+    "newPassword": "Nueva contraseña",
+    "newPasswordRequired": "Elige una nueva contraseña",
+    "passwordMinLength": "Al menos 8 caracteres, con una letra y un número",
+    "passwordMinPlaceholder": "Mínimo 6 caracteres",
+    "confirmPassword": "Confirmar nueva contraseña",
+    "confirmationRequired": "Confirmación obligatoria",
+    "passwordMismatch": "Las contraseñas no coinciden",
+    "confirmPlaceholder": "Igual que el campo anterior",
+    "cancelBtn": "Cancelar",
+    "submitBtn": "Confirmar",
+    "barcodeMode": "Modo lector de código de barras",
+    "barcodeModeDesc": "Optimizar la interfaz para el uso de un lector USB."
+  },
+  "sidebar": {
+    "accueil": "Inicio",
+    "dashboard": "Panel",
+    "delivery": "Ventas",
+    "products": "Productos",
+    "ai_assistant": "Asistente IA",
+    "customers": "Clientes",
+    "sub_boutique": "Subtiendas",
+    "reports": "Informes",
+    "accounting": "Contabilidad",
+    "charges": "Gastos",
+    "messages": "Mensajes a clientes",
+    "settings": "Ajustes",
+    "support": "Soporte Lumistock",
+    "logout": "Cerrar sesión",
+    "caisses": "Cajas",
+    "sections": {
+      "ventes": "Ventas",
+      "stock": "Stock",
+      "clients": "Clientes",
+      "finances": "Finanzas",
+      "outils": "Herramientas",
+      "administration": "Administración",
+      "caisse": "Caja",
+      "suivi": "Seguimiento",
+      "outilsCompte": "Herramientas y cuenta"
+    },
+    "items": {
+      "nouvelleVente": "Nueva venta",
+      "approvisionnements": "Abastecimientos",
+      "codesBarres": "Códigos de barras",
+      "msgEnvoyer": "Enviar un mensaje",
+      "msgPlanification": "Automáticos y programados",
+      "msgHistorique": "Historial",
+      "msgParametres": "Ajustes y plantillas",
+      "fin_tableau": "Panel",
+      "fin_resultat": "Cuenta de resultados",
+      "fin_tresorerie": "Tesorería e IVA",
+      "fin_impots": "Impuestos",
+      "fin_bilan": "Balance",
+      "fin_journal": "Diario contable",
+      "fin_fournisseurs": "Facturas de proveedores",
+      "fin_rapprochement": "Conciliación bancaria",
+      "fin_immobilisations": "Inmovilizado",
+      "fin_financements": "Capital y préstamos",
+      "fin_cloture": "Cierre y reglas",
+      "rap_ventes": "Informe de ventas",
+      "rap_encaissements": "Cobros",
+      "rap_mouvements": "Movimientos de stock",
+      "rap_annuel": "Movimiento anual",
+      "rap_inventaire": "Inventario",
+      "par_profil": "Mi perfil",
+      "par_magasin": "Tienda",
+      "par_acces": "Accesos y permisos",
+      "par_preferences": "Personalización",
+      "par_securite": "Seguridad",
+      "mesVentes": "Mis ventas",
+      "maCaisse": "Mi caja",
+      "mesStatistiques": "Mis estadísticas",
+      "securite": "Seguridad"
+    }
+  },
+  "admin": {
+    "accueil": {
+      "defaultUser": "Administrador",
+      "badge": "Espacio de administración",
+      "role": "Admin",
+      "hero": {
+        "badge": "Centro de mando",
+        "title_prefix": "Bienvenido a tu",
+        "title_main": "Centro de control",
+        "subtitle": "Supervisa tus operaciones, analiza el rendimiento de tu negocio y dirige tu empresa con total precisión, {{name}}.",
+        "cta": "Panel"
+      },
+      "modules": {
+        "title": "Tus módulos",
+        "dashboard": {
+          "title": "Panel",
+          "desc": "Visión global y métricas clave de la empresa."
+        },
+        "delivery": {
+          "title": "Flujo de ventas",
+          "desc": "Organización de la logística y los envíos."
+        },
+        "stock": {
+          "title": "Gestión de inventario",
+          "desc": "Inventario preciso y abastecimientos en tiempo real."
+        },
+        "customers": {
+          "title": "Cartera de clientes",
+          "desc": "Análisis del comportamiento y fidelización de clientes."
+        },
+        "reports": {
+          "title": "Informes y ventas",
+          "desc": "Análisis de rendimiento y estadísticas detalladas."
+        },
+        "accounting": {
+          "title": "Contabilidad",
+          "desc": "Situación financiera, cuenta de resultados y seguimiento de la tesorería neta."
+        }
+      },
+      "ia": {
+        "badge": "Asistente IA",
+        "title": "Conversa con tus datos",
+        "desc": "Obtén análisis al instante, detecta anomalías y genera informes estratégicos con un clic gracias a la IA integrada en tu panel.",
+        "cta": "Hacer una pregunta"
+      },
+      "footer": {
+        "system": "Lumistock Enterprise System"
+      }
+    },
+    "dashboard": {
+      "success": "Operación realizada",
+      "info": "Información general",
+      "actions": "Acciones",
+      "date": "Fecha",
+      "title": "Panel",
+      "revenue": "Ingresos totales",
+      "deliveries": "Ventas totales",
+      "clients": "Clientes totales",
+      "products": "Productos totales",
+      "loading": "Cargando...",
+      "no_data": "No hay datos disponibles",
+      "error": "Se produjo un error",
+      "top_products": "Productos principales",
+      "sold": "Vendido",
+      "of_total_revenue": "de los ingresos totales",
+      "no_products_sold": "Ningún producto vendido",
+      "recent_deliveries": "Ventas recientes",
+      "access_delivery_page": "Ir a la página de ventas",
+      "no_deliveries_recorded": "No hay ventas registradas",
+      "since_last_week": "desde la semana pasada",
+      "revenue_total_stat": "Ingresos totales",
+      "period_total": "Total del periodo",
+      "payment_volume": "Volumen:",
+      "payment_proportion": "Proporción:",
+      "pdf_col_product": "Producto",
+      "pdf_col_sales": "Ventas (%)",
+      "top_clients": "Mejores clientes",
+      "top_debtors": "Mayores deudores",
+      "top_suppliers": "Principales proveedores",
+      "table": {
+        "date": "Fecha del pedido",
+        "client": "Cliente",
+        "quantity": "Cantidad",
+        "payment": "Pago",
+        "amount": "Importe",
+        "status": "Estado"
+      },
+      "scroll_down": "Desplázate hacia abajo",
+      "revenue_title": "Ingresos",
+      "returns_title": "Reembolsos",
+      "risk_evolution": "Evolución del riesgo",
+      "debt_evolution": "Evolución de la deuda de clientes",
+      "payment_distribution": "Distribución de pagos",
+      "total_period": "Total del periodo",
+      "total_debt": "Deuda pendiente total",
+      "total_paid": "Importe total pagado",
+      "total_delivery_amount": "Importe total de ventas",
+      "loading_revenue": "Cargando ingresos...",
+      "loading_returns": "Cargando devoluciones...",
+      "loading_payments": "Cargando pagos...",
+      "loading_stats": "Cargando estadísticas...",
+      "periods": {
+        "day": "Día",
+        "week": "Semana",
+        "month": "Mes",
+        "year": "Año"
+      },
+      "stats": {
+        "total": "Total",
+        "paid": "Pagado",
+        "unpaid": "No pagado",
+        "partial": "Pagado parcialmente",
+        "debt": "Deuda",
+        "deliveries": "Ventas"
+      },
+      "retry": "Reintentar",
+      "location": "Ubicación",
+      "supplier_products": "Número de productos suministrados",
+      "ref": "ref.",
+      "risk": {
+        "low": "Bajo",
+        "medium": "Medio",
+        "high": "Alto"
+      },
+      "tooltips": {
+        "location": "Ubicación",
+        "supplier_products": "Número de productos suministrados"
+      },
+      "out_of": "de",
+      "delivery_status": {
+        "delivered": "Entregada",
+        "in_progress": "En curso",
+        "cancelled": "Anulada"
+      },
+      "status_labels": {
+        "payé": "Pagado",
+        "payée": "Pagada",
+        "non payé": "No pagado",
+        "partiel": "Parcial",
+        "partiellement payé": "Pagado parcialmente",
+        "livré": "Entregado",
+        "livrée": "Entregada",
+        "en cours": "En curso",
+        "annulé": "Anulado",
+        "annulée": "Anulada"
+      }
+    },
+    "users": {
+      "title": "Gestión de almaceneros",
+      "search": "Buscar",
+      "addBtn": "Añadir un almacenero",
+      "table": {
+        "shop": "Almacenero",
+        "name": "Nombre y apellidos",
+        "email": "Correo",
+        "role": "Rol",
+        "status": "Estado",
+        "date": "Fecha de creación",
+        "action": "Acción",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "actions": {
+        "edit": "Editar",
+        "resetPassword": "Restablecer contraseña",
+        "deactivate": "Desactivar",
+        "activate": "Activar",
+        "delete": "Eliminar",
+        "viewDetails": "Ver detalles"
+      },
+      "deleteModal": {
+        "title": "¡Atención!",
+        "message": "Eliminar un usuario es irreversible",
+        "deleteBtn": "Eliminar",
+        "cancelBtn": "Cancelar",
+        "confirm": "¿Seguro que quieres eliminar al usuario {{name}} {{firstName}}?",
+        "delete": "Eliminar"
+      },
+      "messages": {
+        "successEdit": "Usuario actualizado correctamente",
+        "successReset": "Contraseña restablecida correctamente",
+        "successActivate": "Usuario activado correctamente",
+        "successDeactivate": "Usuario desactivado correctamente",
+        "successDelete": "Usuario eliminado correctamente",
+        "error": "Se produjo un error",
+        "tokenError": "Sesión caducada, vuelve a iniciar sesión.",
+        "fetchError": "No se pudieron cargar los usuarios.",
+        "unknownError": "Se produjo un error desconocido"
+      },
+      "modals": {
+        "edit": {
+          "title": "Editar usuario",
+          "name": "Apellido",
+          "firstName": "Nombre",
+          "email": "Correo",
+          "shopName": "Nombre del almacenero",
+          "shopPlaceholder": "Introduce el nombre del almacenero",
+          "cancel": "Cancelar",
+          "save": "Guardar"
+        },
+        "delete": {
+          "title": "Eliminar usuario",
+          "confirm": "¿Seguro que quieres eliminar al usuario {{name}} {{firstName}}?",
+          "cancel": "Cancelar",
+          "delete": "Eliminar"
+        },
+        "resetPassword": {
+          "title": "Restablecer la contraseña de {{name}} {{firstName}}",
+          "newPassword": "Nueva contraseña",
+          "description": "Se generará una nueva contraseña aleatoria y se enviará a {{email}}. La contraseña anterior dejará de funcionar.",
+          "cancel": "Cancelar",
+          "validate": "Enviar la nueva contraseña"
+        }
+      },
+      "add": {
+        "title": "Añadir una cuenta",
+        "breadcrumb": "Usuarios",
+        "typeSelection": {
+          "title": "Tipo de cuenta",
+          "subtitle": "Selecciona el tipo de usuario que quieres crear",
+          "back": "Volver",
+          "shop": {
+            "title": "Almacenero",
+            "description": "Crear una cuenta para un nuevo almacenero"
+          },
+          "manager": {
+            "title": "Gerente",
+            "description": "Crear una cuenta de gerente con acceso limitado"
+          },
+          "caissier": {
+            "title": "Cajero",
+            "description": "Vende en el mostrador y solo ve sus propias ventas"
+          }
+        },
+        "form": {
+          "titleShop": "Nuevo almacenero",
+          "titleManager": "Nuevo gerente",
+          "subtitleShop": "Introduce los datos del almacenero",
+          "subtitleManager": "Introduce los datos del gerente",
+          "name": "Apellido",
+          "nameRequired": "El apellido es obligatorio",
+          "namePlaceholder": "Introduce el apellido",
+          "firstName": "Nombre",
+          "firstNameRequired": "El nombre es obligatorio",
+          "firstNamePlaceholder": "Introduce el nombre",
+          "email": "Correo",
+          "emailRequired": "El correo es obligatorio",
+          "emailInvalid": "Correo no válido",
+          "password": "Contraseña",
+          "passwordRequired": "La contraseña es obligatoria",
+          "passwordMin": "La contraseña debe tener al menos 6 caracteres",
+          "passwordPlaceholder": "Mínimo 6 caracteres",
+          "shopName": "Denominación del almacenero",
+          "shopNameRequired": "La denominación es obligatoria",
+          "shopNamePlaceholder": "Introduce el nombre del almacenero o de la tienda",
+          "changeType": "Cambiar el tipo",
+          "prev": "Anterior",
+          "save": "Añadir {{role}}",
+          "roleLivreur": "el almacenero",
+          "roleManager": "el gerente",
+          "success": "Se añadió {{role}}: se ha enviado por correo un enlace de invitación para elegir una contraseña",
+          "invitationHint": "El usuario recibirá por correo un enlace seguro para elegir su propia contraseña.",
+          "errorCreation": "Error al crear el usuario",
+          "sessionExpired": "Tu sesión ha caducado, vuelve a iniciar sesión",
+          "errorAuth": "Error de autenticación",
+          "errorNetwork": "Error de conexión con el servidor",
+          "readError": "Error al leer la respuesta del servidor",
+          "roleCaissier": "el cajero",
+          "titleCaissier": "Nuevo cajero",
+          "subtitleCaissier": "El cajero recibirá por correo un enlace para elegir una contraseña. Solo verá sus propias ventas, su caja y sus estadísticas."
+        }
+      }
+    },
+    "products": {
+      "title": "Productos",
+      "new_product": "Nuevo producto",
+      "edit_product": "Editar producto",
+      "product_name": "Nombre del producto",
+      "description": "Descripción",
+      "category": "Categoría",
+      "supplier": "Proveedor",
+      "unit": "Unidad de venta",
+      "initial_quantity": "Cantidad inicial",
+      "unit_price": "Precio unitario",
+      "purchase_price": "Precio de compra",
+      "stock_value": "Valor del stock",
+      "total_products": "Total de productos",
+      "purchase_value": "Valor total de compra",
+      "sale_value": "Valor total de venta",
+      "different_references": "referencias distintas",
+      "search_placeholder": "Buscar un producto...",
+      "create_btn": "Crear un producto",
+      "import_excel": "Importar Excel",
+      "export_excel": "Exportar Excel",
+      "trash": "Papelera",
+      "filters": "Filtros",
+      "status": {
+        "all": "Todos los estados",
+        "in_stock": "En stock",
+        "out_of_stock": "Agotado"
+      },
+      "categories": {
+        "all": "Todas las categorías",
+        "new": "Nueva categoría"
+      },
+      "packaging": {
+        "title": "Embalaje",
+        "add_btn": "Añadir embalaje",
+        "name": "Nombre del embalaje",
+        "factor": "Número de unidades",
+        "total_price": "Precio total",
+        "none": "Ningún embalaje añadido"
+      },
+      "image": {
+        "title": "Imagen del producto",
+        "upload_btn": "Subir una imagen",
+        "suggestions": "Sugerencias",
+        "none_suggestion": "Sin sugerencias",
+        "required": "Se requiere una imagen",
+        "tooltip_suggestions": "Imágenes usadas a menudo para este tipo de producto",
+        "barcode": "Código de barras",
+        "generateBarcode": "Generar un código interno"
+      },
+      "delete_modal": {
+        "title": "Confirmar eliminación",
+        "warning": "¿Seguro que quieres eliminar este elemento? Esta acción es irreversible.",
+        "confirm_btn": "Eliminar",
+        "cancel_btn": "Cancelar",
+        "deleting": "Eliminando...",
+        "success_title": "Eliminación correcta",
+        "success_message": "El elemento se ha eliminado correctamente",
+        "close_btn": "Cerrar"
+      },
+      "form": {
+        "placeholder_name": "nombre del producto",
+        "placeholder_desc": "Detalles del producto, especificaciones técnicas...",
+        "choose_category": "Elige una categoría",
+        "new_category": "Nueva categoría",
+        "bag": "Saco",
+        "kilogram": "Kilogramo (kg)",
+        "carton": "Caja",
+        "bottle": "Botella",
+        "liter": "Litro (L)",
+        "gram": "Gramo (g)",
+        "packet": "Paquete",
+        "placeholder_carton": "Ej.: Caja",
+        "placeholder_cat_name": "Alimentación, bebidas..."
+      },
+      "code_id": "ID de código",
+      "table": {
+        "columns": {
+          "alert": "Alerta de stock",
+          "image": "Imagen",
+          "name": "Nombre",
+          "description": "Descripción",
+          "category": "Categoría",
+          "remaining": "Restante",
+          "price_sale": "Precio de venta",
+          "price_purchase": "Precio de compra",
+          "status": "Estado",
+          "action": "Acción"
+        },
+        "alerts": {
+          "low_stock_title": "Stock bajo (< 30)",
+          "low_stock_tag": "Stock bajo",
+          "ok_stock_title": "Stock suficiente",
+          "ok_stock_tag": "Stock correcto"
+        },
+        "actions": {
+          "edit": "Editar",
+          "details": "Ver detalles",
+          "expired": "Declarar averías",
+          "provision": "Reabastecer",
+          "delete": "Eliminar"
+        },
+        "empty": {
+          "title": "No hay productos",
+          "subtitle": "Añade artículos"
+        }
+      },
+      "provision_modal": {
+        "title": "Reabastecer producto",
+        "ok_btn": "Reabastecer",
+        "cancel_btn": "Cancelar",
+        "product_id": "ID del producto:",
+        "quantity_label": "Cantidad a añadir:",
+        "quantity_placeholder": "Introduce la cantidad"
+      },
+      "messages": {
+        "invalid_quantity": "Introduce una cantidad válida (mayor que 0).",
+        "auth_required": "Debes iniciar sesión.",
+        "success_provision": "Producto reabastecido correctamente.",
+        "error_unknown": "Se produjo un error desconocido.",
+        "error_server": "No se puede conectar con el servidor. Inténtalo de nuevo."
+      },
+      "corbeille": {
+        "title": "Papelera de productos",
+        "subtitle": "Los productos eliminados se borrarán al final del periodo de conservación.",
+        "empty": "La papelera de productos está vacía",
+        "restore": "Restaurar",
+        "deleteDefinitive": "Eliminar definitivamente",
+        "successDeleteDefinitive": "Producto eliminado definitivamente",
+        "failDeleteDefinitive": "No se pudo eliminar definitivamente",
+        "confirmDeleteTitle": "Eliminación definitiva",
+        "confirmDeleteMessage": "¿Seguro que quieres eliminar definitivamente este producto? Esta acción es irreversible.",
+        "table": {
+          "product": "Producto",
+          "quantity": "Cantidad",
+          "price": "Precio (reventa)",
+          "restore": "Restaurar",
+          "deleteDefinitive": "Eliminar definitivamente",
+          "successDeleteDefinitive": "Producto eliminado definitivamente",
+          "failDeleteDefinitive": "No se pudo eliminar definitivamente",
+          "confirmDeleteTitle": "Eliminación definitiva",
+          "confirmDeleteMessage": "¿Seguro que quieres eliminar definitivamente este producto? Esta acción es irreversible.",
+          "messages": {
+            "loadError": "No se pudo cargar la papelera.",
+            "restoreSuccess": "Producto restaurado correctamente",
+            "restoreError": "La restauración falló."
+          },
+          "action": "Acción"
+        },
+        "messages": {
+          "loadError": "No se pudo cargar la papelera.",
+          "restoreSuccess": "Producto restaurado correctamente",
+          "restoreError": "La restauración falló."
+        }
+      },
+      "quantity_instore": "Cantidad en stock",
+      "reports": {
+        "table": {
+          "total": "Total"
+        }
+      }
+    },
+    "supplies": {
+      "title": "Abastecimientos",
+      "total_quantity": "Cantidad total",
+      "items_entered": "Artículos ingresados",
+      "total_amount": "Importe total",
+      "budget_invested": "Presupuesto invertido",
+      "select_products": "Seleccionar productos",
+      "deliverer": "Almacenero",
+      "select_deliverer": "Selecciona un almacenero",
+      "new_supply": "Nuevo abastecimiento",
+      "success": "Abastecimiento realizado correctamente",
+      "error": "Se produjo un error durante el abastecimiento",
+      "confirm_title": "Confirmar el abastecimiento",
+      "summary": "Resumen del abastecimiento",
+      "allProducts": "Todos los productos",
+      "itemsCount": "artículo(s)",
+      "table": {
+        "columns": {
+          "id": "ID",
+          "deliverer": "Nombre del almacenero",
+          "quantity": "Cantidad",
+          "stock_total": "Stock total",
+          "amount": "Importe",
+          "date": "Fecha",
+          "action": "Acción"
+        },
+        "actions": {
+          "details": "Ver detalles",
+          "delete": "Eliminar"
+        },
+        "empty": {
+          "title": "No hay abastecimientos",
+          "subtitle": "Añade abastecimientos"
+        }
+      },
+      "details": {
+        "title": "Detalles del abastecimiento",
+        "reference": "Referencia",
+        "magasinier": "Almacenero",
+        "total_amount": "Importe total",
+        "qty_supplied": "Cant. suministrada",
+        "stock_total_label": "Stock total",
+        "date_label": "Fecha del abastecimiento",
+        "product_details_title": "Detalles de productos ({{count}})",
+        "summary": "Resumen",
+        "items_plural": "artículos",
+        "items_singular": "artículo",
+        "download_invoice": "Descargar la factura",
+        "columns": {
+          "product": "Producto",
+          "qty_supply": "Cant. suministrada",
+          "stock_deliverer": "Stock del almacenero",
+          "price_purchase": "Precio de compra",
+          "price_sale": "Precio de venta",
+          "total": "Total"
+        }
+      },
+      "messages": {
+        "success": "Abastecimiento correcto",
+        "error": "Error durante el abastecimiento",
+        "delete_success": "Abastecimiento eliminado correctamente",
+        "delete_error": "Error al eliminar",
+        "load_error": "Error al cargar los detalles",
+        "not_auth": "No autenticado",
+        "generating_pdf": "Generando la factura...",
+        "pdf_success": "Factura descargada correctamente",
+        "pdf_error": "Error al generar la factura"
+      },
+      "units": {
+        "simple": "Unidades sueltas:",
+        "total": "Total:"
+      },
+      "filters": {
+        "less_than_100k": "Menos de 100.000",
+        "between_100k_500k": "100.000 - 500.000",
+        "more_than_500k": "Más de 500.000"
+      },
+      "confirm_delete": {
+        "title": "Confirmar eliminación",
+        "content": "¿Seguro que quieres eliminar este abastecimiento?"
+      },
+      "corbeille": {
+        "title": "Papelera de abastecimientos",
+        "subtitle": "Los abastecimientos eliminados se conservan temporalmente.",
+        "empty": "La papelera de abastecimientos está vacía",
+        "restore": "Restaurar",
+        "deleteDefinitive": "Eliminar definitivamente",
+        "successDeleteDefinitive": "Abastecimiento eliminado definitivamente",
+        "failDeleteDefinitive": "No se pudo eliminar definitivamente",
+        "confirmDeleteTitle": "Eliminación definitiva",
+        "confirmDeleteMessage": "¿Seguro que quieres eliminar definitivamente este abastecimiento? Esta acción es irreversible.",
+        "messages": {
+          "loadError": "No se pudo cargar la papelera.",
+          "restoreSuccess": "Abastecimiento restaurado correctamente",
+          "restoreError": "La restauración falló."
+        }
+      }
+    },
+    "ia": {
+      "title": "Asistente IA",
+      "header": {
+        "newChat": "Nueva conversación",
+        "subtitle": "Pregunta sobre tus ventas, tu stock y tus clientes",
+        "period": "Datos de los últimos 30 días",
+        "analysis": "Analizar mi negocio"
+      },
+      "sidebar": {
+        "newChat": "Nueva conversación",
+        "search": "Buscar conversaciones…",
+        "noChat": "Aún no hay conversaciones",
+        "startChat": "Haz tu primera pregunta al asistente",
+        "noResult": "No se encontró ninguna conversación",
+        "rename": "Renombrar",
+        "delete": "Eliminar",
+        "clearAll": "Borrar todas las conversaciones",
+        "groups": {
+          "today": "Hoy",
+          "yesterday": "Ayer",
+          "week": "Últimos 7 días",
+          "older": "Anteriores"
+        }
+      },
+      "welcome": {
+        "hello": "Hola {{name}} 👋",
+        "helloNoName": "Hola 👋",
+        "title": "¿Qué quieres saber de tu tienda?",
+        "subtitle": "Pregunta con tus propias palabras: el asistente responde a partir de tus ventas, stock, clientes y finanzas.",
+        "analysisBadge": "Análisis IA",
+        "analysisTitle": "Tu negocio de un vistazo",
+        "analysisText": "La situación de tu tienda en palabras sencillas y las acciones prioritarias de esta semana.",
+        "analysisButton": "Ejecutar el análisis",
+        "suggestionsTitle": "Preguntas frecuentes",
+        "admin": {
+          "stock": {
+            "cat": "Stock",
+            "q": "¿Qué productos se van a agotar pronto y cuánto debo pedir?"
+          },
+          "sales": {
+            "cat": "Ventas",
+            "q": "¿Cuáles son mis productos más vendidos y su margen?"
+          },
+          "debts": {
+            "cat": "Clientes",
+            "q": "¿Qué clientes me deben dinero y a quién debo reclamar primero?"
+          },
+          "margin": {
+            "cat": "Margen",
+            "q": "¿Qué productos vendo sin margen o con pérdidas?"
+          },
+          "sleeping": {
+            "cat": "Stock inmovilizado",
+            "q": "¿Qué stock no se vende y cómo puedo darle salida?"
+          },
+          "team": {
+            "cat": "Equipo",
+            "q": "¿Cómo se comparan las ventas de mi equipo?"
+          }
+        },
+        "seller": {
+          "sales": {
+            "cat": "Mis ventas",
+            "q": "¿Cuánto he vendido y cobrado este mes?"
+          },
+          "debts": {
+            "cat": "Seguimiento",
+            "q": "¿A qué clientes debo dar seguimiento hoy?"
+          },
+          "stock": {
+            "cat": "Mi stock",
+            "q": "¿Qué stock me queda disponible?"
+          },
+          "push": {
+            "cat": "Consejos",
+            "q": "¿Qué productos debo ofrecer primero a mis clientes?"
+          }
+        },
+        "cashier": {
+          "jour": {
+            "cat": "Mi día",
+            "q": "¿Cuánto he vendido y cobrado hoy?"
+          },
+          "caisse": {
+            "cat": "Mi caja",
+            "q": "¿Cuánto efectivo debería haber ahora en mi caja?"
+          },
+          "debts": {
+            "cat": "Seguimiento",
+            "q": "¿Qué clientes todavía me deben dinero?"
+          },
+          "push": {
+            "cat": "Consejos",
+            "q": "¿Qué productos se venden mejor en mi caja?"
+          }
+        }
+      },
+      "chat": {
+        "you": "Tú",
+        "aiName": "Asistente Lumistock",
+        "typing": "El asistente está analizando tus datos…",
+        "placeholder": "Pregunta sobre ventas, stock, clientes…",
+        "hint": "Intro para enviar · Mayús + Intro para nueva línea",
+        "disclaimer": "Las respuestas se basan en los datos de tu tienda. Comprueba las cifras importantes.",
+        "send": "Enviar",
+        "copy": "Copiar",
+        "copied": "Copiado",
+        "retry": "Reintentar",
+        "loadingConv": "Cargando conversación…"
+      },
+      "insights": {
+        "title": "Análisis de tu negocio",
+        "subtitle": "Ventas, stock y clientes de los últimos 30 días",
+        "loading": "Analizando, esto tarda unos segundos…",
+        "refresh": "Actualizar",
+        "generatedAt": "Generado a las {{time}}",
+        "discuss": "Comentarlo con el asistente",
+        "discussPrompt": "Explica las prioridades de esta semana y cómo ponerlas en práctica.",
+        "error": "No se pudo realizar el análisis. Inténtalo más tarde."
+      },
+      "modals": {
+        "deleteTitle": "¿Eliminar esta conversación?",
+        "deleteContent": "Esta acción no se puede deshacer.",
+        "cancel": "Cancelar",
+        "delete": "Eliminar",
+        "clearTitle": "¿Borrar todas las conversaciones?",
+        "clearContent": "Se eliminarán todas tus conversaciones con el asistente. Esta acción no se puede deshacer.",
+        "clear": "Borrar todo"
+      },
+      "messages": {
+        "loadError": "No se pudieron cargar las conversaciones",
+        "loadConvError": "No se pudo cargar la conversación",
+        "renameSuccess": "Conversación renombrada",
+        "renameError": "No se pudo renombrar la conversación",
+        "deleteSuccess": "Conversación eliminada",
+        "deleteError": "No se pudo eliminar la conversación",
+        "clearSuccess": "Todas las conversaciones borradas",
+        "clearError": "No se pudieron borrar las conversaciones",
+        "commError": "El asistente no pudo responder. Comprueba tu conexión e inténtalo de nuevo.",
+        "aiNoResponse": "No pude obtener una respuesta."
+      }
+    },
+    "deliveries": {
+      "new": {
+        "breadcrumb": "Nueva venta",
+        "title": "Venta",
+        "allProducts": "Todos los productos",
+        "sessionExpired": "Sesión caducada, vuelve a iniciar sesión",
+        "fetchingCategoriesError": "Error al obtener las categorías",
+        "selectedCount": "{{count}} artículos seleccionados",
+        "noSelectedProducts": "Ningún producto seleccionado"
+      },
+      "config": {
+        "title": "Configuración de la venta",
+        "sections": {
+          "products": "Productos seleccionados",
+          "payment": "Estado del pago",
+          "summary": "Resumen del pedido"
+        },
+        "breadcrumb": "Configuración",
+        "client": {
+          "form": {
+            "uploadPrompt": "Añadir perfil del cliente",
+            "phone": "Número de teléfono",
+            "city": "Ciudad",
+            "district": "Barrio",
+            "cancel": "Cancelar",
+            "submit": "Guardar",
+            "errorFileType": "Solo se permiten imágenes JPG o PNG.",
+            "errorFileSize": "La imagen debe pesar menos de 2 MB."
+          },
+          "product": {
+            "unknown": "Producto desconocido",
+            "unit": "Unidad"
+          }
+        }
+      },
+      "stats": {
+        "title": "Ventas",
+        "total": "Total del pedido",
+        "deliveredArticles": "Artículos entregados",
+        "productValue": "Valor de los productos",
+        "selectedPeriod": "Periodo seleccionado",
+        "showAllHistory": "Mostrando todo el historial"
+      },
+      "filters": {
+        "title": "Filtros avanzados",
+        "btn": "Filtrar",
+        "reset": "Restablecer",
+        "period": "Periodo personalizado",
+        "start": "Inicio",
+        "end": "Fin",
+        "status": "Estado de la venta",
+        "payment": "Estado del pago",
+        "driver": "Nombre del vendedor",
+        "driverPlaceholder": "Ej.: Juan Pérez",
+        "minAmount": "Mín. (CFA)",
+        "maxAmount": "Máx. (CFA)",
+        "allStatus": "Todos los estados",
+        "allPayments": "Todos los pagos",
+        "inProgress": "En curso",
+        "delivered": "Entregada",
+        "paid": "Pagada",
+        "unpaid": "No pagada",
+        "partial": "Parcial"
+      },
+      "table": {
+        "clientName": "Cliente",
+        "quantity": "Cantidad",
+        "payment": "Pago",
+        "amount": "Importe",
+        "date": "Fecha",
+        "paidAmount": "Importe pagado",
+        "debt": "Deuda",
+        "oldDebt": "Deuda anterior",
+        "return": "Devolución",
+        "status": "Estado",
+        "action": "Acción",
+        "viewDetails": "Resumen del pedido",
+        "edit": "Editar",
+        "finishPayment": "Completar el pago",
+        "refund": "Reembolsar al cliente",
+        "makeReturn": "Registrar una devolución",
+        "cancel": "Anular"
+      },
+      "detail": {
+        "title": "Detalles de la venta",
+        "orderId": "ID del pedido",
+        "clientInfo": "Información del cliente",
+        "financialSummary": "Resumen financiero",
+        "orderedProducts": "Productos pedidos",
+        "returns": "Devoluciones",
+        "orderHistory": "Historial del pedido",
+        "totalAmount": "Importe total",
+        "amountPaid": "Importe pagado",
+        "amountRemaining": "Importe pendiente",
+        "returnReason": "Motivo de la devolución",
+        "returnedProducts": "Productos devueltos",
+        "orderDate": "Fecha del pedido",
+        "createdAt": "Creado el",
+        "lastModified": "Última modificación",
+        "totalQuantity": "Cantidad total de artículos",
+        "loading": "Cargando detalles...",
+        "notFound": "Venta no encontrada",
+        "notFoundDesc": "Los detalles de esta venta no están disponibles.",
+        "errorTitle": "Error de carga",
+        "retry": "Reintentar",
+        "relicat": "Saldo pendiente",
+        "ristourne": "Bonificación"
+      },
+      "modals": {
+        "delete": {
+          "title": "¡Atención!",
+          "message": "Eliminar una venta es irreversible.",
+          "confirm": "Eliminar",
+          "cancel": "Cancelar",
+          "deleting": "Eliminando..."
+        },
+        "detail": {
+          "title": "Venta",
+          "print": "Imprimir",
+          "clientSection": "Información del cliente",
+          "orderSection": "Detalles del pedido",
+          "financialSection": "Resumen financiero",
+          "itemsSection": "Artículos pedidos",
+          "notesSection": "Notas de la venta",
+          "returnsSection": "Devoluciones",
+          "noPhone": "No indicado",
+          "noEmail": "N/D",
+          "articles": "Artículos",
+          "totalAmount": "Importe total",
+          "discount": "Descuento",
+          "remaining": "Pendiente de pago",
+          "paid": "Pagado",
+          "reliquat": "Excedente",
+          "paymentMethod": "Método de pago"
+        },
+        "corbeille": {
+          "title": "Papelera de ventas",
+          "description": "Los elementos eliminados se borrarán definitivamente al cabo de 30 días.",
+          "empty": "La papelera está vacía",
+          "close": "Cerrar",
+          "restore": "Restaurar",
+          "idDate": "ID / Fecha",
+          "client": "Cliente",
+          "driver": "Vendedor",
+          "amount": "Importe",
+          "action": "Acción",
+          "notAssigned": "Sin asignar",
+          "successRestore": "Venta restaurada correctamente",
+          "errorRestore": "No se pudo cargar la papelera.",
+          "failRestore": "La restauración falló.",
+          "deleteDefinitive": "Eliminar definitivamente",
+          "successDeleteDefinitive": "Venta eliminada definitivamente",
+          "failDeleteDefinitive": "No se pudo eliminar definitivamente",
+          "confirmDeleteTitle": "Eliminación definitiva",
+          "confirmDeleteMessage": "¿Seguro que quieres eliminar definitivamente esta venta? Esta acción es irreversible."
+        },
+        "payment": {
+          "title": "Detalles del pago",
+          "totalAmount": "Importe total",
+          "paidAmount": "Importe pagado",
+          "remainingDebt": "Deuda pendiente",
+          "amountToCollect": "Importe a cobrar",
+          "fullPayment": "Pago exacto: deuda saldada",
+          "partialPayment": "Pago parcial: quedan {{amount}}",
+          "overpayment": "Pago excesivo (anticipo)",
+          "overpaymentInfo": "Un excedente de {{amount}} se añadirá como anticipo.",
+          "confirmTitle": "Confirmar el pago",
+          "confirmWarning": "Esta acción es irreversible. ¿Quieres confirmar el cobro?",
+          "yesConfirm": "Sí, confirmar",
+          "confirmDebtCleared": "Deuda actual saldada",
+          "confirmSurplusCredit": "Abonar el anticipo al cliente",
+          "success": "Pago registrado correctamente",
+          "error": "Error durante el pago"
+        },
+        "return": {
+          "title": "Registrar una devolución",
+          "orderLabel": "Pedido n.º",
+          "motif": "Motivo de la devolución",
+          "motifPlaceholder": "Describe el motivo de la devolución...",
+          "productsTitle": "Productos a devolver",
+          "maxQty": "Máx.: {{count}} unidades",
+          "maxConditioning": "Máx.: {{count}} {{name}}",
+          "infoTitle": "Información",
+          "infoConditioning": "Por embalaje: devolver cajas/sacos enteros (ej.: 1 = 1 caja completa)",
+          "infoUnit": "Por unidad: devolver productos sueltos (ej.: 5 = 5 unidades de la caja)",
+          "infoToggle": "Pulsa el botón para cambiar de modo",
+          "byUnit": "Por unidad",
+          "byConditioning": "Por embalaje",
+          "success": "Devolución registrada correctamente",
+          "error": "Error al registrar la devolución",
+          "confirm": "Confirmar la devolución",
+          "recording": "Registrando..."
+        }
+      },
+      "common": {
+        "packaging": "Embalaje",
+        "factor": "Factor",
+        "conditioned": "Embalado",
+        "discount": "Descuento",
+        "yes": "Sí",
+        "no": "No",
+        "unknown": "Desconocido"
+      },
+      "product": {
+        "stock": "Stock",
+        "price": "Precio",
+        "units": "Unidades",
+        "unknown": "Producto desconocido",
+        "remove": "Quitar artículo",
+        "addConditioning": "Añadir embalaje",
+        "add": "Añadir",
+        "insufficientStock": "Stock insuficiente para esta cantidad"
+      },
+      "payment": {
+        "status": {
+          "label": "Estado del pago",
+          "none": "No pagada",
+          "total": "Pagada",
+          "partial": "Pagada parcialmente"
+        },
+        "oldDebt": {
+          "toggle": "¿Incluir la deuda anterior?",
+          "amountLabel": "Importe de la deuda anterior",
+          "placeholder": "Introduce el importe"
+        },
+        "methods": {
+          "label": "Métodos de pago",
+          "placeholder": "Selecciona uno o varios métodos",
+          "cash": "Efectivo",
+          "om": "Orange Money",
+          "momo": "MTN MoMo",
+          "bancaire": "Transferencia bancaria"
+        },
+        "details": {
+          "title": "Detalles del pago",
+          "amountLabel": "Importe ({{method}})",
+          "totalPaid": "Total pagado"
+        }
+      },
+      "client": {
+        "label": "Cliente",
+        "selectExisting": "Elige un cliente existente",
+        "placeholder": "Selecciona un cliente",
+        "addPrompt": "¿Cliente nuevo?",
+        "form": {
+          "title": "Perfil del cliente",
+          "name": "Nombre completo",
+          "email": "Correo electrónico",
+          "initialAmount": "Importe inicial",
+          "namePlaceholder": "Introduce el nombre completo",
+          "emailPlaceholder": "tu@correo.com"
+        },
+        "fetchError": "Error al cargar los clientes",
+        "addButton": "Añadir cliente",
+        "addError": "Error al añadir el cliente"
+      },
+      "actions": {
+        "start": "Iniciar una venta",
+        "trash": "Papelera",
+        "trashTitle": "Abrir la papelera",
+        "validation": {
+          "selectClient": "Selecciona un cliente",
+          "selectProduct": "Selecciona al menos un producto",
+          "specifyQuantity": "Indica una cantidad para los productos"
+        },
+        "messages": {
+          "updateSuccess": "Venta actualizada correctamente",
+          "createSuccess": "Venta creada correctamente",
+          "error": "Se produjo un error al guardar"
+        },
+        "update": "Actualizar la venta",
+        "save": "Cobrar y confirmar",
+        "addItems": "Volver a añadir artículos"
+      },
+      "flow": {
+        "continue": "Continuar"
+      },
+      "edit": {
+        "missingId": "Falta el ID de la venta",
+        "loadError": "Error al cargar los detalles de la venta",
+        "loading": "Cargando detalles de la venta...",
+        "backToList": "Volver a la lista",
+        "title": "Editar la venta",
+        "titleWithId": "Editar la venta n.º {{id}}",
+        "breadcrumb": {
+          "delivery": "Venta",
+          "edit": "Editar",
+          "config": "Configuración"
+        }
+      },
+      "search": {
+        "placeholder": "Buscar por ID, nombre del cliente o teléfono"
+      },
+      "invoice": {
+        "title": "Factura",
+        "number": "Número de factura",
+        "date": "Fecha de venta",
+        "clientSection": "Cliente y destino",
+        "recipient": "Destinatario",
+        "phone": "Teléfono",
+        "address": "Dirección",
+        "status": "Estado",
+        "designation": "Concepto",
+        "qty": "Cant.",
+        "total": "Total",
+        "subtotal": "Subtotal en origen",
+        "discounts": "Descuentos",
+        "alreadyPaid": "Ya pagado",
+        "remaining": "SALDO PENDIENTE",
+        "paidStamp": "PAGADO",
+        "footer": "¡Gracias por su compra! Los artículos vendidos no se devuelven ni se cambian pasadas 24 h.",
+        "platform": "Plataforma Lumistock"
+      },
+      "messages": {
+        "deleteSuccess": "Venta eliminada correctamente",
+        "deleteError": "Error al eliminar la venta",
+        "tokenError": "Sesión caducada, vuelve a conectarte",
+        "fetchError": "Error al cargar las ventas"
+      }
+    },
+    "table": {
+      "clientName": "Cliente",
+      "quantity": "Cantidad",
+      "payment": "Pago",
+      "amount": "Importe",
+      "date": "Fecha",
+      "paidAmount": "Importe pagado",
+      "debt": "Deuda",
+      "oldDebt": "Deuda anterior",
+      "return": "Devolución",
+      "status": "Estado",
+      "action": "Acción",
+      "viewDetails": "Ver detalles",
+      "edit": "Editar",
+      "finishPayment": "Completar el pago",
+      "refund": "Reembolsar al cliente",
+      "makeReturn": "Registrar una devolución",
+      "cancel": "Anular",
+      "deb": "Deuda",
+      "paginationInfo": "Mostrando {{start}} a {{end}} de {{total}} elementos"
+    },
+    "customers": {
+      "title": "Clientes",
+      "tabs": {
+        "active": "Clientes activos",
+        "inactive": "Clientes inactivos",
+        "debts": "Deudas de clientes"
+      },
+      "header": {
+        "searchPlaceholder": "Buscar por nombre, teléfono, barrio...",
+        "filter": "Filtrar",
+        "trash": "Papelera",
+        "addClient": "Añadir un cliente",
+        "advancedFilters": "Filtros avanzados",
+        "city": "Ciudad",
+        "district": "Barrio",
+        "minAmount": "Importe mín. (CFA)",
+        "maxAmount": "Importe máx. (CFA)",
+        "minDeliveries": "Ventas mín.",
+        "maxDeliveries": "Ventas máx.",
+        "startDate": "Fecha de inicio",
+        "endDate": "Fecha de fin",
+        "clearFilters": "Borrar filtros",
+        "apply": "Aplicar",
+        "export": "Exportar"
+      },
+      "table": {
+        "name": "Nombre",
+        "phone": "Teléfono",
+        "address": "Dirección",
+        "cashAmount": "Saldo a favor",
+        "createdAt": "Fecha de creación",
+        "action": "Acción",
+        "edit": "Editar",
+        "addToCash": "Añadir saldo",
+        "sendMessage": "Enviar un mensaje",
+        "clientDetails": "Detalles del cliente",
+        "delete": "Eliminar",
+        "restore": "Restaurar",
+        "noData": "No se encontraron clientes",
+        "inactiveList": "Lista de clientes",
+        "columns": {
+          "id": "ID del cliente",
+          "name": "Nombre",
+          "phone": "Teléfono",
+          "address": "Dirección",
+          "deliveries": "Ventas",
+          "amount": "Importe",
+          "date": "Fecha",
+          "actions": "Acciones"
+        },
+        "pagination": {
+          "info": "Mostrando {{start}} a {{end}} de {{total}} elementos",
+          "previous": "Anterior",
+          "next": "Siguiente"
+        }
+      },
+      "details": {
+        "title": "Detalles del cliente",
+        "history": "Historial de ventas",
+        "noDeliveries": "No hay ventas registradas para este cliente",
+        "totalSpent": "Total gastado",
+        "cash": "Saldo a favor",
+        "numDeliveries": "Número de ventas",
+        "date": "Fecha",
+        "products": "Productos",
+        "amount": "Importe",
+        "status": "Estado",
+        "delivered": "ENTREGADA",
+        "inProgress": "EN CURSO",
+        "paid": "PAGADA",
+        "unpaid": "NO PAGADA",
+        "total": "total"
+      },
+      "trash": {
+        "title": "Papelera de clientes",
+        "description": "Los clientes eliminados se borrarán definitivamente al cabo de 30 días.",
+        "empty": "La papelera de clientes está vacía",
+        "restore": "Restaurar",
+        "location": "Ubicación",
+        "client": "Cliente"
+      },
+      "add": {
+        "breadcrumb": "Nuevo cliente",
+        "title": "Nuevo cliente",
+        "profileSection": "Perfil del cliente",
+        "uploadBtn": "Registrar",
+        "changePhoto": "Cambiar la foto",
+        "uploadPrompt": "Añadir perfil del cliente",
+        "fullName": "Nombre completo",
+        "email": "Correo electrónico",
+        "phone": "Número",
+        "cashAmount": "Saldo a favor",
+        "city": "Ciudad",
+        "district": "Barrio",
+        "cancel": "Cancelar",
+        "save": "Guardar",
+        "placeholders": {
+          "fullName": "Nombre",
+          "email": "Correo",
+          "phone": "xx xx xx xx",
+          "cashAmount": " 0000",
+          "city": "Ciudad",
+          "district": "Barrio"
+        },
+        "validation": {
+          "nameRequired": "Introduce el nombre del cliente",
+          "invalidEmail": "El formato del correo no es válido",
+          "phonePattern": "El número debe tener 8 cifras después del '6' inicial (9 cifras en total)",
+          "tokenMissing": "Falta el token de autenticación",
+          "authRequired": "Debes iniciar sesión para acceder a esta página",
+          "error": "Se produjo un error"
+        },
+        "messages": {
+          "success": "El cliente se ha creado correctamente.",
+          "successTitle": "¡Listo!",
+          "successExport": "¡Exportación correcta!",
+          "errorExport": "Error durante la exportación"
+        }
+      },
+      "modals": {
+        "edit": {
+          "title": "Editar cliente",
+          "success": "Actualización correcta",
+          "successMsg": "Los datos de {{name}} se han actualizado correctamente",
+          "close": "Cerrar",
+          "submitting": "Actualizando...",
+          "update": "Actualizar",
+          "confirm": "¿Seguro que quieres modificar al cliente {{name}}?",
+          "error": "Error al modificar"
+        },
+        "delete": {
+          "title": "Eliminar cliente",
+          "confirmTitle": "¿Seguro que quieres eliminar al cliente:",
+          "success": "Eliminación correcta",
+          "successMsg": "El cliente {{name}} se ha eliminado correctamente",
+          "deleting": "Eliminando...",
+          "error": "Error al eliminar",
+          "warningTitle": "Atención:",
+          "warningMsg": "Esta acción es irreversible. Todos los datos de este cliente se borrarán definitivamente."
+        },
+        "restore": {
+          "title": "Restaurar cliente",
+          "confirm": "¿Quieres restaurar al cliente {{name}}?",
+          "success": "Cliente restaurado correctamente",
+          "error": "Error al restaurar"
+        },
+        "addToCash": {
+          "title": "Añadir saldo",
+          "amount": "Importe a añadir",
+          "save": "Confirmar el pago",
+          "success": "Importe añadido correctamente",
+          "successMsg": "Se han añadido {{amount}} CFA al saldo de {{name}}.",
+          "error": "Error al añadir",
+          "errorInvalid": "Introduce un importe válido mayor que 0."
+        },
+        "withdrawFromCash": {
+          "title": "Retirar saldo",
+          "amount": "Importe a retirar",
+          "save": "Confirmar la retirada",
+          "success": "Importe retirado correctamente",
+          "successMsg": "Se han retirado {{amount}} CFA del saldo de {{name}}.",
+          "error": "Error al retirar",
+          "errorInvalid": "Introduce un importe válido mayor que 0.",
+          "insufficientFunds": "Saldo insuficiente."
+        }
+      },
+      "pagination": {
+        "info": "Mostrando {{start}} a {{end}} de {{total}} elementos",
+        "previous": "Anterior",
+        "next": "Siguiente"
+      },
+      "debt": {
+        "pageTitle": "Deudas de clientes",
+        "breadcrumb": [
+          "Panel",
+          "Gestión de deudas"
+        ],
+        "header": {
+          "title": "Seguimiento de deudas de clientes",
+          "subtitle": "Consulta y gestiona los pagos pendientes por cliente"
+        },
+        "stats": {
+          "totalDebt": "Deudas totales",
+          "totalDebtDesc": "Importe total pendiente de pago",
+          "debtorsCount": "Número de clientes deudores",
+          "debtorsCountDesc": "Personas con facturas impagadas",
+          "averageDebt": "Deuda media",
+          "clients": "clientes"
+        },
+        "filters": {
+          "searchPlaceholder": "Buscar un cliente...",
+          "allCities": "Todas las ciudades",
+          "allDeliveryPersons": "Todos los almaceneros"
+        },
+        "table": {
+          "listTitle": "Lista de clientes deudores",
+          "resultsFound": "resultados encontrados",
+          "columns": {
+            "client": "Cliente",
+            "phone": "Teléfono",
+            "location": "Ubicación",
+            "deliveryPerson": "Almacenero",
+            "nbDeliveries": "N.º ventas",
+            "totalAmount": "Importe total",
+            "paidAmount": "Importe pagado",
+            "debt": "Deuda",
+            "action": "Acción",
+            "details": "Detalles"
+          }
+        },
+        "modal": {
+          "title": "Detalles de la deuda:",
+          "loading": "Cargando datos...",
+          "date": "Fecha:",
+          "remainder": "Resto:",
+          "productsDelivered": "Productos entregados:",
+          "oldDebtIncluded": "Deuda anterior:",
+          "totalDue": "Total adeudado:",
+          "paid": "Pagado:",
+          "remainingToPay": "Pendiente de pago:",
+          "productDetails": "Detalles de productos",
+          "qty": "Cant.:",
+          "amountToPay": "Importe a pagar",
+          "payButton": "Pagar"
+        },
+        "messages": {
+          "loadErrorTitle": "Error de carga",
+          "loadErrorDesc": "No se pudieron obtener los datos de deudas de clientes.",
+          "errorDebtDetails": "Error al cargar los detalles de la deuda.",
+          "validAmountWarning": "Introduce un importe válido",
+          "paymentSuccess": "Pago parcial registrado correctamente",
+          "paymentError": "Error durante el pago parcial",
+          "fieldRequired": "Este campo es obligatorio",
+          "amountMustBeLessOrEqual": "El importe debe ser menor o igual que {{amount}}"
+        }
+      }
+    },
+    "reports": {
+      "table": {
+        "total": "Total"
+      }
+    },
+    "charges": {
+      "title": "Diario de gastos",
+      "subtitle": "Consulta y gestiona tus gastos corrientes",
+      "searchPlaceholder": "Buscar un gasto...",
+      "newExpense": "Nuevo gasto",
+      "filteredExpenses": "Gastos filtrados",
+      "operationsFound": "operaciones encontradas",
+      "category": "Categoría",
+      "period": "Periodo",
+      "reset": "Restablecer",
+      "totalCharges": "Total {{total}} gastos",
+      "columns": {
+        "designation": "Concepto",
+        "category": "Categoría",
+        "amount": "Importe",
+        "date": "Fecha",
+        "actions": "Acciones"
+      },
+      "messages": {
+        "errorLoading": "No se pudieron cargar los gastos",
+        "successUpdate": "Gasto actualizado",
+        "successCreate": "{{count}} gasto(s) guardado(s)",
+        "actionFailed": "La acción falló",
+        "successDelete": "Gasto eliminado",
+        "errorDelete": "No se pudo eliminar el gasto",
+        "error": "Error",
+        "success": "Éxito"
+      },
+      "confirmDelete": "¿Eliminar este gasto?",
+      "yes": "Sí",
+      "no": "No",
+      "modal": {
+        "titleEdit": "Editar gasto",
+        "titleAdd": "Registrar gastos",
+        "save": "Guardar",
+        "validate": "Validar",
+        "cancel": "Cancelar",
+        "name": "Nombre",
+        "namePlaceholder": "Ej.: Alquiler de la tienda",
+        "amount": "Importe",
+        "amountPlaceholder": "Precio",
+        "category": "Categoría",
+        "categoryPlaceholder": "Categoría",
+        "date": "Fecha",
+        "description": "Descripción",
+        "descPlaceholder": "Detalles (opcional)",
+        "addAnother": "Añadir otra línea de gasto",
+        "required": "Obligatorio",
+        "nameRequired": "El nombre es obligatorio",
+        "amountRequired": "El importe es obligatorio"
+      },
+      "categories": {
+        "salaire": "Salario",
+        "loyer": "Alquiler",
+        "electricite": "Electricidad",
+        "transport": "Transporte",
+        "autre": "Otro"
+      }
+    },
+    "parameters": {
+      "title": "Parámetros del sistema",
+      "back": "Volver",
+      "status": {
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "role": "Responsable principal",
+      "changePassword": "Cambiar contraseña",
+      "tabs": {
+        "profile": "Perfil de la empresa",
+        "customization": "Personalización"
+      },
+      "profile": {
+        "titleInfo": "Información general",
+        "email": "Correo de la tienda",
+        "address": "Dirección",
+        "contact": "Contacto",
+        "website": "Sitio web",
+        "activity": "Actividad",
+        "memberSince": "Miembro desde",
+        "unspecified": "Sin especificar",
+        "titleLicence": "Capacidad de la licencia",
+        "maxManagers": "Máx. gerentes",
+        "maxLivreurs": "Máx. almaceneros"
+      },
+      "customization": {
+        "title": "Apariencia de la aplicación",
+        "description": "Personaliza el color principal de la interfaz según tu imagen de marca.",
+        "primaryColor": "Color principal",
+        "primaryColorDesc": "Botones, iconos activos y enlaces",
+        "success": "Tema actualizado",
+        "language": "Idioma del sistema",
+        "languageDesc": "Elige el idioma de visualización de tu interfaz",
+        "showOldDebt": "Mostrar la deuda del cliente en la pantalla de venta",
+        "showOldDebtDesc": "Muestra lo que el cliente ya debe (deuda anterior a Lumistock y ventas impagadas) y permite registrar un pago"
+      },
+      "passwordModal": {
+        "title": "Cambiar tu contraseña",
+        "oldPassword": "Contraseña anterior",
+        "oldPasswordReq": "Introduce tu contraseña anterior",
+        "newPassword": "Nueva contraseña",
+        "newPasswordReq": "Introduce tu nueva contraseña",
+        "newPasswordMin": "Al menos 8 caracteres, con una letra y un número",
+        "confirmPassword": "Confirmar nueva contraseña",
+        "confirmPasswordReq": "Confirma tu nueva contraseña",
+        "matchError": "Las contraseñas no coinciden",
+        "cancel": "Cancelar",
+        "update": "Actualizar",
+        "success": "Contraseña actualizada correctamente",
+        "error": "Error al cambiarla",
+        "connError": "Error de conexión"
+      },
+      "messages": {
+        "loadError": "Error al cargar los datos"
+      }
+    }
+  },
+  "parameters": {
+    "title": "Parámetros del sistema",
+    "back": "Volver",
+    "status": {
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "role": "Responsable principal",
+    "changePassword": "Cambiar contraseña",
+    "tabs": {
+      "profile": "Perfil de la empresa",
+      "customization": "Personalización"
+    },
+    "profile": {
+      "titleInfo": "Información general",
+      "email": "Correo de la tienda",
+      "address": "Dirección",
+      "contact": "Contacto",
+      "website": "Sitio web",
+      "activity": "Actividad",
+      "memberSince": "Miembro desde",
+      "unspecified": "Sin especificar",
+      "titleLicence": "Capacidad de la licencia",
+      "maxManagers": "Máx. gerentes",
+      "maxLivreurs": "Máx. almaceneros"
+    },
+    "customization": {
+      "title": "Apariencia de la aplicación",
+      "description": "Personaliza el color principal de la interfaz según tu imagen de marca.",
+      "primaryColor": "Color principal",
+      "primaryColorDesc": "Botones, iconos activos y enlaces",
+      "success": "Tema actualizado",
+      "language": "Idioma del sistema",
+      "languageDesc": "Elige el idioma de visualización de tu interfaz"
+    },
+    "passwordModal": {
+      "title": "Cambiar tu contraseña",
+      "oldPassword": "Contraseña anterior",
+      "oldPasswordReq": "Introduce tu contraseña anterior",
+      "newPassword": "Nueva contraseña",
+      "newPasswordReq": "Introduce tu nueva contraseña",
+      "newPasswordMin": "Al menos 8 caracteres, con una letra y un número",
+      "confirmPassword": "Confirmar nueva contraseña",
+      "confirmPasswordReq": "Confirma tu nueva contraseña",
+      "matchError": "Las contraseñas no coinciden",
+      "cancel": "Cancelar",
+      "update": "Actualizar",
+      "success": "Contraseña actualizada correctamente",
+      "error": "Error al cambiarla",
+      "connError": "Error de conexión"
+    },
+    "messages": {
+      "loadError": "Error al cargar los datos"
+    }
+  },
+  "reports": {
+    "paymentFiltering": {
+      "pageTitle": "Pagos por método",
+      "methods": {
+        "cash": "Efectivo",
+        "om": "Orange Money",
+        "momo": "MTN Mobile Money",
+        "bancaire": "Transferencia bancaria",
+        "title": "Método"
+      },
+      "periods": {
+        "all": "Todo el historial",
+        "today": "Hoy",
+        "week": "Esta semana",
+        "month": "Este mes",
+        "year": "Este año",
+        "title": "Periodo"
+      },
+      "table": {
+        "client": "Cliente",
+        "totalAmount": "Importe total",
+        "paymentStatus": "Estado del pago",
+        "unknown": "Desconocido",
+        "noPhone": "Sin teléfono"
+      },
+      "total": "Total",
+      "detailsTitle": "Detalles de la venta"
+    },
+    "pageTitle": "Informes y actividades",
+    "tabs": {
+      "deliveryReport": "Informe de ventas",
+      "paymentTracking": "Seguimiento de pagos",
+      "productMovements": "Movimientos de inventario"
+    },
+    "movements": {
+      "title": "Informe de movimientos de inventario",
+      "subtitle": "Sigue las entradas y salidas del almacén",
+      "filters": {
+        "year": "Año",
+        "type": "Tipo de operación"
+      },
+      "table": {
+        "product": "Producto",
+        "type": "Operación",
+        "qty": "Cantidad",
+        "date": "Fecha / Hora",
+        "actor": "Responsable",
+        "details": "Detalles"
+      },
+      "types": {
+        "all": "Todos los tipos",
+        "vente": "Venta",
+        "approvisionnement_magasin": "Abastecimiento",
+        "approvisionnement_livreur": "Abastecimiento almacenero",
+        "produit_perime": "Producto caducado",
+        "retour_produit": "Devolución de producto",
+        "livraison": "Venta",
+        "retour_stock_magasin": "Devolución al almacén",
+        "retour_produit_dans_stock_livreur": "Devolución al stock del almacenero",
+        "modification_produit": "Modificación de producto",
+        "modification_approvisionnement_ajout": "Modificación de abastecimiento (alta)",
+        "annulation_approvisionnement": "Anulación de abastecimiento",
+        "restauration_approvisionnement": "Restauración de abastecimiento",
+        "retour_dans_stock_magasin": "Devolución al almacén"
+      },
+      "modal": {
+        "title": "Detalles del movimiento",
+        "productInfo": "Información del producto",
+        "movementInfo": "Desglose del movimiento",
+        "actorInfo": "Responsable"
+      }
+    },
+    "header": {
+      "title": "Informe de ventas",
+      "subtitle": "Consulta e imprime tus informes de ventas"
+    },
+    "filters": {
+      "perDay": "Por día",
+      "perWeek": "Por semana",
+      "perMonth": "Por mes",
+      "perYear": "Por año"
+    },
+    "actions": {
+      "print": "Imprimir"
+    },
+    "stats": {
+      "revenue": "Ingresos",
+      "productsDelivered": "Productos vendidos",
+      "deliveryCount": "Número de ventas"
+    },
+    "print": {
+      "title": "INFORME DE VENTAS",
+      "period": "Periodo:",
+      "generatedOn": "Generado el",
+      "weekOf": "Semana del",
+      "totalRevenue": "Ingresos totales",
+      "totalQuantity": "Cantidad total",
+      "deliveries": "Ventas",
+      "units": "unidades",
+      "records": "registros",
+      "signatureManager": "Firma del gerente",
+      "companyStamp": "Sello de la empresa"
+    },
+    "table": {
+      "date": "Fecha",
+      "client": "Cliente",
+      "deliveryPerson": "Vendedor",
+      "product": "Producto",
+      "qty": "Cant.",
+      "unitPrice": "Precio unitario",
+      "total": "Total",
+      "status": "Estado",
+      "totalRows": "Total {{total}} filas"
+    },
+    "messages": {
+      "fetchError": "Error al obtener el informe"
+    }
+  },
+  "users": {
+    "paginationInfo": "Mostrando {{start}} a {{end}} de {{total}} registros"
+  },
+  "finance": {
+    "pageTitle": "Gestión financiera",
+    "header": {
+      "title": "Panel financiero",
+      "subtitle": "Analiza y gestiona tus recursos financieros"
+    },
+    "tabs": {
+      "profitLoss": "Análisis financiero del inventario",
+      "reporting": "Flujo de caja",
+      "assets": "Activos fijos"
+    },
+    "profitloss": {
+      "revenue": "Ingresos",
+      "totalSales": "Ventas totales",
+      "totalCharges": "Gastos totales",
+      "cumulativeExpenses": "Gastos acumulados",
+      "netProfit": "Beneficio neto",
+      "netProfitability": "Rentabilidad neta",
+      "margin": "margen",
+      "financialDistribution": "Distribución financiera",
+      "marginAnalysis": "Análisis de márgenes",
+      "revenueComposition": "Composición de los ingresos",
+      "totalPurchaseCost": "Coste de compra (total)",
+      "grossProfit": "Beneficio bruto",
+      "grossMarginPercent": "Margen bruto %"
+    },
+    "reporting": {
+      "reportPeriod": "Periodo del informe",
+      "initialBalance": "Saldo inicial (caja)",
+      "generateReports": "Generar informes",
+      "pnlTitle": "Pérdidas y ganancias",
+      "pnlSubtitle": "Rendimiento económico bruto",
+      "netProfitPeriod": "Beneficio neto del periodo",
+      "financialDetails": "Detalles financieros",
+      "sales": "Ventas",
+      "stockPurchases": "Compras de mercancía",
+      "expenses": "Gastos",
+      "depreciation": "Amortizaciones",
+      "cashFlowTitle": "Flujo de caja",
+      "cashFlowSubtitle": "Gestión real de la liquidez",
+      "openingBalance": "Saldo de apertura",
+      "netEntries": "Entradas netas",
+      "totalExits": "Salidas totales",
+      "projectedClosing": "Saldo final previsto",
+      "action": "Acción"
+    },
+    "assets": {
+      "totalAssets": "Activos fijos",
+      "totalAcquisition": "Valor total de adquisición",
+      "monthlyDepreciation": "Amortización mensual",
+      "estimatedDepreciation": "Amortización mensual estimada",
+      "assetRegister": "Registro de activos",
+      "assetTracking": "Seguimiento de activos y amortizaciones",
+      "newAsset": "Nuevo activo",
+      "columns": {
+        "equipmentName": "Nombre del equipo",
+        "purchaseValue": "Valor de compra",
+        "lifespan": "Vida útil (años)",
+        "monthlyDeprec": "Amort. mensual",
+        "purchaseDate": "Fecha de compra",
+        "actions": "Acciones",
+        "years": "años"
+      },
+      "confirmDelete": "¿Eliminar este activo?",
+      "delete": "Eliminar",
+      "cancel": "Cancelar",
+      "modal": {
+        "editTitle": "Editar activo",
+        "addTitle": "Registrar nuevo equipo",
+        "save": "Guardar",
+        "name": "Nombre del equipo",
+        "namePlaceholder": "Ej.: Ordenador Dell XPS",
+        "purchaseValue": "Valor de compra",
+        "lifespan": "Vida útil (años)",
+        "category": "Categoría",
+        "categoryPlaceholder": "Selecciona una categoría",
+        "date": "Fecha de compra",
+        "required": "Obligatorio"
+      },
+      "categories": {
+        "informatique": "Informática",
+        "mobilier": "Mobiliario",
+        "vehicule": "Vehículo",
+        "equipement": "Equipamiento",
+        "autre": "Otro"
+      },
+      "messages": {
+        "errorLoading": "No se pudieron cargar los activos",
+        "successUpdate": "Activo actualizado",
+        "successCreate": "Activo registrado",
+        "actionFailed": "La acción falló",
+        "successDelete": "Activo eliminado",
+        "errorDelete": "No se pudo eliminar el activo",
+        "error": "Error",
+        "success": "Éxito"
+      }
+    }
+  },
+  "inventory": {
+    "pageTitle": "Inventario de productos",
+    "stats": {
+      "totalQuantity": "Cantidad en stock",
+      "articles": "Artículos",
+      "references": "referencias activas",
+      "totalValue": "Valor total del stock",
+      "valuationDesc": "Valoración al precio de venta actual"
+    },
+    "filters": {
+      "search": "Buscar",
+      "export": "Exportar",
+      "filter": "Filtrar",
+      "title": "Filtros",
+      "category": "Categoría",
+      "allCategories": "Todas las categorías",
+      "availability": "Disponibilidad",
+      "allProducts": "Todos los productos",
+      "inStock": "En stock",
+      "outOfStock": "Agotado",
+      "reset": "Restablecer",
+      "apply": "Aplicar filtros"
+    },
+    "table": {
+      "noData": "No se encontraron productos",
+      "adjustFilters": "Ajusta tus filtros o realiza una nueva búsqueda",
+      "emptyInventory": "No hay productos en tu inventario",
+      "columns": {
+        "alert": "Alerta de stock",
+        "image": "Imagen",
+        "name": "Nombre",
+        "category": "Categoría",
+        "initialQty": "Stock inicial",
+        "currentQty": "Stock actual",
+        "priceUnit": "Precio unitario",
+        "status": "Estado",
+        "actions": "Acciones"
+      },
+      "alerts": {
+        "lowStock": "Stock bajo",
+        "stockOk": "Stock correcto",
+        "lowStockTooltip": "Stock bajo (< 30)",
+        "stockOkTooltip": "Stock suficiente"
+      },
+      "actionLabels": {
+        "details": "Ver detalles",
+        "return": "Devolver a la tienda"
+      }
+    },
+    "details": {
+      "title": "Detalles del producto",
+      "livreurTitle": "Detalles (almacenero)",
+      "back": "Volver",
+      "breadcrumb": "Productos",
+      "loading": "Cargando detalles...",
+      "notFound": "Producto no encontrado",
+      "tabs": {
+        "info": "Información",
+        "history": "Mis ventas y salidas"
+      },
+      "info": {
+        "id": "ID del producto",
+        "status": "Estado del stock",
+        "store": "Tienda de origen",
+        "unit": "Unidad de medida",
+        "description": "Descripción",
+        "noCategory": "Sin categoría",
+        "noDesc": "No hay descripción para este producto.",
+        "pricingByPack": "Precios por embalaje",
+        "available": "DISPONIBLE",
+        "outOfStock": "AGOTADO",
+        "created": "Creado el",
+        "price": "Precio de venta",
+        "stock": "Tu stock actual",
+        "value": "Valor de tu stock",
+        "zoom": "Ampliar"
+      },
+      "history": {
+        "columns": {
+          "date": "Fecha",
+          "movement": "Movimiento",
+          "quantity": "Cantidad",
+          "author": "Autor"
+        },
+        "me": "Yo",
+        "empty": "No tienes ventas ni salidas registradas."
+      },
+      "error": "Error",
+      "loadingErrorDesc": "No se pudieron cargar los detalles del producto"
+    },
+    "returnModal": {
+      "title": "Devolver a la tienda",
+      "cancel": "Cancelar",
+      "confirm": "Confirmar devolución",
+      "qtyLabel": "Cantidad a devolver:",
+      "placeholder": "Introduce la cantidad",
+      "note": "Nota: esta cantidad se descontará de tu stock y se devolverá a la tienda principal.",
+      "currentStock": "Stock actual: {{count}}"
+    },
+    "messages": {
+      "unexpectedError": "Se produjo un error inesperado."
+    }
+  },
+  "public": {
+    "navbar": {
+      "features": "Funciones",
+      "ai": "IA y datos",
+      "login": "Iniciar sesión",
+      "getStarted": "Empezar",
+      "createStore": "Crear tienda"
+    },
+    "hero": {
+      "badge": "La referencia en logística v2.0",
+      "titlePart1": "Dirige tu",
+      "titlePart2": "tienda",
+      "titlePart3": "con precisión.",
+      "subtitle": "Lumistock centraliza tu stock, tus ventas y tu contabilidad en una interfaz única y ultrarrápida. Maximiza tus beneficios con inteligencia artificial.",
+      "cta": "Empezar gratis",
+      "demo": "Demo del panel",
+      "stats": {
+        "activeStores": "Tiendas activas",
+        "uptime": "Disponibilidad del sistema"
+      }
+    },
+    "features": {
+      "badge": "Potencia y sencillez",
+      "title": "Todo lo que necesitas para dominar tu mercado.",
+      "items": {
+        "stock": {
+          "title": "Gestión de inventario",
+          "desc": "Seguimiento en tiempo real de entradas y salidas. Alertas automáticas de rotura de stock."
+        },
+        "delivery": {
+          "title": "Seguimiento de ventas",
+          "desc": "Organiza tus rutas y ventas con máxima precisión."
+        },
+        "customers": {
+          "title": "Cartera de clientes",
+          "desc": "Analiza el comportamiento de tus clientes y premia a los más rentables."
+        },
+        "accounting": {
+          "title": "Contabilidad y tesorería",
+          "desc": "Genera tus balances y cuentas de resultados y sigue tu tesorería con un clic."
+        },
+        "reports": {
+          "title": "Informes avanzados",
+          "desc": "Estadísticas visuales para decidir con datos."
+        },
+        "multiStore": {
+          "title": "Multitienda",
+          "desc": "Gestiona varios puntos de venta desde una sola cuenta de administrador."
+        }
+      }
+    },
+    "ai": {
+      "badge": "Inteligencia artificial",
+      "title": "Conversa con tus datos.",
+      "subtitle": "Nuestra IA integrada analiza tus ventas y detecta oportunidades. Haz preguntas en lenguaje natural y obtén respuestas estratégicas al instante.",
+      "items": [
+        "Previsión automática de roturas de stock",
+        "Análisis de rentabilidad por producto",
+        "Detección de anomalías financieras"
+      ],
+      "assistant": "Asistente Lumistock",
+      "status": "En línea y analizando",
+      "chat": {
+        "question": "\"¿Cuáles son mis productos más rentables este mes?\"",
+        "answer": "Según tus informes, el **azúcar** genera el 40 % de tu margen bruto. Se espera un aumento del 5 % de la demanda la próxima semana."
+      }
+    },
+    "cta": {
+      "title": "¿Listo para transformar tu negocio?",
+      "button": "Crear mi cuenta",
+      "note": "Configuración en 2 minutos • Sin tarjeta de crédito"
+    },
+    "footer": {
+      "desc": "La plataforma logística de nueva generación para empresas que buscan excelencia operativa y crecimiento sostenible.",
+      "columns": {
+        "platform": "Plataforma",
+        "company": "Empresa",
+        "contact": "Contacto"
+      },
+      "links": {
+        "about": "Acerca de",
+        "blog": "Blog",
+        "careers": "Empleo",
+        "legal": "Aviso legal",
+        "privacy": "Privacidad"
+      },
+      "tagline": "LUMISTOCK ENTERPRISE — DISEÑADO PARA LA EXCELENCIA"
+    }
+  },
+  "logout_confirm": {
+    "titre": "¿Cerrar sesión?",
+    "texte": "Tu sesión se cerrará en este dispositivo. Tendrás que volver a introducir tu correo y tu contraseña para entrar.",
+    "partout": "Cerrar sesión también en todos mis otros dispositivos",
+    "confirmer": "Cerrar sesión",
+    "annuler": "Cancelar"
+  }
+}

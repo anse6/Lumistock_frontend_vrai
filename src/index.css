@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+html,
+body,
+#root {
+  font-family: 'Poppins', sans-serif;
+}
+
+@theme {
+  --color-brand: #0F172A;
+  --color-brand-hover: #1E293B;
+  --color-brand-light: #F8FAFC;
+}
+
+/* Site public (accueil, inscription, connexion) — système de design issu de
+   UI/UX Pro Max : « Inventory & Stock Management » = Flat Design + Minimalism,
+   neutres fonctionnels + couleurs d'état ; couleur d'action = violet Lumistock. */
+@theme {
+  --color-marque: #3b1558;
+  --color-marque-fonce: #2a0f40;
+  --color-marque-50: #f7f3fb;
+  --color-marque-100: #eee5f6;
+  --color-marque-200: #dccbec;
+  --color-marque-300: #c9aee0;
+  --color-marque-600: #6b3a94;
+  --color-encre: #0f172a;
+  --color-texte: #334155;
+  --color-attenue: #64748b;
+  --color-trait: #e2e8f0;
+  --color-fond: #f8fafc;
+  --color-stock: #059669;
+  --color-alerte: #d97706;
+  --color-danger: #dc2626;
+  --font-titre: "Rubik", "Poppins", system-ui, sans-serif;
+  --font-texte: "Nunito Sans", "Poppins", system-ui, sans-serif;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+
+
+/* Ajouter dans votre fichier CSS global */
+.ant-carousel .slick-slide {
+  padding: 8px 0;
+}
+
+.ant-carousel .slick-dots-bottom {
+  bottom: -10px;
+}
+
+/* Arabe (droite à gauche) : un montant « 214 650 FCFA » garde l'ordre de ses
+   chiffres ; le sens de chaque cellule suit son contenu (texte arabe ou chiffres). */
+[dir="rtl"] :where(td, th, .ant-statistic-content, .tabular-nums) {
+  unicode-bidi: plaintext;
+}
