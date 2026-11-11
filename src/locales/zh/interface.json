@@ -4061,5 +4061,9 @@
   "{0} × {1} de {2}": "{0} × {1} {2}",
   "Articles non modifiables": "商品不可修改",
   "Un carton de cette vente a été entamé par un retour. Pour changer les articles, faites un nouveau retour ou une nouvelle vente. Le client, le paiement et les remises restent modifiables.": "此销售中的一个包装因退货已被拆开。如需修改商品，请登记新的退货或新的销售。客户、付款和折扣仍可修改。",
-  "{0} {1}(s) d'un {2} entamé": "{0} {1}（来自已拆开的 {2}）"
+  "{0} {1}(s) d'un {2} entamé": "{0} {1}（来自已拆开的 {2}）",
+  "Dont abîmé(s) :": "其中损坏：",
+  "{0} {1}(s) en avarie, {2} remise(s) en vente": "{0} {1} 计入损耗，{2} 重新上架",
+  "Toutes les unités sont remises en vente": "所有商品重新上架",
+  "{0} unité(s) abîmée(s) iront en avarie (perte comptée au coût d'achat), pas dans le stock vendable.": "{0} 件损坏商品将计入损耗（按采购成本计损失），不进入可售库存。"
 }

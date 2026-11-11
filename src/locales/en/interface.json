@@ -4061,5 +4061,9 @@
   "{0} × {1} de {2}": "{0} × {1} of {2}",
   "Articles non modifiables": "Items cannot be changed",
   "Un carton de cette vente a été entamé par un retour. Pour changer les articles, faites un nouveau retour ou une nouvelle vente. Le client, le paiement et les remises restent modifiables.": "A pack in this sale was opened by a return. To change the items, record a new return or a new sale. Customer, payment and discounts can still be changed.",
-  "{0} {1}(s) d'un {2} entamé": "{0} {1}(s) from an opened {2}"
+  "{0} {1}(s) d'un {2} entamé": "{0} {1}(s) from an opened {2}",
+  "Dont abîmé(s) :": "Of which damaged:",
+  "{0} {1}(s) en avarie, {2} remise(s) en vente": "{0} {1}(s) written off as damaged, {2} back on sale",
+  "Toutes les unités sont remises en vente": "All units go back on sale",
+  "{0} unité(s) abîmée(s) iront en avarie (perte comptée au coût d'achat), pas dans le stock vendable.": "{0} damaged unit(s) will be written off (loss at purchase cost), not put back in sellable stock."
 }

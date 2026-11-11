@@ -4061,5 +4061,9 @@
   "{0} × {1} de {2}": "{0} × {1} من {2}",
   "Articles non modifiables": "لا يمكن تعديل المواد",
   "Un carton de cette vente a été entamé par un retour. Pour changer les articles, faites un nouveau retour ou une nouvelle vente. Le client, le paiement et les remises restent modifiables.": "تم فتح عبوة من هذا البيع بسبب إرجاع. لتغيير المواد، سجّل إرجاعًا جديدًا أو بيعًا جديدًا. يبقى العميل والدفع والخصومات قابلة للتعديل.",
-  "{0} {1}(s) d'un {2} entamé": "{0} {1} من {2} مفتوح"
+  "{0} {1}(s) d'un {2} entamé": "{0} {1} من {2} مفتوح",
+  "Dont abîmé(s) :": "منها تالفة:",
+  "{0} {1}(s) en avarie, {2} remise(s) en vente": "{0} {1} تالفة، {2} أعيدت للبيع",
+  "Toutes les unités sont remises en vente": "جميع الوحدات تعود للبيع",
+  "{0} unité(s) abîmée(s) iront en avarie (perte comptée au coût d'achat), pas dans le stock vendable.": "{0} وحدة تالفة ستُسجل كخسارة (بتكلفة الشراء)، لا في المخزون القابل للبيع."
 }

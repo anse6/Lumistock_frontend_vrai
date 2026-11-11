@@ -42,6 +42,8 @@ interface Ligne {
   /** Article suivi : numéros encore vendus sur la ligne, et ceux qui reviennent. */
   numeros?: string[];
   choisis: string[];
+  /** Unités rendues abîmées : elles partent en avarie au lieu du stock vendable. */
+  abimes: number;
 }
 
 const extraireId = (id: unknown): string => {
@@ -94,6 +96,7 @@ const ReturnModal: React.FC<ReturnModalProps> = ({ order, onConfirm, onCancel })
           ? (p as { numeros_serie?: string[] }).numeros_serie
           : undefined,
         choisis: [],
+        abimes: 0,
       };
     }),
   );
@@ -103,7 +106,13 @@ const ReturnModal: React.FC<ReturnModalProps> = ({ order, onConfirm, onCancel })
 
   const changer = (key: string, champs: Partial<Ligne>) =>
     setLignes((prev) => prev.map((l) => (l.key === key ? { ...l, ...champs } : l)));
-  const fixerSaisie = (l: Ligne, v: number) => changer(l.key, { saisie: Math.max(0, Math.min(maxSaisie(l), Math.floor(v) || 0)) });
+  const fixerSaisie = (l: Ligne, v: number) => {
+    const saisie = Math.max(0, Math.min(maxSaisie(l), Math.floor(v) || 0));
+    const rendues = l.parConditionnement ? saisie * l.facteur : saisie;
+    changer(l.key, { saisie, abimes: Math.min(l.abimes, rendues) });
+  };
+  // Vente d'un gérant ou article suivi par numéro : l'avarie se déclare depuis l'écran Avaries.
+  const avariesPossibles = (l: Ligne) => order.vendeur_role !== 'gerant' && !l.numeros;
 
   const estimation = useMemo(() => {
     const valeurBrute = lignes.reduce((s, l) => s + unites(l) * l.prix, 0);
@@ -122,6 +131,7 @@ const ReturnModal: React.FC<ReturnModalProps> = ({ order, onConfirm, onCancel })
     const nouveauTotal = netApres * (1 + tauxTva) + dette + fraisAnterieurs + frais;
     return {
       unites: lignes.reduce((s, l) => s + unites(l), 0),
+      abimes: lignes.reduce((s, l) => s + Math.min(l.abimes, unites(l)), 0),
       valeur,
       frais,
       aRembourser: Math.max(paye - nouveauTotal, 0),
@@ -147,6 +157,7 @@ const ReturnModal: React.FC<ReturnModalProps> = ({ order, onConfirm, onCancel })
             is_conditionne: l.is_conditionne,
             ...(l.is_conditionne && l.conditionnement_id ? { conditionnement_id: l.conditionnement_id } : {}),
             ...(l.numeros ? { numeros_serie: l.choisis } : {}),
+            ...(avariesPossibles(l) && Math.min(l.abimes, unites(l)) > 0 ? { abimes: Math.min(l.abimes, unites(l)) } : {}),
           })),
         retenue,
       );
@@ -269,6 +280,27 @@ const ReturnModal: React.FC<ReturnModalProps> = ({ order, onConfirm, onCancel })
                         {u > 0 && l.parConditionnement && <span className="text-slate-500">= {u} {l.unite}(s)</span>}
                       </div>
                     )}
+                    {u > 0 && avariesPossibles(l) && (
+                      <div className="mt-2 flex flex-wrap items-center gap-2 rounded-lg bg-amber-50 px-2.5 py-1.5 text-xs">
+                        <span className="font-semibold text-amber-800">Dont abîmé(s) :</span>
+                        <InputNumber
+                          size="small"
+                          min={0}
+                          max={u}
+                          precision={0}
+                          value={Math.min(l.abimes, u)}
+                          onChange={(v) => changer(l.key, { abimes: Math.max(0, Math.min(u, Number(v) || 0)) })}
+                          disabled={envoi}
+                          className="w-20"
+                          aria-label="Unités abîmées"
+                        />
+                        <span className="text-amber-700">
+                          {Math.min(l.abimes, u) > 0
+                            ? `${Math.min(l.abimes, u)} ${l.unite}(s) en avarie, ${u - Math.min(l.abimes, u)} remise(s) en vente`
+                            : `Toutes les unités sont remises en vente`}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -348,6 +380,11 @@ const ReturnModal: React.FC<ReturnModalProps> = ({ order, onConfirm, onCancel })
                 : estimation.aRembourser > 0
                   ? `Le client a payé plus que le nouveau total : le montant sera à rembourser (bouton « Rembourser »)${estimation.frais > 0 ? `, frais de retour de ${fmt(estimation.frais)} déduits` : ''}.`
                   : `Nouveau total de la vente : ${fmt(estimation.nouveauTotal)}. Rien à rendre, la dette du client baisse.`}
+              {estimation.abimes > 0 && (
+                <span className="mt-1 block text-amber-200">
+                  {estimation.abimes} unité(s) abîmée(s) iront en avarie (perte comptée au coût d'achat), pas dans le stock vendable.
+                </span>
+              )}
             </p>
           </div>
 
