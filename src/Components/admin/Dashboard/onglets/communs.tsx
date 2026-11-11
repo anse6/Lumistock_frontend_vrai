@@ -45,9 +45,31 @@ export const Tuile: React.FC<TuileProps> = ({ titre, valeur, icone, detail, evol
   </div>
 );
 
-export const GrilleTuiles: React.FC<{ children: React.ReactNode; colonnes?: 4 | 5 }> = ({ children, colonnes = 5 }) => (
-  <div className={`grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3 ${colonnes === 5 ? "xl:grid-cols-5" : "xl:grid-cols-4"}`}>{children}</div>
-);
+/**
+ * Grille des tuiles chiffrées : la dernière ligne est toujours remplie.
+ * Téléphone (2 colonnes) : une tuile seule en fin de liste prend toute la ligne.
+ * Tablette (3 colonnes, grille de 6) : un reste de 2 tuiles se partage la
+ * ligne, un reste de 1 la prend en entier. Ordinateur : une seule ligne.
+ */
+export const GrilleTuiles: React.FC<{ children: React.ReactNode; colonnes?: 4 | 5 }> = ({ children, colonnes = 5 }) => {
+  const tuiles = React.Children.toArray(children).filter(Boolean);
+  const n = tuiles.length;
+  const resteTablette = n % 3;
+  return (
+    <div className={`grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-6 ${colonnes === 5 ? "xl:grid-cols-5" : "xl:grid-cols-4"}`}>
+      {tuiles.map((tuile, i) => {
+        const derniereSeule = n % 2 === 1 && i === n - 1;
+        const dansDernierRang = i >= n - resteTablette;
+        const tablette = !dansDernierRang ? "md:col-span-2" : resteTablette === 1 ? "md:col-span-6" : "md:col-span-3";
+        return (
+          <div key={i} className={`flex min-w-0 [&>*]:w-full ${derniereSeule ? "col-span-2" : "col-span-1"} ${tablette} xl:col-span-1`}>
+            {tuile}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
 /** Pastille de légende : couleur + libellé, toujours visible. */
 export const Legende: React.FC<{ items: { couleur: string; libelle: string; trait?: boolean }[] }> = ({ items }) => (
@@ -91,9 +113,9 @@ export const EtatOnglet: React.FC<{ chargement: boolean; erreur: boolean; relanc
   if (!chargement) return null;
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3 2xl:grid-cols-5">
+      <GrilleTuiles>
         {Array.from({ length: 5 }).map((_, i) => <Squelette key={i} hauteur={120} />)}
-      </div>
+      </GrilleTuiles>
       <Squelette hauteur={340} />
     </div>
   );
