@@ -162,15 +162,16 @@ export default function CaissesAdmin() {
         )}
 
         {/* Réglages */}
-        <div className="flex flex-col gap-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-purple-100/70 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-start gap-3">
+        {/* Le switch reste à sa taille, à droite du texte (en colonne, il s'étirait sur toute la largeur). */}
+        <div className="flex items-start justify-between gap-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-purple-100/70 sm:items-center">
+          <div className="flex min-w-0 items-start gap-3">
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-fuchsia-50 text-fuchsia-700"><BadgePercent size={19} /></span>
             <div>
               <p className="font-semibold text-slate-900">Autoriser les remises à la caisse</p>
               <p className="text-sm text-slate-500">Désactivé : les caissiers vendent toujours au prix du catalogue. Les annulations restent possibles 15 minutes après la vente.{!estAdmin && " Seul l'administrateur change ce réglage."}</p>
             </div>
           </div>
-          <Switch checked={!!parametres.data?.remises_autorisees} loading={parametres.isLoading} disabled={!estAdmin} onChange={changerRemises} />
+          <Switch className="mt-1 shrink-0 sm:mt-0" checked={!!parametres.data?.remises_autorisees} loading={parametres.isLoading} disabled={!estAdmin} onChange={changerRemises} />
         </div>
 
         {/* Historique des sessions */}
@@ -187,12 +188,12 @@ export default function CaissesAdmin() {
                 </p>
               )}
             </div>
-            <div className="flex flex-wrap gap-2">
-              <Select allowClear placeholder="Tous les caissiers" className="w-48" value={caissierId} onChange={setCaissierId}
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+              <Select allowClear placeholder="Tous les caissiers" className="w-full sm:w-48" value={caissierId} onChange={setCaissierId}
                 options={equipe.data?.caissiers.map((c) => ({ value: c.id, label: c.nom }))} />
-              <Select allowClear placeholder="Toutes" className="w-32" value={statut} onChange={setStatut}
+              <Select allowClear placeholder="Toutes" className="w-full sm:w-32" value={statut} onChange={setStatut}
                 options={[{ value: "ouverte", label: "Ouvertes" }, { value: "fermee", label: "Fermées" }]} />
-              <DatePicker.RangePicker value={plage} onChange={(v) => setPlage(v as [Dayjs | null, Dayjs | null] | null)} format="DD/MM/YYYY" />
+              <DatePicker.RangePicker className="col-span-2 w-full sm:w-auto" value={plage} onChange={(v) => setPlage(v as [Dayjs | null, Dayjs | null] | null)} format="DD/MM/YYYY" />
             </div>
           </div>
           {sessions.isLoading ? (

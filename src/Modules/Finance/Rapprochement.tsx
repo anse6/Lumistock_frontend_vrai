@@ -160,18 +160,19 @@ const Rapprochement: React.FC<{ periode: Periode; devise: string; onChange: () =
   const t = donnees?.totaux;
   return (
     <Spin spinning={chargement}>
-      <div className="mb-4 flex flex-wrap items-center gap-2">
-        <Segmented value={compte} onChange={(v) => setCompte(v as CompteBancaire)} options={COMPTES_BANCAIRES} />
+      {/* Téléphone : compte puis boutons pleine largeur, les uns sous les autres. */}
+      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+        <Segmented className="self-start" value={compte} onChange={(v) => setCompte(v as CompteBancaire)} options={COMPTES_BANCAIRES} />
         <input ref={fichier} type="file" accept=".csv,text/csv" className="hidden" onChange={(e) => importer(e.target.files)} />
         <Tooltip title="Fichier CSV exporté depuis votre banque : colonnes Date, Libellé, Montant (ou Débit et Crédit), Référence.">
-          <Button icon={<FileUp size={15} />} onClick={() => fichier.current?.click()}>
+          <Button className="w-full sm:w-auto" icon={<FileUp size={15} />} onClick={() => fichier.current?.click()}>
             Importer le relevé (CSV)
           </Button>
         </Tooltip>
-        <Button icon={<Plus size={15} />} onClick={() => setSaisie({ ouvert: true, date: dayjs(), libelle: "", montant: null })}>
+        <Button className="w-full sm:w-auto" icon={<Plus size={15} />} onClick={() => setSaisie({ ouvert: true, date: dayjs(), libelle: "", montant: null })}>
           Saisir une ligne
         </Button>
-        <Button type="primary" icon={<Wand2 size={15} />} onClick={auto} disabled={!t?.lignes_non_rapprochees}>
+        <Button className="w-full sm:w-auto" type="primary" icon={<Wand2 size={15} />} onClick={auto} disabled={!t?.lignes_non_rapprochees}>
           Rapprocher automatiquement
         </Button>
       </div>
@@ -197,7 +198,7 @@ const Rapprochement: React.FC<{ periode: Periode; devise: string; onChange: () =
         </div>
       )}
 
-      <div className="grid gap-4 xl:grid-cols-[3fr_2fr]">
+      <div className="grid gap-4 xl:grid-cols-[3fr_2fr] [&>*]:min-w-0">
         <Section titre={`Relevé ${donnees?.libelle?.toLowerCase() || ""}`} note="Importez le relevé puis rapprochez chaque ligne">
           <Table
             rowKey="id"

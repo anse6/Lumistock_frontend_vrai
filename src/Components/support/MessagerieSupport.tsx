@@ -391,12 +391,13 @@ const MessagerieSupport: React.FC<{ cote: Cote }> = ({ cote }) => {
         {choisie && (chargement || !detail) && <div className="p-6"><Skeleton active paragraph={{ rows: 6 }} /></div>}
         {choisie && detail && !chargement && (
           <>
-            <header className="flex flex-wrap items-center gap-3 border-b border-slate-200 px-4 py-3">
+            <header className="flex items-start gap-2 border-b border-slate-200 px-3 py-3 sm:items-center sm:gap-3 sm:px-4">
               <button type="button" onClick={() => ouvrir(null)} aria-label="Retour à la liste" className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full text-slate-600 hover:bg-slate-100 md:hidden">
                 <ArrowLeft size={18} />
               </button>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-[15px] font-bold text-slate-900">{detail.sujet}</p>
+                {/* Téléphone : le sujet passe sur 2 lignes au lieu d'être coupé. */}
+                <p className="line-clamp-2 text-[15px] font-bold leading-snug text-slate-900 sm:truncate">{detail.sujet}</p>
                 <p className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[12.5px] text-slate-500">
                   {cote === "staff" ? (
                     <>
@@ -412,9 +413,14 @@ const MessagerieSupport: React.FC<{ cote: Cote }> = ({ cote }) => {
               <button
                 type="button"
                 onClick={basculerStatut}
-                className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-[13px] font-semibold text-slate-700 hover:bg-slate-50"
+                aria-label={detail.statut === "ouverte" ? "Marquer résolue" : "Rouvrir"}
+                title={detail.statut === "ouverte" ? "Marquer résolue" : "Rouvrir"}
+                className="inline-flex h-9 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-slate-200 px-2.5 text-[13px] font-semibold text-slate-700 hover:bg-slate-50 sm:px-3"
               >
-                {detail.statut === "ouverte" ? <><CircleCheck size={14} /> Marquer résolue</> : <><RotateCcw size={14} /> Rouvrir</>}
+                {/* Téléphone : l'icône seule, pour laisser la place au sujet. */}
+                {detail.statut === "ouverte"
+                  ? <><CircleCheck size={16} /> <span className="hidden sm:inline">Marquer résolue</span></>
+                  : <><RotateCcw size={16} /> <span className="hidden sm:inline">Rouvrir</span></>}
               </button>
             </header>
 
@@ -447,17 +453,19 @@ const MessagerieSupport: React.FC<{ cote: Cote }> = ({ cote }) => {
                   }}
                   autoSize={{ minRows: 1, maxRows: 6 }}
                   maxLength={4000}
-                  placeholder="Votre message… (Entrée pour envoyer, Maj+Entrée pour aller à la ligne)"
+                  placeholder="Votre message…"
                 />
                 <button
                   type="submit"
                   disabled={envoi || !reponse.trim()}
-                  className="flex h-10 shrink-0 cursor-pointer items-center gap-2 rounded-lg px-4 text-sm font-semibold text-white hover:opacity-90 disabled:cursor-default disabled:opacity-50"
+                  aria-label="Envoyer"
+                  className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg text-sm font-semibold text-white hover:opacity-90 disabled:cursor-default disabled:opacity-50 sm:w-auto sm:px-4"
                   style={{ backgroundColor: VIOLET }}
                 >
-                  <Send size={15} /> Envoyer
+                  <Send size={15} /> <span className="hidden sm:inline">Envoyer</span>
                 </button>
               </div>
+              <p className="mt-1 hidden px-1 text-[11.5px] text-slate-400 sm:block">Entrée pour envoyer, Maj+Entrée pour aller à la ligne.</p>
             </form>
           </>
         )}

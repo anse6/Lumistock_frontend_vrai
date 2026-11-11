@@ -43,7 +43,7 @@ const RapportNumerosSerie = ({ devise }: { devise: string }) => {
       render: (_: unknown, s: SortieSerie) =>
         s.revenu ? <Tag color="blue">{s.revenu_libelle}</Tag> : <span className="text-slate-400">—</span> },
     { title: "Vente", dataIndex: "vente_id", key: "v",
-      render: (v?: string) => (v ? <Link to={`/admin/dashboard/detaillivrason/${v}`}>Voir</Link> : "—") },
+      render: (v?: string) => (v ? <Link to={`/admin/dashboard/deliverys/detaillivrason/${v}`}>Voir</Link> : "—") },
   ];
 
   return (

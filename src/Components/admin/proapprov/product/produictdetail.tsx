@@ -372,7 +372,7 @@ const ProductDetailAdmin: React.FC = () => {
                 type="primary"
                 style={{ backgroundColor: APP_COLOR }}
                 onClick={() =>
-                  navigate(`/admin/dashboard/produits_approvisionnements/modifier/${id}`)
+                  navigate(`/admin/dashboard/produits_approvisionnements/edit/${id}`)
                 }
               >
                 Modifier

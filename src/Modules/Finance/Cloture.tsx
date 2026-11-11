@@ -160,7 +160,7 @@ const Cloture: React.FC<{ devise: string; onChange: () => void }> = ({ devise, o
             className="mb-3 flex items-center gap-3 rounded-xl px-4 py-3 text-sm"
             style={etat?.date_verrouillage ? { backgroundColor: PURPLE_950, color: "white" } : undefined}
           >
-            {etat?.date_verrouillage ? <Lock size={18} /> : <LockOpen size={18} className="text-slate-400" />}
+            {etat?.date_verrouillage ? <Lock size={18} className="shrink-0" /> : <LockOpen size={18} className="shrink-0 text-slate-400" />}
             <span>
               {etat?.date_verrouillage ? (
                 <>
@@ -232,7 +232,9 @@ const Cloture: React.FC<{ devise: string; onChange: () => void }> = ({ devise, o
 
       <div className="mb-4">
         <Section titre="Retours clients" note={retenueEnregistree ? `${retenueEnregistree} % retenus par défaut` : "Remboursement intégral"}>
-          <div className="flex flex-wrap items-center gap-4">
+          {/* Téléphone : icône + texte, puis le réglage en dessous. */}
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+            <div className="flex min-w-0 flex-1 items-start gap-3">
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-100 text-purple-900">
               <RotateCcw size={18} />
             </span>
@@ -242,6 +244,7 @@ const Cloture: React.FC<{ devise: string; onChange: () => void }> = ({ devise, o
               sont comptés en articles (compte 7078). Un retour sur une vente d'une période clôturée est autorisé : il est
               compté le jour du retour.
             </p>
+            </div>
             {estAdmin ? (
               <div className="flex items-center gap-2">
                 <InputNumber min={0} max={100} step={0.5} value={retenue} onChange={setRetenue} addonAfter="%" className="w-28" />
@@ -262,6 +265,7 @@ const Cloture: React.FC<{ devise: string; onChange: () => void }> = ({ devise, o
           size="middle"
           pagination={false}
           dataSource={etat?.clotures || []}
+          scroll={{ x: 560 }}
           locale={{ emptyText: <Empty description="Aucun exercice clôturé" /> }}
           columns={[
             {

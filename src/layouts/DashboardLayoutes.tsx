@@ -12,7 +12,7 @@ export default function DashboardLayoutes() {
   };
 
   return (
-    <div className="flex h-screen min-w-0 flex-col bg-gray-100 lg:flex-row">
+    <div className="flex min-h-screen min-w-0 flex-col bg-gray-100 lg:h-screen lg:flex-row">
       <Sidesuperadmin isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
       
       <div className="flex min-w-0 w-full flex-1 flex-col">

@@ -33,7 +33,7 @@ export default function DashboardLayout() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-screen bg-gray-100">
+    <div className="flex min-h-screen flex-col bg-gray-100 lg:h-screen lg:flex-row">
       <Side
         isOpen={sidebarOpen}
         setIsOpen={setSidebarOpen}
