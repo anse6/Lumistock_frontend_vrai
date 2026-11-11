@@ -137,7 +137,7 @@ const SupplyModal: React.FC<SupplyModalProps> = ({
                 optionFilterProp="children"
                 loading={loadingFournisseurs}
                 suffixIcon={<UserOutlined className="text-gray-400" />}
-                dropdownRender={(menu) => (
+                popupRender={(menu) => (
                   <>
                     {menu}
                     <Divider style={{ margin: "8px 0" }} />

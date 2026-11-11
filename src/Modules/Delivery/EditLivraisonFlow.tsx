@@ -13,6 +13,8 @@ import { useDeliveryStore } from './Clients/composantclient/deliveryStore';
 import { useProductStore, SelectedProduct } from '../../Components/componentproduitselection/stores/useProductStore';
 import { useTranslation } from 'react-i18next';
 
+import { regrouperLignesVente } from '../../Components/admin/livaision/livraisonfinal/editionVente';
+
 const API_URL = getUrlServer();
 
 const EditLivraisonFlow: React.FC = () => {
@@ -39,6 +41,8 @@ const EditLivraisonFlow: React.FC = () => {
   const { clearProducts, addProduct } = useProductStore();
 
   useEffect(() => {
+    // En développement, React lance cet effet deux fois : seul le dernier chargement compte.
+    let annule = false;
     const fetchAndHydrate = async () => {
       if (!id) {
         setError(t('delivery.deliveryConfig.errorMissingId'));
@@ -86,32 +90,26 @@ const EditLivraisonFlow: React.FC = () => {
           setPaiements([{ methode: data.methode_paiement, montant: data.montant_paye || 0 }]);
         }
 
-        // 2. Hydrate ProductStore
-        if (data.produits && Array.isArray(data.produits)) {
-          data.produits.forEach((prod: any) => {
-            const productToAdd: Omit<SelectedProduct, 'quantity' | 'total' | 'conditionconfig'> & { quantite_livreur_initiale: number; conditionnements?: any[] } = {
-              id: prod.produit_id,
-              name: prod.nom || 'Produit inconnu',
-              price: prod.prix || 0,
-              size: prod.unite || 'Unité',
-              image: prod.image || null,
-              quantite_livreur_initiale: prod.quantite_livreur ?? prod.quantite_magasin ?? 9999, // Fallback
-              conditionnements: prod.conditionnements || [],
-            };
-
-            addProduct(productToAdd);
-
-            // Accessing the Zustand store manually for direct quantity updates using existing actions
-            const store = useProductStore.getState();
-
-            if (prod.is_conditionne && prod.conditionnement_id) {
-              store.addConditioning(prod.produit_id, prod.conditionnement_id, prod.quantite);
-            } else {
-              store.updateUnitQuantity(prod.produit_id, prod.quantite);
-            }
-          });
+        // 2. Articles : une ligne par article, unités et cartons regroupés.
+        if (annule) return;
+        if (Array.isArray(data.produits)) {
+          const store = useProductStore.getState();
+          for (const article of regrouperLignesVente(data.produits)) {
+            const l = article.ligne;
+            addProduct({
+              id: article.produit_id,
+              name: l.nom || 'Article inconnu',
+              price: article.prixUnitaire,
+              size: l.unite || 'Unité',
+              image: l.image || null,
+              // Stock du gérant + ce que la vente a déjà pris (rendu si on le retire).
+              quantite_livreur_initiale: (Number(l.quantite_livreur) || 0) + article.unitesDansLaVente,
+              conditionnements: article.conditionnements,
+            } as Omit<SelectedProduct, 'quantity' | 'total' | 'conditionconfig'> & { quantite_livreur_initiale: number });
+            if (article.unites > 0) store.updateUnitQuantity(article.produit_id, article.unites);
+            for (const carton of article.cartons) store.addConditioning(article.produit_id, carton.id, carton.nombre);
+          }
         }
-
       } catch (err: any) {
         console.error(err);
         setError(err.message || t('delivery.deliveryConfig.errorFallback'));
@@ -124,6 +122,7 @@ const EditLivraisonFlow: React.FC = () => {
 
     // Cleanup when leaving form
     return () => {
+      annule = true;
       setEditDeliveryId(null);
     };
   }, [id, setEditDeliveryId, setClientId, setPaymentStatus, setMethodePaiement, setAdvanceAmount, setRelicat, setRistourne, setDetteAncienne, setIsDetteAncienneActive, clearDelivery, clearProducts, addProduct]);

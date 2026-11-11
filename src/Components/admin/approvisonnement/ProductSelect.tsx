@@ -469,7 +469,7 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
             )}
 
             <div className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">
-              {t("admin.supplies.summary")} · {summary.length} produit(s)
+              {t("admin.supplies.summary")} · {summary.length} article(s)
             </div>
 
             <div className="max-h-52 overflow-y-auto space-y-1.5 pr-1">

@@ -21,7 +21,9 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { isValidPhoneNumber, type Country } from "react-phone-number-input";
-import { getUrlServer } from "./../../../configServer";
+import axios from "axios";
+import type { Dayjs } from "dayjs";
+import { api } from "../../../api/client";
 import type { UploadFile, UploadProps } from "antd";
 import {
   countryOptions,
@@ -32,7 +34,7 @@ import {
 } from "./locationData";
 import { getApiErrorMessage } from "./apiErrors";
 import CitySelect from "./CitySelect";
-import { currencyOptions } from "./storeOptions";
+import { currencyOptions, deviseDuPays } from "./storeOptions";
 
 const { Dragger } = Upload;
 
@@ -65,9 +67,15 @@ const NouveauMagasin: React.FC = () => {
     [neighborhoods],
   );
 
+  // Mêmes règles que l'inscription publique : chiffres et espaces, 9 chiffres
+  // au Cameroun, numéro valide pour le pays choisi (plus de coupure à 9
+  // chiffres pour les autres pays).
   const validatePhone = (_: unknown, value?: string) => {
     const digits = String(value || "").replace(/\D/g, "");
     if (!digits) return Promise.resolve();
+    if (!/^[\d\s]{6,16}$/.test(String(value))) {
+      return Promise.reject(new Error("Saisissez entre 6 et 16 chiffres (espaces autorisés)."));
+    }
     if ((selectedCountryCode || "CM") === "CM" && digits.length !== 9) {
       return Promise.reject(
         new Error(
@@ -83,91 +91,51 @@ const NouveauMagasin: React.FC = () => {
     return Promise.resolve();
   };
 
-  const onFinish = async (values: any) => {
+  // Champs envoyés tels quels (texte nettoyé), au même format que
+  // l'inscription publique : l'administrateur est à plat (admin_*).
+  const CHAMPS_TEXTE = [
+    "denomination", "activité", "email", "country_code", "ville", "quartier",
+    "raison_sociale", "forme_juridique", "region", "adresse_ligne_1", "adresse_ligne_2",
+    "code_postal", "site_web", "numero_immatriculation", "numero_fiscal", "devise",
+    "admin_name", "admin_first_name", "admin_email", "admin_fonction", "admin_sexe",
+  ];
+
+  const telephoneComplet = (chiffres?: string) => {
+    const d = String(chiffres || "").replace(/\D/g, "");
+    return d ? `${selectedCountry?.callingCode || ""}${d}` : "";
+  };
+
+  const onFinish = async (values: Record<string, unknown>) => {
+    const fd = new FormData();
+    CHAMPS_TEXTE.forEach((cle) => fd.append(cle, String(values[cle] ?? "").trim()));
+    fd.append("pays", selectedCountry?.name || "");
+    fd.append("telephone", telephoneComplet(values.telephone as string | undefined));
+    fd.append("admin_telephone", telephoneComplet(values.admin_telephone as string | undefined));
+    fd.append("admin_date_naissance", (values.admin_date_naissance as Dayjs | undefined)?.format("YYYY-MM-DD") || "");
+    fd.append("nombre_manager", String(values.nombre_manager));
+    fd.append("nombre_livreur", String(values.nombre_livreur));
+    fd.append("nombre_caissier", String(values.nombre_caissier ?? 2));
+    if (fileList[0]?.originFileObj) fd.append("image", fileList[0].originFileObj);
+
     setLoading(true);
     try {
-      const token = localStorage.getItem("access_token");
-      if (!token) throw new Error("Non authentifié");
-
-      const formDataToSend = new FormData();
-
-      formDataToSend.append("denomination", values.denomination);
-      formDataToSend.append("pays", selectedCountry?.name || "");
-      formDataToSend.append("country_code", values.country_code);
-      formDataToSend.append("ville", values.ville);
-      formDataToSend.append("quartier", values.quartier);
-      formDataToSend.append("email", values.email);
-      formDataToSend.append("activité", values.activite);
-      formDataToSend.append(
-        "telephone",
-        `${selectedCountry?.callingCode || "+237"}${values.telephone.replace(/\D/g, "")}`,
-      );
-
-      const optionalFields = [
-        "raison_sociale",
-        "forme_juridique",
-        "region",
-        "adresse_ligne_1",
-        "adresse_ligne_2",
-        "code_postal",
-        "site_web",
-        "numero_immatriculation",
-        "numero_fiscal",
-        "devise",
-      ];
-
-      optionalFields.forEach((field) => {
-        if (values[field]) formDataToSend.append(field, values[field]);
-      });
-
-      formDataToSend.append("nombre_manager", values.nombre_manager.toString());
-      formDataToSend.append("nombre_livreur", values.nombre_livreur.toString());
-      formDataToSend.append("nombre_caissier", String(values.nombre_caissier ?? 2));
-
-      const adminData = {
-        name: values.admin_name,
-        first_name: values.admin_first_name,
-        email: values.admin_email,
-        sexe: values.admin_sexe || "Homme",
-        date_naissance: values.admin_date_naissance?.format("YYYY-MM-DD"),
-        telephone: values.admin_telephone
-          ? `${selectedCountry?.callingCode || "+237"}${values.admin_telephone.replace(/\D/g, "")}`
-          : undefined,
-        fonction: values.admin_fonction,
-      };
-
-      formDataToSend.append("admin", JSON.stringify(adminData));
-
-      if (fileList.length > 0 && fileList[0].originFileObj) {
-        formDataToSend.append("image", fileList[0].originFileObj);
-      }
-
-      const response = await fetch(`${getUrlServer()}/magasin/create`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formDataToSend,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        throw new Error(
-          getApiErrorMessage(errorData, "Erreur lors de la création du magasin"),
-        );
-      }
-
-      const result = await response.json().catch(() => null);
+      const { data: result } = await api.post("/magasin/create", fd);
       if (result?.invitation_envoyee === false) {
         message.warning(result.message);
       } else {
         message.success("Magasin créé. L'administrateur a reçu un lien pour choisir son mot de passe.");
       }
       navigate("/superadmin/dashboard/magasin");
-    } catch (err: any) {
-      message.error(
-        err.message || "Une erreur est survenue lors de la création.",
-      );
+    } catch (err) {
+      const data = axios.isAxiosError(err) ? err.response?.data : null;
+      // Erreurs de champ : affichées sous le champ concerné, qui est montré.
+      const erreurs = (data?.errors || {}) as Record<string, string[] | string>;
+      const champs = Object.keys(erreurs).filter((k) => k in values);
+      if (champs.length) {
+        form.setFields(champs.map((k) => ({ name: k, errors: ([] as string[]).concat(erreurs[k]) })));
+        form.scrollToField(champs[0], { block: "center" });
+      }
+      message.error(getApiErrorMessage(data, "Une erreur est survenue lors de la création."));
     } finally {
       setLoading(false);
     }
@@ -256,10 +224,10 @@ const NouveauMagasin: React.FC = () => {
               onFinish={onFinish}
               initialValues={{
                 country_code: "CM",
+                devise: "XAF",
                 nombre_manager: 1,
                 nombre_livreur: 2,
                 nombre_caissier: 2,
-                admin_sexe: "Homme",
               }}
               requiredMark={false}
             >
@@ -288,8 +256,10 @@ const NouveauMagasin: React.FC = () => {
                         rules={[
                           {
                             required: true,
+                            whitespace: true,
                             message: "Veuillez entrer la dénomination",
                           },
+                          { min: 3, message: "Au moins 3 caractères" },
                         ]}
                       >
                         <Input
@@ -321,10 +291,11 @@ const NouveauMagasin: React.FC = () => {
                                 value: country.code,
                                 label: `${country.flag} ${country.name} (${country.callingCode})`,
                               }))}
-                              onChange={() =>
+                              onChange={(code: string) =>
                                 form.setFieldsValue({
                                   ville: undefined,
                                   quartier: undefined,
+                                  devise: deviseDuPays(code),
                                 })
                               }
                               className="h-10"
@@ -372,6 +343,7 @@ const NouveauMagasin: React.FC = () => {
                             rules={[
                               {
                                 required: true,
+                                whitespace: true,
                                 message:
                                   "Veuillez sélectionner ou saisir le quartier",
                               },
@@ -437,11 +409,6 @@ const NouveauMagasin: React.FC = () => {
                                 message:
                                   "Veuillez entrer un numéro de téléphone",
                               },
-                              {
-                                pattern: /^[0-9 ()-]+$/,
-                                message:
-                                  "Le numéro contient des caractères non valides",
-                              },
                               { validator: validatePhone },
                             ]}
                           >
@@ -453,13 +420,8 @@ const NouveauMagasin: React.FC = () => {
                               }
                               placeholder={phonePlaceholder}
                               className="h-10"
-                              maxLength={9}
-                              onChange={(e) => {
-                                const digits = e.target.value
-                                  .replace(/\D/g, "")
-                                  .slice(0, 9);
-                                form.setFieldValue("telephone", digits);
-                              }}
+                              maxLength={16}
+                              inputMode="tel"
                             />
                           </Form.Item>
                         </Col>
@@ -488,10 +450,11 @@ const NouveauMagasin: React.FC = () => {
                             <span className="text-red-500">*</span>
                           </span>
                         }
-                        name="activite"
+                        name="activité"
                         rules={[
                           {
                             required: true,
+                            whitespace: true,
                             message: "Veuillez décrire l'activité",
                           },
                         ]}
@@ -500,6 +463,8 @@ const NouveauMagasin: React.FC = () => {
                         <Input.TextArea
                           rows={4}
                           placeholder="Entrer une brève description de l'activité..."
+                          maxLength={255}
+                          showCount
                           className="py-2"
                         />
                       </Form.Item>
@@ -527,7 +492,7 @@ const NouveauMagasin: React.FC = () => {
                               </span>
                             }
                             name="admin_name"
-                            rules={[{ required: true, message: "Requis" }]}
+                            rules={[{ required: true, whitespace: true, message: "Requis" }, { min: 2, message: "Au moins 2 caractères" }]}
                           >
                             <Input
                               placeholder="Entrer le nom"
@@ -543,7 +508,7 @@ const NouveauMagasin: React.FC = () => {
                               </span>
                             }
                             name="admin_first_name"
-                            rules={[{ required: true, message: "Requis" }]}
+                            rules={[{ required: true, whitespace: true, message: "Requis" }, { min: 2, message: "Au moins 2 caractères" }]}
                           >
                             <Input
                               placeholder="Entrer le prénom"
@@ -597,15 +562,8 @@ const NouveauMagasin: React.FC = () => {
                               }
                               placeholder={phonePlaceholder}
                               className="h-10"
-                              maxLength={9}
-                              onChange={(e) => {
-                                const digits = e.target.value.replace(
-                                  /\D/g,
-                                  "",
-                                );
-                                if (digits.length <= 9)
-                                  form.setFieldValue("admin_telephone", digits);
-                              }}
+                              maxLength={16}
+                              inputMode="tel"
                             />
                           </Form.Item>
                         </Col>
@@ -619,7 +577,6 @@ const NouveauMagasin: React.FC = () => {
                               </span>
                             }
                             name="admin_sexe"
-                            initialValue="Homme"
                           >
                             <Radio.Group buttonStyle="solid">
                               <Radio.Button value="Homme">Homme</Radio.Button>

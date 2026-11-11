@@ -20,7 +20,7 @@ export const es: Contenu = {
     titre1: "Dirige tu tienda,",
     titre2: "del mostrador a la contabilidad.",
     sousTitre:
-      "Lumistock reúne la caja, el inventario, el crédito a clientes y la contabilidad SYSCOHADA en un solo software, pensado para las empresas de África Central.",
+      "Lumistock reúne la caja, el inventario, el crédito a clientes y la contabilidad en un solo software, para comercios de todo el mundo.",
     cta: "Crear mi tienda",
     ctaSecondaire: "Iniciar sesión",
     garanties: ["Importes en FCFA", "Orange Money y MTN MoMo", "Contabilidad SYSCOHADA"],
@@ -141,7 +141,7 @@ export const es: Contenu = {
           { q: "¿Cuánto cuesta Lumistock?", r: "El precio depende del tamaño de tu tienda y del número de cuentas. Registra tu tienda o contáctanos y te propondremos la oferta adecuada." },
           { q: "¿Cuánto tarda la validación de mi tienda?", r: "Nuestro equipo revisa cada registro. Una vez validada, el administrador recibe un correo con un enlace para elegir su contraseña." },
           { q: "¿Puedo crear varias tiendas?", r: "Sí, tantas como quieras. Cada tienda se registra por separado, con su propio correo y administrador: su stock, equipo, clientes y contabilidad son independientes." },
-          { q: "¿En qué dispositivos funciona Lumistock?", r: "En un navegador web, en ordenador, tableta o teléfono. No hay nada que instalar." },
+          { q: "¿En qué dispositivos funciona Lumistock?", r: "En ordenador, tableta y teléfono, con la misma cuenta y los mismos datos en cada dispositivo." },
           { q: "¿En qué idiomas está disponible Lumistock?", r: "En francés, inglés, español, alemán, chino y árabe. Cada usuario elige su idioma en cualquier momento desde la aplicación." },
         ],
       },
@@ -218,7 +218,7 @@ export const es: Contenu = {
     secondaire: "Ya tengo una cuenta",
   },
   footer: {
-    accroche: "Software de gestión comercial para las empresas de África Central: ventas, stock, caja, crédito a clientes y contabilidad.",
+    accroche: "El software de gestión comercial para comercios de todo el mundo: ventas, stock, caja, crédito a clientes y contabilidad.",
     produit: "Producto",
     compte: "Cuenta",
     contact: "Contacto",

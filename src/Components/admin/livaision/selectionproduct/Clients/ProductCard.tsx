@@ -215,7 +215,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 <button
                   onClick={() => removeProduct(id)}
                   className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors duration-200 flex-shrink-0"
-                  title="Supprimer le produit"
+                  title="Supprimer l'article"
                 >
                   <svg
                     className="w-5 h-5"
@@ -260,7 +260,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <button
             onClick={() => removeProduct(id)}
             className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors duration-200"
-            title="Supprimer le produit"
+            title="Supprimer l'article"
           >
             <svg
               className="w-5 h-5"

@@ -93,7 +93,7 @@ const MovementsReport: React.FC<{ devise: string }> = ({ devise }) => {
   const filtres = [
     famille && LIBELLES_FAMILLE[famille].toLowerCase(),
     sens && (sens === "entree" ? "entrées seulement" : "sorties seulement"),
-    produitId && `produit ${produits[produitId]}`,
+    produitId && `article ${produits[produitId]}`,
     recherche.trim() && `recherche « ${recherche.trim()} »`,
   ].filter(Boolean).join(", ");
 
@@ -131,7 +131,7 @@ const MovementsReport: React.FC<{ devise: string }> = ({ devise }) => {
             lignes: mouvements,
             colonnes: [
               { titre: "Date", largeur: 15, valeur: (m: Mouvement) => dateHeure(m.date) },
-              { titre: "Produit", largeur: 30, valeur: (m: Mouvement) => m.produit, sous: (m: Mouvement) => m.detail, gras: true },
+              { titre: "Article", largeur: 30, valeur: (m: Mouvement) => m.produit, sous: (m: Mouvement) => m.detail, gras: true },
               { titre: "Nature", largeur: 22, valeur: (m: Mouvement) => m.libelle, sous: (m: Mouvement) => (m.par ? `par ${m.par}` : "") },
               {
                 titre: "Quantité",
@@ -152,14 +152,14 @@ const MovementsReport: React.FC<{ devise: string }> = ({ devise }) => {
   const excel = () =>
     exporterCsv(
       `${nomFichier("Mouvements_de_stock", params.debut, params.fin)}.csv`,
-      ["Date", "Produit", "Unité", "Nature", "Type enregistré", "Quantité", "Valeur au prix d'achat", "Par", "Détail"],
+      ["Date", "Article", "Unité", "Nature", "Type enregistré", "Quantité", "Valeur au prix d'achat", "Par", "Détail"],
       mouvements.map((m) => [dateHeure(m.date), m.produit, m.unite, m.libelle, m.type, m.quantite, m.valeur, m.par || "", m.detail]),
     );
 
   const colonnes: ColumnsType<Mouvement> = [
     { title: "Date", dataIndex: "date", render: dateHeure, sorter: (a, b) => a.date.localeCompare(b.date), defaultSortOrder: "descend" },
     {
-      title: "Produit",
+      title: "Article",
       key: "produit",
       render: (_, m) => (
         <div>
@@ -237,7 +237,7 @@ const MovementsReport: React.FC<{ devise: string }> = ({ devise }) => {
           allowClear
           showSearch
           optionFilterProp="label"
-          placeholder="Tous les produits"
+          placeholder="Tous les articles"
           value={produitId}
           onChange={setProduitId}
           options={Object.entries(produits)
@@ -267,7 +267,7 @@ const MovementsReport: React.FC<{ devise: string }> = ({ devise }) => {
           />
           <CarteChiffre ton="vert" libelle="Entrées" valeur={fmt(totaux.entrees)} icone={<ArrowDownToLine size={16} />} />
           <CarteChiffre ton="rouge" libelle="Sorties" valeur={fmt(totaux.sorties)} icone={<ArrowUpFromLine size={16} />} />
-          <CarteChiffre ton="gris" libelle="Produits concernés" valeur={fmt(totaux.produits)} icone={<Boxes size={16} />} />
+          <CarteChiffre ton="gris" libelle="Articles concernés" valeur={fmt(totaux.produits)} icone={<Boxes size={16} />} />
         </div>
 
         {totaux.parFamille.length > 0 && (

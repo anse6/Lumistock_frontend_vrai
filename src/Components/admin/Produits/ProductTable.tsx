@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   MoreVertical,
   AlertTriangle,
@@ -33,12 +33,20 @@ import {
   ShoppingCartOutlined,
   UserOutlined,
   InboxOutlined,
+  DeleteOutlined,
+  CheckSquareOutlined,
+  CloseOutlined,
 } from "@ant-design/icons";
+import { api, messageErreur } from "../../../api/client";
 import type { ColumnsType } from "antd/es/table";
 import { useTranslation } from "react-i18next";
 import images from "@/assets/no_data.png";
 import axios from "axios";
 import useCompteConnecte from "../../../hooks/useCompteConnecte";
+import { useQueryClient } from "@tanstack/react-query";
+import ApercuCout from "../../../Modules/Valorisation/ApercuCout";
+import SaisieNumeros from "../../../Modules/NumerosSerie/SaisieNumeros";
+import { cleValorisation } from "../../../Modules/Valorisation/api";
 
 const APP_COLOR = "#3b1558";
 const APP_COLOR_LIGHT = "#f5f0fa";
@@ -67,6 +75,8 @@ interface Product {
   remainingQuantity: number;
   price: number;
   purchasePrice: number;
+  lastPurchasePrice?: number;
+  suiviSerie?: boolean;
   status: "in_stock" | "out_of_stock";
   avarie?: AvarieResume | null;
   /** Produit créé par la mise en solde d'unités avariées. */
@@ -75,7 +85,7 @@ interface Product {
 
 // Libellés des motifs proposés dans ExpiredProductModal.
 const MOTIFS_AVARIE: Record<string, string> = {
-  perime: "Produit périmé",
+  perime: "Article périmé",
   casse: "Casse / bris",
   vol: "Vol / perte",
   deteriore: "Détérioration / avarie",
@@ -108,6 +118,71 @@ const ProductTable: React.FC<ProductTableProps> = ({
   const { t, i18n } = useTranslation();
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+  const quantiteSaisie = Form.useWatch("quantity", form);
+  const prixSaisi = Form.useWatch("prix_achat", form);
+  const [modal, modalContextHolder] = Modal.useModal();
+
+  // Sélection par cases à cocher, pour mettre plusieurs articles à la
+  // corbeille d'un coup. Réservée à qui a le droit de supprimer.
+  const peutSupprimer = peut("produits.supprimer");
+  const [selection, setSelection] = useState<React.Key[]>([]);
+  const [suppressionEnCours, setSuppressionEnCours] = useState(false);
+  const idsVisibles = useMemo(() => products.map((p) => p.id), [products]);
+
+  // Un filtre ou un rechargement retire de la sélection les articles qui ne
+  // sont plus affichés : on ne supprime jamais un article qu'on ne voit pas.
+  useEffect(() => {
+    setSelection((avant) => {
+      const visibles = new Set(idsVisibles);
+      const gardes = avant.filter((id) => visibles.has(String(id)));
+      return gardes.length === avant.length ? avant : gardes;
+    });
+  }, [idsVisibles]);
+
+  const toutSelectionne = idsVisibles.length > 0 && selection.length === idsVisibles.length;
+
+  const supprimerSelection = () => {
+    const ids = selection.map(String);
+    if (!ids.length) return;
+    const noms = products.filter((p) => ids.includes(p.id)).map((p) => p.name);
+    modal.confirm({
+      title: ids.length === 1 ? "Supprimer 1 article ?" : `Supprimer ${ids.length} articles ?`,
+      icon: <DeleteOutlined style={{ color: "#dc2626" }} />,
+      content: (
+        <div className="text-sm text-gray-600">
+          <p className="mb-2">
+            {ids.length === 1
+              ? "Cet article sera mis à la corbeille. Vous pourrez le restaurer depuis « Articles supprimés »."
+              : "Ces articles seront mis à la corbeille. Vous pourrez les restaurer depuis « Articles supprimés »."}
+          </p>
+          <ul className="max-h-40 overflow-y-auto list-disc pl-5 text-gray-700">
+            {noms.slice(0, 20).map((n, i) => (
+              <li key={i}>{n}</li>
+            ))}
+          </ul>
+          {noms.length > 20 && <p className="mt-1 text-gray-400">… et {noms.length - 20} autre(s)</p>}
+        </div>
+      ),
+      okText: "Supprimer",
+      okButtonProps: { danger: true },
+      cancelText: "Annuler",
+      onOk: async () => {
+        setSuppressionEnCours(true);
+        try {
+          const { data } = await api.post("/produits/supprimer-plusieurs", { ids });
+          messageApi.success(data.message || `${ids.length} article(s) mis à la corbeille.`);
+          setSelection([]);
+          onProvisionSuccess?.();
+        } catch (err) {
+          messageApi.error(messageErreur(err, "La suppression n'a pas pu être faite."));
+          onProvisionSuccess?.(); // liste peut-être périmée : on la recharge
+        } finally {
+          setSuppressionEnCours(false);
+        }
+      },
+    });
+  };
 
   // Provision modal state
   const [showProvisionModal, setShowProvisionModal] = useState<boolean>(false);
@@ -134,6 +209,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
     id: string;
     name: string;
     currentStock: number;
+    suiviSerie?: boolean;
   } | null>(null);
 
   // Mise en solde des unités avariées
@@ -197,7 +273,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
         }
       }
     } catch (err) {
-      console.error("Erreur chargement produit:", err);
+      console.error("Erreur chargement article:", err);
     } finally {
       setLoadingPreviousFournisseur(false);
     }
@@ -209,9 +285,10 @@ const ProductTable: React.FC<ProductTableProps> = ({
     setNewFournisseurNom("");
     setNewFournisseurVille("");
     form.resetFields();
-    // Prix d'achat du produit pré-rempli : il suffit de le corriger si le
-    // fournisseur a changé de prix pour ce lot.
-    form.setFieldsValue({ prix_achat: product.purchasePrice ?? 0 });
+    // Dernier prix payé pré-rempli : il suffit de le corriger si le
+    // fournisseur a changé de prix pour ce lot. (Le coût d'achat de l'article,
+    // lui, est calculé selon la méthode du magasin.)
+    form.setFieldsValue({ prix_achat: product.lastPurchasePrice ?? product.purchasePrice ?? 0 });
     setShowProvisionModal(true);
 
     // Load fournisseurs list first, then fetch previous supplier
@@ -240,6 +317,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
       // Prix d'achat de ce lot : sert au calcul du coût (CMUP / FIFO / LIFO).
       if (values.prix_achat !== undefined && values.prix_achat !== null) body.prix_achat = values.prix_achat;
       if (values.note) body.note = values.note;
+      if (selectedProductForProvision.suiviSerie) body.numeros_serie = values.numeros_serie || [];
       if (values.livreur) body.first_name = values.livreur;
 
       const response = await fetch(
@@ -256,6 +334,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
 
       if (response.ok) {
         messageApi.success(t("admin.products.messages.success_provision"));
+        queryClient.invalidateQueries({ queryKey: cleValorisation(selectedProductForProvision.id) });
         onProvisionSuccess?.();
         setShowProvisionModal(false);
         setSelectedProductForProvision(null);
@@ -324,6 +403,13 @@ const ProductTable: React.FC<ProductTableProps> = ({
             <span>
               {name}{" "}
               <Tag className="!ml-1 !rounded-full !border-amber-200 !bg-amber-50 !text-amber-700">Soldé</Tag>
+            </span>
+          </Tooltip>
+        ) : record.suiviSerie ? (
+          <Tooltip title="Suivi par numéro de série : chaque unité est désignée à la vente">
+            <span>
+              {name}{" "}
+              <Tag className="!ml-1 !rounded-full !border-purple-200 !bg-purple-50 !text-purple-800">N° de série</Tag>
             </span>
           </Tooltip>
         ) : (
@@ -466,6 +552,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
                 id: record.id,
                 name: record.name,
                 currentStock: record.remainingQuantity,
+                suiviSerie: record.suiviSerie,
               });
               setShowExpiredModal(true);
             },
@@ -514,17 +601,65 @@ const ProductTable: React.FC<ProductTableProps> = ({
       theme={{ token: { colorPrimary: APP_COLOR, borderRadius: 8 } }}
     >
       {contextHolder}
+      {modalContextHolder}
       <div className="bg-white w-full" style={{ minHeight: 620 }}>
+        {peutSupprimer && products.length > 0 && (
+          <div
+            className={`mb-3 flex flex-wrap items-center gap-2 rounded-lg border px-3 py-2 text-sm ${
+              selection.length ? "border-red-200 bg-red-50" : "border-gray-100 bg-gray-50"
+            }`}
+          >
+            <span className={selection.length ? "font-semibold text-red-800" : "text-gray-500"}>
+              {selection.length
+                ? `${selection.length} article(s) sélectionné(s) sur ${idsVisibles.length}`
+                : "Cochez des articles pour les supprimer en une fois."}
+            </span>
+            <div className="ml-auto flex flex-wrap gap-2">
+              {!toutSelectionne && (
+                <Button size="small" icon={<CheckSquareOutlined />} onClick={() => setSelection(idsVisibles)}>
+                  {`Tout sélectionner (${idsVisibles.length})`}
+                </Button>
+              )}
+              {selection.length > 0 && (
+                <>
+                  <Button size="small" icon={<CloseOutlined />} onClick={() => setSelection([])}>
+                    Tout désélectionner
+                  </Button>
+                  <Button
+                    size="small"
+                    danger
+                    type="primary"
+                    icon={<DeleteOutlined />}
+                    loading={suppressionEnCours}
+                    onClick={supprimerSelection}
+                  >
+                    Supprimer la sélection
+                  </Button>
+                </>
+              )}
+            </div>
+          </div>
+        )}
         <Table
           columns={columns}
           dataSource={products}
+          rowSelection={
+            peutSupprimer
+              ? {
+                  selectedRowKeys: selection,
+                  onChange: (cles) => setSelection(cles),
+                  preserveSelectedRowKeys: true,
+                  selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
+                }
+              : undefined
+          }
           rowKey="id"
           scroll={{ x: 1200 }}
           pagination={{
             pageSize: 10,
             showSizeChanger: false,
             showTotal: (total, range) =>
-              `${range[0]}-${range[1]} sur ${total} produits`,
+              `${range[0]}-${range[1]} sur ${total} articles`,
           }}
           className="custom-antd-table border border-gray-100 rounded-lg overflow-hidden"
           locale={{
@@ -569,7 +704,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
               </div>
               <div>
                 <p className="font-bold text-gray-900 text-base mb-0">
-                  Approvisionner l'Article
+                  Approvisionner l'article
                 </p>
                 {selectedProductForProvision && (
                   <p className="text-xs text-gray-400 font-normal mb-0">
@@ -673,7 +808,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
                       <UserOutlined className="text-gray-400" />
                     )
                   }
-                  dropdownRender={(menu) => (
+                  popupRender={(menu) => (
                     <>
                       {menu}
                       <Divider style={{ margin: "8px 0" }} />
@@ -763,15 +898,15 @@ const ProductTable: React.FC<ProductTableProps> = ({
                   name="prix_achat"
                   label={
                     <span className="font-semibold text-gray-700 text-sm">
-                      Prix d'achat unitaire
+                      Prix d'achat de ce lot
                     </span>
                   }
-                  tooltip="Pré-rempli avec le prix d'achat du produit. Modifiez-le seulement si ce lot a été acheté à un autre prix : c'est ce prix qui sert au calcul du coût des ventes (CMUP, FIFO, LIFO)."
+                  tooltip="Prix unitaire payé au fournisseur pour ce lot, pré-rempli avec le dernier prix payé. Le coût d'achat de l'article est ensuite recalculé selon la méthode du magasin (CMUP, FIFO ou LIFO)."
                   className="!mb-3"
                 >
                   <InputNumber
                     min={0}
-                    placeholder={`Actuel : ${(selectedProductForProvision?.purchasePrice ?? 0).toLocaleString("fr-FR")}`}
+                    placeholder={`Dernier prix : ${(selectedProductForProvision?.lastPurchasePrice ?? selectedProductForProvision?.purchasePrice ?? 0).toLocaleString("fr-FR")}`}
                     className="w-full"
                     style={{ width: "100%" }}
                     formatter={(value) =>
@@ -806,6 +941,30 @@ const ProductTable: React.FC<ProductTableProps> = ({
                   />
                 </Form.Item>
               </div>
+
+              {selectedProductForProvision?.suiviSerie && (
+                <Form.Item
+                  name="numeros_serie"
+                  label={<span className="font-semibold text-gray-700 text-sm">Numéros de série reçus <span className="text-red-500 font-bold">*</span></span>}
+                  rules={[{
+                    validator: (_, v: string[] = []) => v.length === (Number(quantiteSaisie) || 0) && v.length > 0
+                      ? Promise.resolve()
+                      : Promise.reject(new Error(`Saisissez ${Number(quantiteSaisie) || 0} numéro(s) : un par unité reçue.`)),
+                  }]}
+                  className="!mb-3"
+                >
+                  <SaisieNumeros attendu={Number(quantiteSaisie) || 0} />
+                </Form.Item>
+              )}
+
+              {selectedProductForProvision && isAdmin && (
+                <ApercuCout
+                  articleId={selectedProductForProvision.id}
+                  quantite={quantiteSaisie}
+                  prix={prixSaisi}
+                  devise={t("delivery.productSelection.currency")}
+                />
+              )}
 
               {/* Livreur */}
               <Form.Item
@@ -866,6 +1025,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
             productId={selectedProduct.id}
             productName={selectedProduct.name}
             currentStock={selectedProduct.currentStock}
+            suiviSerie={selectedProduct.suiviSerie}
           />
         )}
 

@@ -7,6 +7,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { getUrlServer } from '../../../configServer';
 import { message } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { getConditioningId } from '../../../Components/admin/approvisonnement/conditioning';
 
 const API_URL = getUrlServer()
 
@@ -53,7 +54,7 @@ export const ActionsSection: React.FC = () => {
           if (config.conditionedQuantity > 0) {
             items.push({
               produit_id: p.id,
-              conditionnement_id: config.selectedConditioning._id['$oid'],
+              conditionnement_id: getConditioningId(config.selectedConditioning._id),
               quantite_conditionnement: config.conditionedQuantity,
             })
           }

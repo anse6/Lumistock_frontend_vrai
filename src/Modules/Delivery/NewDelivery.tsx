@@ -13,17 +13,20 @@ import { Input, message } from 'antd';
 import { BarcodeOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
+import type { ConditioningId } from '../../Components/admin/approvisonnement/conditioning';
+
 const API_URL = getUrlServer();
 
 export interface Conditioning {
-  _id: {
-    $oid: string;
-  };
+  // Texte (API actuelle) ou { $oid } (ancienne API Mongo) : lire avec getConditioningId.
+  _id: ConditioningId;
   nom: string;
   facteur: number;
   prix_conditionnement: number;
   prix_reference: number;
   economie: number;
+  contenu_nom?: string | null;
+  contenu_nombre?: number | null;
 }
 
 interface Product {
@@ -239,7 +242,7 @@ const ProductSelection: React.FC = () => {
       }
     } catch (err: any) {
       if (err.response?.status === 404) {
-        message.error("Produit non trouvé");
+        message.error("Article non trouvé");
       } else {
         message.error("Erreur lors du scan");
       }

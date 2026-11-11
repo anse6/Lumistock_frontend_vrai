@@ -7,7 +7,7 @@ export const OrderTableHead: React.FC = () => (
     <tr className="flex w-full">
       <TableHeader title="Commande ID" />
       <TableHeader title=" Nom du Client " />
-      <TableHeader title="Quantité de produits" />
+      <TableHeader title="Quantité d'articles" />
       <TableHeader title="Statut de paiement" />
       <TableHeader title="Montant" />
       <TableHeader title="Date" />

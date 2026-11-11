@@ -33,9 +33,9 @@ const SupplysModal: React.FC<SupplyModalProps> = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-sm">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800">Approvisionner le produit</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">Approvisionner l'article</h2>
         <p className="text-gray-600 mb-4">
-          Voulez-vous vraiment approvisionner ce produit ? Veuillez entrer la quantité et le nom du livreur.
+          Voulez-vous vraiment approvisionner cet article ? Veuillez entrer la quantité et le nom du livreur.
         </p>
 
         <div className="mb-4">

@@ -206,7 +206,7 @@ const OngletAssocier: React.FC<{ produits: ProduitCatalogue[]; chargement: boole
           <ol className="!mb-0 list-decimal pl-4 text-sm">
             <li>Cliquez sur « Scanner » sur la ligne d'un article.</li>
             <li>Scannez le code imprimé sur son emballage : il est enregistré, et l'article sans code suivant est proposé automatiquement.</li>
-            <li>Article sans code imprimé (vrac, produit local) : cliquez sur « Générer », puis imprimez son étiquette.</li>
+            <li>Article sans code imprimé (vrac, article local) : cliquez sur « Générer », puis imprimez son étiquette.</li>
           </ol>
         }
       />

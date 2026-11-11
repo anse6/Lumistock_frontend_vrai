@@ -9,8 +9,8 @@ test('test', async ({ page }) => {
   await page.getByRole('button', { name: 'Connectez-vous' }).click();
   await page.getByRole('button', { name: 'Tableau de bord' }).click();
   await page.getByRole('button', { name: 'Livraison' }).click();
-  await page.getByRole('button', { name: 'Produits' }).click();
-  await page.getByRole('button', { name: 'Produits' }).click();
+  await page.getByRole('button', { name: 'Articles' }).click();
+  await page.getByRole('button', { name: 'Articles' }).click();
   await page.getByRole('button', { name: 'Clients' }).click();
   await page.getByRole('button', { name: 'Paramètre' }).click();
   await page.getByRole('button', { name: 'Modifier votre mot de passe' }).click();

@@ -199,8 +199,11 @@ export async function generateDeliveryInvoicePdf(
 
   drawTableHeader();
   produits.forEach((p, index) => {
-    const nom = clean(p.nom) || "Produit";
-    const sous = p.is_conditionne && p.conditionnement_nom ? `Vendu par ${clean(p.conditionnement_nom).toLowerCase()} de ${p.facteur}` : "";
+    const nom = clean(p.nom) || "Article";
+    const series = (p as { numeros_serie?: string[] }).numeros_serie;
+    const sous = p.is_conditionne && p.conditionnement_nom
+      ? `Vendu par ${clean(p.conditionnement_nom).toLowerCase()} de ${p.facteur}`
+      : series?.length ? `N° de série : ${series.map(clean).join(", ")}` : "";
     setPdfText(pdf, 9.5, TEXT, "bold");
     const lines = pdf.splitTextToSize(nom, cols[1].w - 6) as string[];
     const rowH = lines.length * 4.4 + (sous ? 4 : 0) + 4.4;

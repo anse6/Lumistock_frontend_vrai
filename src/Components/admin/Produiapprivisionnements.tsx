@@ -41,6 +41,10 @@ interface Product {
   remainingQuantity: number;
   price: number;
   purchasePrice: number;
+  /** Dernier prix payé au fournisseur (proposé au prochain approvisionnement). */
+  lastPurchasePrice: number;
+  /** Article suivi par numéro de série. */
+  suiviSerie: boolean;
   status: "in_stock" | "out_of_stock";
   seuil_alerte: number;
   fournisseur_id?: string;
@@ -192,7 +196,7 @@ const Produiapprivisionnements: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`Erreur HTTP produits: ${response.status}`);
+        throw new Error(`Erreur HTTP articles: ${response.status}`);
       }
 
       const productsData = await response.json();
@@ -207,6 +211,7 @@ const Produiapprivisionnements: React.FC = () => {
           quantite: number;
           prix: number;
           prix_achat?: number;
+          dernier_prix_achat?: number;
           etat: string;
           image?: string;
         }) => ({
@@ -218,6 +223,8 @@ const Produiapprivisionnements: React.FC = () => {
           remainingQuantity: produit.quantite,
           price: produit.prix,
           purchasePrice: produit.prix_achat || 0,
+          lastPurchasePrice: produit.dernier_prix_achat ?? produit.prix_achat ?? 0,
+          suiviSerie: Boolean((produit as any).suivi_serie),
           status:
             produit.etat === "en stock" || produit.etat === "En stock"
               ? "in_stock"
@@ -580,7 +587,7 @@ const Produiapprivisionnements: React.FC = () => {
         const ignores = response.data?.produits_ignores?.length || 0;
         showSuccessMessage(
           ignores
-            ? `${crees} produit(s) importé(s), ${ignores} déjà présent(s) ignoré(s).`
+            ? `${crees} article(s) importé(s), ${ignores} déjà présent(s) ignoré(s).`
             : t("admin.dashboard.success"),
           true,
         );
@@ -623,7 +630,7 @@ const Produiapprivisionnements: React.FC = () => {
     try {
       const token = localStorage.getItem("access_token");
       if (!token || !selectedItem) {
-        throw new Error("Non authentifié ou produit non sélectionné");
+        throw new Error("Non authentifié ou article non sélectionné");
       }
 
       const response = await fetch(
@@ -649,9 +656,9 @@ const Produiapprivisionnements: React.FC = () => {
       setSelectedItem("");
       showSuccessMessage(data.message || t("admin.dashboard.success"));
     } catch (err: any) {
-      console.error("Erreur lors de la suppression du produit:", err);
+      console.error("Erreur lors de la suppression de l'article:", err);
       showErrorMessage(
-        err.response?.data?.message || err.message || "Erreur lors de la suppression du produit"
+        err.response?.data?.message || err.message || "Erreur lors de la suppression de l'article"
       );
     }
   }, [selectedItem]);
@@ -687,7 +694,7 @@ const Produiapprivisionnements: React.FC = () => {
       try {
         const token = localStorage.getItem("access_token");
         if (!token || !selectedItem) {
-          throw new Error("Non authentifié ou produit non sélectionné");
+          throw new Error("Non authentifié ou article non sélectionné");
         }
 
         const body: Record<string, any> = {
@@ -948,12 +955,12 @@ const Produiapprivisionnements: React.FC = () => {
                       </p>
                       <div className="grid grid-cols-2 gap-2 mb-4">
                         {[
-                          "Nom du produit",
+                          "Nom de l'article",
                           "Description",
                           "Catégorie",
                           "Quantité initiale",
                           "Prix",
-                          "Prix d'achat",
+                          "Coût d'achat",
                         ].map((col, idx) => (
                           <div
                             key={idx}
@@ -1028,8 +1035,8 @@ const Produiapprivisionnements: React.FC = () => {
               <Tooltip
                 title={
                   showAvaries
-                    ? "Afficher tous les produits"
-                    : "Afficher uniquement les produits signalés en avarie"
+                    ? "Afficher tous les articles"
+                    : "Afficher uniquement les articles signalés en avarie"
                 }
               >
                 <button
@@ -1062,10 +1069,10 @@ const Produiapprivisionnements: React.FC = () => {
 
             {activeTab === "products" ? (
               <div className="flex items-center gap-2">
-                <Tooltip title="Voir les produits supprimés">
+                <Tooltip title="Voir les articles supprimés">
                   <button
                     onClick={() => setShowCorbeilleDrawer(true)}
-                    aria-label="Produits supprimés"
+                    aria-label="Articles supprimés"
                     className="flex items-center justify-center gap-2 px-3 py-2.5 bg-slate-50 text-slate-600 rounded-xl hover:bg-slate-100 hover:text-slate-800 transition-all duration-200 border border-slate-200 group font-medium text-sm"
                   >
                     <Trash2 className="h-5 w-5 group-hover:scale-110 transition-transform" />
@@ -1101,7 +1108,7 @@ const Produiapprivisionnements: React.FC = () => {
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <Tooltip title="Télécharger en PDF les produits des approvisionnements affichés (filtres compris)">
+                <Tooltip title="Télécharger en PDF les articles des approvisionnements affichés (filtres compris)">
                   <button
                     onClick={handleExportSuppliesPdf}
                     disabled={isExportingSuppliesPdf}

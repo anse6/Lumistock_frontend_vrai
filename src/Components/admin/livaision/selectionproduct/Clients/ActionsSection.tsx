@@ -44,6 +44,13 @@ export const ActionsSection: React.FC = () => {
       return;
     }
     // Un article à 0 serait silencieusement ignoré : on le signale.
+    const sansNumero = selectedProducts.filter((p) => p.suiviSerie && !(p.numerosSerie ?? []).length);
+    if (sansNumero.length > 0) {
+      message.error(
+        `Choisissez le numéro de série des unités vendues pour : ${sansNumero.map((p) => p.name).join(", ")}.`,
+      );
+      return;
+    }
     const sansQuantite = selectedProducts.filter(
       (p) => (Number(p.quantity) || 0) === 0 && !p.conditionconfig.some((c) => c.conditionedQuantity > 0),
     );
@@ -70,7 +77,14 @@ export const ActionsSection: React.FC = () => {
       }
 
       const produitsPayload = selectedProducts.flatMap((p) => {
-        const items = [];
+        const items: Record<string, unknown>[] = [];
+        if (p.suiviSerie) {
+          // Une ligne par article suivi : les unités vendues sont désignées.
+          const numeros = p.numerosSerie ?? [];
+          if (numeros.length > 0)
+            items.push({ produit_id: p.id, quantite: numeros.length, prix: p.price, numeros_serie: numeros });
+          return items;
+        }
         if (p.quantity > 0) {
           items.push({
             produit_id: p.id,

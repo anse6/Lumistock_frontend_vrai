@@ -83,7 +83,7 @@ const KpiTiles: React.FC<{ data: VueEnsemble }> = ({ data }) => {
       libelleEvolution: comparaison,
     },
     {
-      titre: "Produits référencés",
+      titre: "Articles référencés",
       valeur: kpis.produits.total,
       icone: <Boxes size={17} />,
       detail:

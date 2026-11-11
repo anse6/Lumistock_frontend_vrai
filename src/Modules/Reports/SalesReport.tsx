@@ -91,7 +91,7 @@ const SalesReport: React.FC<{ devise: string; estLivreur: boolean }> = ({ devise
   const descriptionFiltres = [
     clientId && `client ${options?.clients.find((c) => c.id === clientId)?.nom}`,
     vendeurId && `vendeur ${options?.vendeurs.find((c) => c.id === vendeurId)?.nom}`,
-    produitId && `produit ${options?.produits.find((c) => c.id === produitId)?.nom}`,
+    produitId && `article ${options?.produits.find((c) => c.id === produitId)?.nom}`,
     statut && `statut ${LIBELLES_STATUT[statut].toLowerCase()}`,
     recherche.trim() && `recherche « ${recherche.trim()} »`,
   ].filter(Boolean).join(", ");
@@ -141,11 +141,11 @@ const SalesReport: React.FC<{ devise: string; estLivreur: boolean }> = ({ devise
             total: ["TOTAL", "", fmt(t.articles), fmt(t.ht), fmt(t.tva), fmt(t.ttc), fmt(t.paye), fmt(t.reste)],
           },
           {
-            titre: "Produits les plus vendus",
+            titre: "Articles les plus vendus",
             note: "classés par montant",
             lignes: top,
             colonnes: [
-              { titre: "Produit", largeur: 46, valeur: (p: (typeof top)[number]) => p.nom, gras: true },
+              { titre: "Article", largeur: 46, valeur: (p: (typeof top)[number]) => p.nom, gras: true },
               { titre: "Quantité", largeur: 14, align: "right", valeur: (p: (typeof top)[number]) => fmt(p.quantite) },
               { titre: `Montant (${devise})`, largeur: 20, align: "right", valeur: (p: (typeof top)[number]) => fmt(p.montant) },
               { titre: "Marge", largeur: 20, align: "right", valeur: (p: (typeof top)[number]) => fmt(p.marge), couleur: () => VERT },
@@ -249,7 +249,7 @@ const SalesReport: React.FC<{ devise: string; estLivreur: boolean }> = ({ devise
       <table className="w-full text-xs">
         <thead>
           <tr className="text-left text-[10px] uppercase tracking-wider text-slate-500">
-            <th className="pb-1">Produit</th>
+            <th className="pb-1">Article</th>
             <th className="pb-1 text-right">Qté</th>
             <th className="pb-1 text-right">Prix</th>
             <th className="pb-1 text-right">Total</th>
@@ -336,7 +336,7 @@ const SalesReport: React.FC<{ devise: string; estLivreur: boolean }> = ({ devise
           allowClear
           showSearch
           optionFilterProp="label"
-          placeholder="Tous les produits"
+          placeholder="Tous les articles"
           value={produitId}
           onChange={setProduitId}
           options={options?.produits.map((c) => ({ value: c.id, label: c.nom }))}
@@ -445,7 +445,7 @@ const SalesReport: React.FC<{ devise: string; estLivreur: boolean }> = ({ devise
               <Empty description="Aucune vente sur la période" />
             )}
           </Section>
-          <Section titre="Produits les plus vendus">
+          <Section titre="Articles les plus vendus">
             {donnees?.top_produits.length ? (
               <ul className="m-0 list-none space-y-2 p-0">
                 {donnees.top_produits.slice(0, 6).map((p, i) => {
@@ -468,12 +468,12 @@ const SalesReport: React.FC<{ devise: string; estLivreur: boolean }> = ({ devise
                 })}
               </ul>
             ) : (
-              <Empty description="Aucun produit vendu" />
+              <Empty description="Aucun article vendu" />
             )}
           </Section>
         </div>
 
-        <Section titre="Détail des ventes" note={`${fmt(ventes.length)} vente(s) · cliquez sur une ligne pour voir les produits`}>
+        <Section titre="Détail des ventes" note={`${fmt(ventes.length)} vente(s) · cliquez sur une ligne pour voir les articles`}>
           <Table
             rowKey="id"
             size="middle"

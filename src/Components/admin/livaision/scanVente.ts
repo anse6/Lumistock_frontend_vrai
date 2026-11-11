@@ -39,10 +39,26 @@ export const ajouterAuPanier = (produit: ProduitScanne): Resultat => {
       image: produit.image_url || null,
       size: produit.unite,
       quantite_magasin_initiale: stock,
-      conditionnements: produit.conditionnements || [],
+      conditionnements: produit.suivi_serie ? [] : produit.conditionnements || [],
+      suiviSerie: Boolean(produit.suivi_serie),
+      numerosSerie: [],
     });
     ligne = useProductStore.getState().selectedProducts.find((p) => p.id === produit._id);
     if (!ligne) return { ok: false, texte: "Impossible d'ajouter l'article." };
+  }
+
+  // Article suivi par numéro de série : le scan désigne l'unité vendue.
+  if (produit.suivi_serie) {
+    const numero = produit.numero_serie_scanne;
+    if (!numero) {
+      return { ok: true, texte: `${produit.nom} ajouté : scannez ou choisissez le numéro de série de l'unité vendue.` };
+    }
+    const deja = ligne.numerosSerie ?? [];
+    if (deja.some((n) => n.toUpperCase() === numero.toUpperCase())) {
+      return { ok: false, texte: `${produit.nom} : le numéro ${numero} est déjà dans la vente.` };
+    }
+    store.setNumerosSerie(produit._id, [...deja, numero]);
+    return { ok: true, texte: `${produit.nom} — n° ${numero} (× ${deja.length + 1})` };
   }
 
   const stockLigne = Number(ligne.quantite_magasin_initiale) || stock;

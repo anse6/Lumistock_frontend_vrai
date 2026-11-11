@@ -52,13 +52,10 @@ class AuthManager {
     magasin_id?: string;
     id?: string;
   }) {
-    console.log(' [AuthManager] Setting credentials for user:', data.email);
     localStorage.setItem('access_token', data.access_token);
-    console.log(' [AuthManager] access_token saved');
 
     if (data.refresh_token) {
       localStorage.setItem('refresh_token', data.refresh_token);
-      console.log(' [AuthManager] refresh_token saved');
     }
 
     localStorage.setItem('email', data.email);
@@ -77,7 +74,6 @@ class AuthManager {
       localStorage.setItem('user_id', data.id);
     }
 
-    console.log(' [AuthManager] Credentials saved');
     this.notifyListeners();
   }
 

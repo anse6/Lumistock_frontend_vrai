@@ -27,7 +27,7 @@ export const StoreActionsButton: React.FC<{ store: Store; actions: StoreActions 
   <Dropdown
     trigger={['click']}
     placement="bottomRight"
-    dropdownRender={() => (
+    popupRender={() => (
       <ActionMenu
         store={store}
         onClose={() => {}}

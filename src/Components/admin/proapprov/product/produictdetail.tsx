@@ -39,6 +39,10 @@ import PageTitle from "../../../PageTitle";
 import defaultimage from "./../../../../Modules/Delivery/images/riz.png";
 import axios from "axios";
 import ProductStatusTag from "../../Produits/ProductStatusTag";
+import useCompteConnecte from "../../../../hooks/useCompteConnecte";
+import ValorisationArticle from "../../../../Modules/Valorisation/ValorisationArticle";
+import ListeNumeros from "../../../../Modules/NumerosSerie/ListeNumeros";
+import { formatMontant, useValorisation } from "../../../../Modules/Valorisation/api";
 import AvatarWithPopover from "../../../super-admin/users.tsx/components/AvatarWithPopover";
 
 const { Title, Text, Paragraph } = Typography;
@@ -109,6 +113,8 @@ const ProductDetailAdmin: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { notification } = App.useApp();
+  const { estAdmin } = useCompteConnecte();
+  const { data: valorisation } = useValorisation(id, estAdmin);
 
   const [produit, setProduit] = useState<Produit | null>(null);
   const [magasin, setMagasin] = useState<Magasin | null>(null);
@@ -399,21 +405,27 @@ const ProductDetailAdmin: React.FC = () => {
                     value={produit.prix}
                     valueStyle={{ color: APP_COLOR, fontWeight: "bold" }}
                   />
-                  {produit.prix_achat !== undefined && (
+                  {estAdmin && (
                     <>
                       <Divider style={{ margin: "12px 0" }} />
                       <Statistic
-                        title="Prix d'achat"
-                        value={produit.prix_achat}
+                        title={`Coût d'achat${valorisation ? ` (${valorisation.methode})` : ""}`}
+                        value={formatMontant(valorisation?.cout_achat ?? produit.prix_achat ?? 0)}
                         valueStyle={{ fontSize: "1.2rem", color: "#6b7280" }}
+                      />
+                      <Divider style={{ margin: "12px 0" }} />
+                      <Statistic
+                        title="Valeur du stock (au coût)"
+                        value={formatMontant(valorisation?.valeur_stock ?? (produit.prix_achat ?? 0) * produit.quantite)}
+                        valueStyle={{ fontSize: "1.2rem", fontWeight: "bold" }}
                       />
                     </>
                   )}
                   <Divider style={{ margin: "12px 0" }} />
                   <Statistic
-                    title="Valeur du stock"
+                    title="Valeur du stock (à la vente)"
                     value={produit.prix * produit.quantite}
-                    valueStyle={{ fontSize: "1.2rem", fontWeight: "bold" }}
+                    valueStyle={{ fontSize: "1.2rem", fontWeight: estAdmin ? undefined : "bold" }}
                   />
                 </div>
               </Card>
@@ -430,7 +442,7 @@ const ProductDetailAdmin: React.FC = () => {
                       key: "1",
                       label: (
                         <span>
-                          <InfoCircleOutlined /> Détails de l'Article
+                          <InfoCircleOutlined /> Détails de l'article
                         </span>
                       ),
                       children: (
@@ -547,6 +559,32 @@ const ProductDetailAdmin: React.FC = () => {
                         </div>
                       ),
                     },
+                    ...((produit as { suivi_serie?: boolean }).suivi_serie && id
+                      ? [
+                          {
+                            key: "4",
+                            label: (
+                              <span>
+                                <BarcodeOutlined /> Numéros de série
+                              </span>
+                            ),
+                            children: <ListeNumeros articleId={id} />,
+                          },
+                        ]
+                      : []),
+                    ...(estAdmin && id
+                      ? [
+                          {
+                            key: "3",
+                            label: (
+                              <span>
+                                <ContainerOutlined /> Valorisation
+                              </span>
+                            ),
+                            children: <ValorisationArticle articleId={id} />,
+                          },
+                        ]
+                      : []),
                   ]}
                 />
               </Card>

@@ -8,7 +8,7 @@ test('test', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Mot de passe' }).fill('123456');
   await page.getByRole('button', { name: 'Connectez-vous' }).click();
   await page.getByRole('button', { name: 'Tableau de bord' }).click();
-  await page.getByRole('button', { name: 'Produits' }).click();
+  await page.getByRole('button', { name: 'Articles' }).click();
   await page.getByRole('button', { name: 'Filtre' }).click();
   await page.locator('div').filter({ hasText: /^StatutTous les statutsEn stockEn rupture$/ }).getByRole('combobox').selectOption('stock');
   await page.locator('div').filter({ hasText: /^StatutTous les statutsEn stockEn rupture$/ }).getByRole('combobox').selectOption('rupture');

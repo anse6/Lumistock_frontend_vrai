@@ -192,7 +192,7 @@ const SoldeAvarieModal: React.FC<SoldeAvarieModalProps> = ({
                 <Form.Item
                   name="prix_solde"
                   label={<span className="font-semibold text-gray-700 text-sm">Prix soldé (unité)</span>}
-                  tooltip="S'applique à toutes les unités du produit soldé, y compris celles déjà en solde."
+                  tooltip="S'applique à toutes les unités de l'article soldé, y compris celles déjà en solde."
                   rules={[
                     { required: true, message: "Requis" },
                     { type: "number", min: 0, message: "Le prix ne peut pas être négatif" },

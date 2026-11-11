@@ -14,10 +14,12 @@ import {
   App,
   Upload,
   Spin,
-  Tag,
   Tooltip,
   DatePicker,
+  Switch,
 } from "antd";
+import SaisieNumeros from "../../../Modules/NumerosSerie/SaisieNumeros";
+import { useSuiviSerieActif } from "../../../Modules/NumerosSerie/api";
 import {
   PlusOutlined,
   DeleteOutlined,
@@ -34,6 +36,8 @@ import axios from "axios";
 import PageTitle from "../../PageTitle";
 import dayjs from "dayjs";
 import InlineSupplierForm from "../proapprov/product/parts/InlineSupplierForm";
+import { useValorisation } from "../../../Modules/Valorisation/api";
+import ConditionnementsEditor, { type ConditionnementSaisi } from "./ConditionnementsEditor";
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
@@ -46,12 +50,7 @@ interface Category {
   nom: string;
 }
 
-interface Conditionnement {
-  _id?: string;
-  nom: string;
-  facteur: number;
-  prix_conditionnement?: number;
-}
+type Conditionnement = ConditionnementSaisi;
 
 interface ApiImage {
   _id: string;
@@ -78,6 +77,19 @@ const EditProduct: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+  // Coût d'achat calculé par la valorisation : modifiable seulement tant que
+  // l'article n'a reçu qu'un seul lot (correction d'une erreur de saisie).
+  const { data: valorisation } = useValorisation(id);
+  const coutVerrouille = valorisation ? !valorisation.cout_modifiable : false;
+  // Suivi par numéro de série : l'activer demande les numéros du stock actuel.
+  const optionSerie = useSuiviSerieActif();
+  const [suiviInitial, setSuiviInitial] = useState(false);
+  const [stockInitial, setStockInitial] = useState(0);
+  const suiviSerie = Form.useWatch("suivi_serie", form);
+  const prixSaisi = Form.useWatch("price", form);
+  const coutSaisi = Form.useWatch("purchasePrice", form);
+  const uniteSaisie = Form.useWatch("unit", form);
+  const activationSerie = Boolean(suiviSerie) && !suiviInitial;
 
   // States
   const [categories, setCategories] = useState<Category[]>([]);
@@ -106,8 +118,6 @@ const EditProduct: React.FC = () => {
   const [showUnitInline, setShowUnitInline] = useState(false);
   const [newUnitName, setNewUnitName] = useState("");
 
-  const [showPackagingInline, setShowPackagingInline] = useState(false);
-  const [packagingForm] = Form.useForm();
 
   const getImageUrl = (imagePath: string): string => {
     if (!imagePath) return "";
@@ -151,6 +161,7 @@ const EditProduct: React.FC = () => {
         quantity: prod.quantite,
         price: prod.prix,
         purchasePrice: prod.prix_achat,
+        suivi_serie: Boolean(prod.suivi_serie),
         code_barre: prod.code_barre,
         date_peremption: prod.date_peremption ? dayjs(prod.date_peremption) : undefined,
         seuil_alerte: prod.seuil_alerte,
@@ -158,6 +169,8 @@ const EditProduct: React.FC = () => {
       });
 
       setConditionnements(prod.conditionnements || []);
+      setSuiviInitial(Boolean(prod.suivi_serie));
+      setStockInitial(Number(prod.quantite) || 0);
       if (prod.image) {
         setSelectedImageUrl(getImageUrl(prod.image));
       }
@@ -251,21 +264,6 @@ const EditProduct: React.FC = () => {
     }
   };
 
-  const handleAddPackaging = (values: any) => {
-    const newCond: Conditionnement = {
-      nom: values.nom,
-      facteur: values.facteur,
-      prix_conditionnement: values.prix_conditionnement,
-    };
-    setConditionnements([...conditionnements, newCond]);
-    packagingForm.resetFields();
-    setShowPackagingInline(false);
-    msg.success("Succès");
-  };
-
-  const removePackaging = (index: number) => {
-    setConditionnements(conditionnements.filter((_, i) => i !== index));
-  };
 
   // Un scan fait n'importe où sur la page remplit le champ code-barre.
   useScanCodeBarre((scan) => {
@@ -299,6 +297,12 @@ const EditProduct: React.FC = () => {
         formData.append("prix_achat", values.purchasePrice.toString());
       }
       formData.append("quantite", values.quantity.toString());
+      if (optionSerie || suiviInitial) {
+        formData.append("suivi_serie", values.suivi_serie ? "true" : "false");
+        if (values.suivi_serie && !suiviInitial) {
+          formData.append("numeros_serie", JSON.stringify(values.numeros_serie || []));
+        }
+      }
       formData.append("categorie_id", values.category);
       if (values.fournisseur) {
         formData.append("fournisseur_id", values.fournisseur);
@@ -327,6 +331,8 @@ const EditProduct: React.FC = () => {
         nom: c.nom,
         facteur: c.facteur,
         prix_conditionnement: c.prix_conditionnement,
+        // Palette = 84 packs : le serveur recalcule le nombre d'unités.
+        ...(c.contenu_nom ? { contenu_nom: c.contenu_nom, contenu_nombre: c.contenu_nombre } : {}),
       }));
       formData.append(
         "conditionnements",
@@ -364,7 +370,7 @@ const EditProduct: React.FC = () => {
   return (
     <ConfigProvider theme={{ token: { colorPrimary: APP_COLOR, borderRadius: 8 } }}>
       <>
-        <PageTitle>Modifier l'Article</PageTitle>
+        <PageTitle>Modifier l'article</PageTitle>
 
       <div className="p-4 sm:p-6 bg-white min-h-screen">
         <div className="w-full">
@@ -379,7 +385,7 @@ const EditProduct: React.FC = () => {
             </Link>
             <span style={{ color: APP_COLOR }} className="font-bold px-1 opacity-50">{">"}</span>
             <span className="!text-white px-3 py-1.5 rounded-lg shadow-sm" style={{ backgroundColor: APP_COLOR }}>
-              Modifier l'Article
+              Modifier l'article
             </span>
           </div>
 
@@ -387,7 +393,7 @@ const EditProduct: React.FC = () => {
             <div>
               <Title level={2} className="!mb-1 flex items-center gap-3">
                 <ShoppingOutlined style={{ color: APP_COLOR }} />
-                Modifier l'Article
+                Modifier l'article
               </Title>
               <Text type="secondary">Modifier les informations de l'article</Text>
             </div>
@@ -400,12 +406,18 @@ const EditProduct: React.FC = () => {
             form={form}
             layout="vertical"
             onFinish={onFinish}
+            onFinishFailed={({ errorFields }) => {
+              // Sinon rien ne se passe en apparence : on dit ce qui bloque.
+              const premiere = errorFields[0]?.errors[0];
+              msg.error(premiere ? `Modification non enregistrée : ${premiere}` : "Vérifiez les champs signalés en rouge.");
+            }}
+            scrollToFirstError={{ behavior: "smooth", block: "center" }}
             size="large"
             requiredMark="optional"
           >
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-6">
-                <Card title="Informations de l'Article" className="!rounded-xl shadow-sm border-gray-100">
+                <Card title="Informations de l'article" className="!rounded-xl shadow-sm border-gray-100">
                   <Form.Item
                     name="productName"
                     label="Nom de l'article"
@@ -458,7 +470,7 @@ const EditProduct: React.FC = () => {
                           placeholder="Sélectionner une catégorie"
                           showSearch
                           optionFilterProp="children"
-                          dropdownRender={(menu) => (
+                          popupRender={(menu) => (
                             <>
                               {menu}
                               <Divider style={{ margin: "8px 0" }} />
@@ -501,7 +513,7 @@ const EditProduct: React.FC = () => {
                           placeholder="Sélectionner un fournisseur"
                           showSearch
                           optionFilterProp="children"
-                          dropdownRender={(menu) => (
+                          popupRender={(menu) => (
                             <>
                               {menu}
                               <Divider style={{ margin: "8px 0" }} />
@@ -567,7 +579,7 @@ const EditProduct: React.FC = () => {
                           placeholder="Sélectionner"
                           showSearch
                           optionFilterProp="children"
-                          dropdownRender={(menu) => (
+                          popupRender={(menu) => (
                             <>
                               {menu}
                               <Divider style={{ margin: "8px 0" }} />
@@ -604,15 +616,61 @@ const EditProduct: React.FC = () => {
                       )}
                     </div>
 
-                    <Form.Item name="quantity" label="Quantité (Stock)" rules={[{ required: true }]}>
-                      <InputNumber className="w-full" min={0} placeholder="0" style={{ width: '100%' }} />
+                    <Form.Item
+                      name="quantity"
+                      label="Quantité (Stock)"
+                      rules={[{ required: true }]}
+                      extra={suiviSerie ? "Article suivi par numéro de série : le stock change par un approvisionnement ou une avarie." : undefined}
+                    >
+                      <InputNumber className="w-full" min={0} placeholder="0" style={{ width: '100%' }} disabled={Boolean(suiviSerie)} />
                     </Form.Item>
 
-                    <Form.Item name="purchasePrice" label="Prix d'achat unitaire" className="md:col-span-2">
+                    {(optionSerie || suiviInitial) && (
+                      <div className="md:col-span-2 rounded-lg border border-purple-100 bg-purple-50/50 p-3">
+                        <Form.Item
+                          name="suivi_serie"
+                          valuePropName="checked"
+                          label="Suivi par numéro de série"
+                          tooltip="Chaque unité a un numéro unique, enregistré à l'arrivée et désigné à chaque vente. Arrêter le suivi conserve l'historique des numéros."
+                          className="!mb-2"
+                        >
+                          <Switch disabled={!optionSerie && !suiviInitial} />
+                        </Form.Item>
+                        {activationSerie && stockInitial > 0 && (
+                          <Form.Item
+                            name="numeros_serie"
+                            label={`Numéros de série des ${stockInitial} unité(s) en stock`}
+                            className="!mb-0"
+                            rules={[{
+                              validator: (_, v: string[] = []) => v.length === stockInitial
+                                ? Promise.resolve()
+                                : Promise.reject(new Error(`Saisissez ${stockInitial} numéro(s) : un par unité en stock.`)),
+                            }]}
+                          >
+                            <SaisieNumeros attendu={stockInitial} />
+                          </Form.Item>
+                        )}
+                        {suiviInitial && !suiviSerie && (
+                          <p className="text-xs text-amber-700">
+                            Le suivi sera arrêté : les unités en stock ne seront plus désignées à la vente (leur historique est conservé).
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    <Form.Item
+                      name="purchasePrice"
+                      label={valorisation ? `Coût d'achat unitaire (${valorisation.methode})` : "Coût d'achat unitaire"}
+                      className="md:col-span-2"
+                      extra={coutVerrouille
+                        ? "Calculé automatiquement à partir des approvisionnements, selon la méthode de valorisation du magasin."
+                        : undefined}
+                    >
                       <InputNumber
                         className="w-full"
                         style={{ width: '100%' }}
                         min={0}
+                        disabled={coutVerrouille}
                         formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, " ")}
                         parser={(value) => value!.replace(/\s?/g, "") as any}
                         placeholder="0"
@@ -632,78 +690,20 @@ const EditProduct: React.FC = () => {
                   </div>
                 </Card>
 
-                <Card
-                  title={
-                    <div className="flex justify-between items-center">
-                      <span>Conditionnements</span>
-                      <Button
-                        type="dashed"
-                        icon={<PlusOutlined />}
-                        onClick={() => setShowPackagingInline(!showPackagingInline)}
-                        style={{ color: APP_COLOR, borderColor: APP_COLOR }}
-                      >
-                        Ajouter
-                      </Button>
-                    </div>
-                  }
-                  className="!rounded-xl shadow-sm border-gray-100"
-                >
-                  {showPackagingInline && (
-                    <div className="p-4 bg-purple-50 border border-purple-100 rounded-xl mb-4 animate-in fade-in zoom-in-95 duration-200">
-                      <Form form={packagingForm} layout="vertical" onFinish={handleAddPackaging}>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <Form.Item name="nom" label="Nom (ex: Carton)" rules={[{ required: true }]} className="!mb-0">
-                            <Input placeholder="Carton, Palette..." />
-                          </Form.Item>
-                          <Form.Item name="facteur" label="Quantité (Unités)" rules={[{ required: true }]} className="!mb-0">
-                            <InputNumber className="w-full" min={1} />
-                          </Form.Item>
-                          <Form.Item name="prix_conditionnement" label="Prix Total" className="!mb-0">
-                            <InputNumber className="w-full" min={0} />
-                          </Form.Item>
-                        </div>
-                        <div className="flex justify-end gap-2 mt-4">
-                          <Button className="!bg-gray-200 !text-gray-700 hover:!bg-gray-300 !border-none" onClick={() => setShowPackagingInline(false)}>Annuler</Button>
-                          <Button type="primary" htmlType="submit" style={{ backgroundColor: APP_COLOR }}>
-                            Valider
-                          </Button>
-                        </div>
-                      </Form>
-                    </div>
-                  )}
-
-                  {conditionnements.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-6 text-gray-400">
-                      <ShoppingOutlined style={{ fontSize: 40, opacity: 0.2 }} className="mb-2" />
-                      <Text type="secondary">Aucun conditionnement configuré</Text>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {conditionnements.map((cond, idx) => (
-                        <Card key={idx} size="small" className="bg-gray-50 border-gray-200 shadow-sm">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <Text strong className="text-lg">{cond.nom}</Text>
-                              <Paragraph className="mb-0 text-gray-500">
-                                Facteur: <Tag color="purple">{cond.facteur}</Tag>
-                              </Paragraph>
-                              {cond.prix_conditionnement && (
-                                <Text type="success" strong>
-                                  {cond.prix_conditionnement.toLocaleString()}
-                                </Text>
-                              )}
-                            </div>
-                            <Button type="text" danger icon={<DeleteOutlined />} onClick={() => removePackaging(idx)} />
-                          </div>
-                        </Card>
-                      ))}
-                    </div>
-                  )}
-                </Card>
+                {!suiviSerie && (
+                  <ConditionnementsEditor
+                    value={conditionnements}
+                    onChange={setConditionnements}
+                    prixUnitaire={Number(prixSaisi) || 0}
+                    coutUnitaire={Number(coutSaisi) || 0}
+                    unite={typeof uniteSaisie === "string" ? uniteSaisie : undefined}
+                    onError={(texte) => msg.error(texte)}
+                  />
+                )}
               </div>
 
               <div className="space-y-6">
-                <Card title="Image de l'Article" className="!rounded-xl shadow-sm border-gray-100">
+                <Card title="Image de l'article" className="!rounded-xl shadow-sm border-gray-100">
                   <div className="flex flex-col items-center">
                     <div className="w-full aspect-square bg-gray-50 rounded-xl border-2 border-dashed flex items-center justify-center overflow-hidden relative group transition-colors border-gray-300">
                       {selectedImageUrl ? (

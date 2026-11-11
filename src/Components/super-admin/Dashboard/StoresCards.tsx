@@ -30,7 +30,7 @@ export const TopStoresCard: React.FC<{ data: VueEnsemble }> = ({ data }) => {
   return (
     <Carte
       titre="Meilleurs magasins"
-      sousTitre={`Chiffre d'affaires HT · ${LIBELLES_PERIODE[data.periode.jours]}`}
+      sousTitre={`Ventes HT · ${LIBELLES_PERIODE[data.periode.jours]}`}
       icone={<Trophy size={18} />}
       action={
         data.devises.length > 1 ? (
@@ -176,11 +176,11 @@ export const StoresHealthCard: React.FC<{ data: VueEnsemble }> = ({ data }) => {
                     <dd className="font-semibold text-slate-900">{formatNombre(m.ventes)}</dd>
                   </div>
                   <div>
-                    <dt className="text-slate-500">Chiffre d'affaires HT</dt>
+                    <dt className="text-slate-500">Ventes HT</dt>
                     <dd className="font-semibold text-slate-900">{formatMontant(m.chiffre_affaire, m.devise)}</dd>
                   </div>
                   <div>
-                    <dt className="text-slate-500">Produits</dt>
+                    <dt className="text-slate-500">Articles</dt>
                     <dd className="text-slate-900">
                       {formatNombre(m.produits)}
                       {m.produits_rupture > 0 && <span className="ml-1 text-amber-700">· {m.produits_rupture} en rupture</span>}
@@ -208,7 +208,7 @@ export const StoresHealthCard: React.FC<{ data: VueEnsemble }> = ({ data }) => {
                   <th className="px-3 py-2 font-medium">Statut</th>
                   <th className="px-3 py-2 text-right font-medium">Ventes</th>
                   <th className="px-3 py-2 text-right font-medium">CA HT</th>
-                  <th className="px-3 py-2 text-right font-medium">Produits</th>
+                  <th className="px-3 py-2 text-right font-medium">Articles</th>
                   <th className="px-3 py-2 font-medium">Licence</th>
                   <th className="py-2 pl-3 font-medium">Dernière activité</th>
                 </tr>

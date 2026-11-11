@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('test export produits', async ({ page }) => {
+test('test export articles', async ({ page }) => {
   await page.goto('http://localhost:5173/');
 
   await page.getByRole('textbox', { name: 'Email' }).fill('ansevernel@gmail.com');
@@ -9,7 +9,7 @@ test('test export produits', async ({ page }) => {
 
   await page.getByRole('button', { name: 'Tableau de bord' }).click();
   await page.getByRole('button', { name: 'Livraison' }).click();
-  await page.getByRole('button', { name: 'Produits' }).click();
+  await page.getByRole('button', { name: 'Articles' }).click();
 
   // Attente du téléchargement
   const downloadPromise = page.waitForEvent('download');

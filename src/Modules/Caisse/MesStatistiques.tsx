@@ -120,7 +120,7 @@ export default function MesStatistiques() {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2">
-              <Carte titre="Mes meilleurs produits" sousTitre={`Par chiffre d'affaires, ${choix.titre}`} icone={<Trophy size={18} />}>
+              <Carte titre="Mes meilleurs articles" sousTitre={`Par chiffre d'affaires, ${choix.titre}`} icone={<Trophy size={18} />}>
                 {data.top_produits.length === 0 ? <MessageVide texte="Aucune vente sur la période." /> : (
                   <ol className="space-y-4">
                     {data.top_produits.map((p, i) => (

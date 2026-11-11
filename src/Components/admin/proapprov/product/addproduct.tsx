@@ -14,10 +14,12 @@ import {
   App,
   Upload,
   Spin,
-  Tag,
   Tooltip,
   DatePicker,
+  Switch,
 } from "antd";
+import SaisieNumeros from "../../../../Modules/NumerosSerie/SaisieNumeros";
+import { useSuiviSerieActif } from "../../../../Modules/NumerosSerie/api";
 import { useTranslation } from "react-i18next";
 import {
   PlusOutlined,
@@ -34,6 +36,7 @@ import { getUrlServer } from "../../../../../configServer";
 import axios from "axios";
 import PageTitle from "../../../PageTitle";
 import InlineSupplierForm from "./parts/InlineSupplierForm";
+import ConditionnementsEditor, { type ConditionnementSaisi } from "../../Produits/ConditionnementsEditor";
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
@@ -46,11 +49,7 @@ interface Category {
   nom: string;
 }
 
-interface Conditionnement {
-  nom: string;
-  facteur: number;
-  prix_conditionnement?: number;
-}
+type Conditionnement = ConditionnementSaisi;
 
 interface ApiImage {
   _id: string;
@@ -76,6 +75,17 @@ const AddProduct: React.FC = () => {
   const { t } = useTranslation();
   const { message: msg } = App.useApp();
   const [form] = Form.useForm();
+  // Numéros de série : seulement si l'option est activée dans les paramètres.
+  const optionSerie = useSuiviSerieActif();
+  const suiviSerie = Form.useWatch("suivi_serie", form);
+  const prixSaisi = Form.useWatch("price", form);
+  const coutSaisi = Form.useWatch("purchasePrice", form);
+  const uniteSaisie = Form.useWatch("unit", form);
+  const numerosSaisis = Form.useWatch("numeros_serie", form) as string[] | undefined;
+  // Article suivi : la quantité initiale = le nombre de numéros saisis.
+  useEffect(() => {
+    if (suiviSerie) form.setFieldValue("quantity", (numerosSaisis || []).length);
+  }, [suiviSerie, numerosSaisis, form]);
   const navigate = useNavigate();
 
   // States
@@ -104,8 +114,6 @@ const AddProduct: React.FC = () => {
   const [showUnitInline, setShowUnitInline] = useState(false);
   const [newUnitName, setNewUnitName] = useState("");
 
-  const [showPackagingInline, setShowPackagingInline] = useState(false);
-  const [packagingForm] = Form.useForm();
 
   useEffect(() => {
     fetchCategories();
@@ -280,21 +288,6 @@ const AddProduct: React.FC = () => {
     }
   };
 
-  const handleAddPackaging = (values: any) => {
-    const newCond: Conditionnement = {
-      nom: values.nom,
-      facteur: values.facteur,
-      prix_conditionnement: values.prix_conditionnement,
-    };
-    setConditionnements([...conditionnements, newCond]);
-    packagingForm.resetFields();
-    setShowPackagingInline(false);
-    msg.success(t("admin.dashboard.success"));
-  };
-
-  const removePackaging = (index: number) => {
-    setConditionnements(conditionnements.filter((_, i) => i !== index));
-  };
 
   // Un scan fait n'importe où sur la page remplit le champ code-barre.
   useScanCodeBarre((scan) => {
@@ -348,8 +341,12 @@ const AddProduct: React.FC = () => {
       if (values.code_barre) {
         formData.append("code_barre", values.code_barre);
       }
-      if (conditionnements.length > 0) {
+      if (conditionnements.length > 0 && !values.suivi_serie) {
         formData.append("conditionnements", JSON.stringify(conditionnements));
+      }
+      if (values.suivi_serie) {
+        formData.append("suivi_serie", "true");
+        formData.append("numeros_serie", JSON.stringify(values.numeros_serie || []));
       }
 
       await axios.post(`${getUrlServer()}/produits`, formData, {
@@ -411,13 +408,19 @@ const AddProduct: React.FC = () => {
             form={form}
             layout="vertical"
             onFinish={onFinish}
+            onFinishFailed={({ errorFields }) => {
+              // Sinon rien ne se passe en apparence : on dit ce qui bloque.
+              const premiere = errorFields[0]?.errors[0];
+              msg.error(premiere ? `Article non enregistré : ${premiere}` : "Vérifiez les champs signalés en rouge.");
+            }}
+            scrollToFirstError={{ behavior: "smooth", block: "center" }}
             size="large"
             requiredMark="optional"
             initialValues={{ unit: "pièce", quantity: 0 }}
           >
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-6">
-                <Card title="Informations de l'Article" className="!rounded-xl shadow-sm border-gray-100">
+                <Card title="Informations de l'article" className="!rounded-xl shadow-sm border-gray-100">
                   <Form.Item
                     name="productName"
                     label="Nom de l'article"
@@ -470,7 +473,7 @@ const AddProduct: React.FC = () => {
                           placeholder="Sélectionner une catégorie"
                           showSearch
                           optionFilterProp="children"
-                          dropdownRender={(menu) => (
+                          popupRender={(menu) => (
                             <>
                               {menu}
                               <Divider style={{ margin: "8px 0" }} />
@@ -513,7 +516,7 @@ const AddProduct: React.FC = () => {
                           placeholder="Sélectionner un fournisseur"
                           showSearch
                           optionFilterProp="children"
-                          dropdownRender={(menu) => (
+                          popupRender={(menu) => (
                             <>
                               {menu}
                               <Divider style={{ margin: "8px 0" }} />
@@ -576,7 +579,7 @@ const AddProduct: React.FC = () => {
                           placeholder="Sélectionner"
                           showSearch
                           optionFilterProp="children"
-                          dropdownRender={(menu) => (
+                          popupRender={(menu) => (
                             <>
                               {menu}
                               <Divider style={{ margin: "8px 0" }} />
@@ -613,11 +616,39 @@ const AddProduct: React.FC = () => {
                       )}
                     </div>
 
-                    <Form.Item name="quantity" label="Quantité initiale" rules={[{ required: true }]}>
-                      <InputNumber className="w-full" min={0} placeholder="0" style={{ width: '100%' }} />
+                    <Form.Item
+                      name="quantity"
+                      label="Quantité initiale"
+                      rules={[{ required: true }]}
+                      extra={suiviSerie ? "Calculée : un numéro de série saisi = une unité." : undefined}
+                    >
+                      <InputNumber className="w-full" min={0} placeholder="0" style={{ width: '100%' }} disabled={Boolean(suiviSerie)} />
                     </Form.Item>
 
-                    <Form.Item name="purchasePrice" label="Prix d'achat unitaire" className="md:col-span-2">
+                    {optionSerie && (
+                      <div className="md:col-span-2 rounded-lg border border-purple-100 bg-purple-50/50 p-3">
+                        <Form.Item
+                          name="suivi_serie"
+                          valuePropName="checked"
+                          label="Suivi par numéro de série"
+                          tooltip="Chaque unité a un numéro unique (machine, téléphone…) : il est enregistré à l'arrivée et désigné à chaque vente. L'article se vend alors à l'unité (pas de conditionnement)."
+                          className="!mb-2"
+                        >
+                          <Switch />
+                        </Form.Item>
+                        {suiviSerie && (
+                          <Form.Item
+                            name="numeros_serie"
+                            label="Numéros de série des unités en stock"
+                            className="!mb-0"
+                          >
+                            <SaisieNumeros />
+                          </Form.Item>
+                        )}
+                      </div>
+                    )}
+
+                    <Form.Item name="purchasePrice" label="Coût d'achat unitaire" className="md:col-span-2" tooltip="Prix payé au fournisseur pour la quantité initiale. Il devient le premier lot de la valorisation (CMUP, FIFO ou LIFO).">
                       <InputNumber
                         className="w-full"
                         style={{ width: '100%' }}
@@ -641,78 +672,20 @@ const AddProduct: React.FC = () => {
                   </div>
                 </Card>
 
-                <Card
-                  title={
-                    <div className="flex justify-between items-center">
-                      <span>Conditionnements</span>
-                      <Button
-                        type="dashed"
-                        icon={<PlusOutlined />}
-                        onClick={() => setShowPackagingInline(!showPackagingInline)}
-                        style={{ color: APP_COLOR, borderColor: APP_COLOR }}
-                      >
-                        Ajouter
-                      </Button>
-                    </div>
-                  }
-                  className="!rounded-xl shadow-sm border-gray-100"
-                >
-                  {showPackagingInline && (
-                    <div className="p-4 bg-purple-50 border border-purple-100 rounded-xl mb-4 animate-in fade-in zoom-in-95 duration-200">
-                      <Form form={packagingForm} layout="vertical" onFinish={handleAddPackaging}>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <Form.Item name="nom" label="Nom (ex: Carton)" rules={[{ required: true }]} className="!mb-0">
-                            <Input placeholder="Carton, Palette..." />
-                          </Form.Item>
-                          <Form.Item name="facteur" label="Quantité (Unités)" rules={[{ required: true }]} className="!mb-0">
-                            <InputNumber className="w-full" min={1} />
-                          </Form.Item>
-                          <Form.Item name="prix_conditionnement" label="Prix Total" className="!mb-0">
-                            <InputNumber className="w-full" min={0} addonAfter="CFA" />
-                          </Form.Item>
-                        </div>
-                        <div className="flex justify-end gap-2 mt-4">
-                          <Button className="!bg-gray-200 !text-gray-700 hover:!bg-gray-300 !border-none" onClick={() => setShowPackagingInline(false)}>Annuler</Button>
-                          <Button type="primary" htmlType="submit" style={{ backgroundColor: APP_COLOR }}>
-                            Valider
-                          </Button>
-                        </div>
-                      </Form>
-                    </div>
-                  )}
-
-                  {conditionnements.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-6 text-gray-400">
-                      <ShoppingOutlined style={{ fontSize: 40, opacity: 0.2 }} className="mb-2" />
-                      <Text type="secondary">Aucun conditionnement configuré</Text>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {conditionnements.map((cond, idx) => (
-                        <Card key={idx} size="small" className="bg-gray-50 border-gray-200 shadow-sm">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <Text strong className="text-lg">{cond.nom}</Text>
-                              <Paragraph className="mb-0 text-gray-500">
-                                Facteur: <Tag color="purple">{cond.facteur}</Tag>
-                              </Paragraph>
-                              {cond.prix_conditionnement && (
-                                <Text type="success" strong>
-                                  {cond.prix_conditionnement.toLocaleString()} CFA
-                                </Text>
-                              )}
-                            </div>
-                            <Button type="text" danger icon={<DeleteOutlined />} onClick={() => removePackaging(idx)} />
-                          </div>
-                        </Card>
-                      ))}
-                    </div>
-                  )}
-                </Card>
+                {!suiviSerie && (
+                  <ConditionnementsEditor
+                    value={conditionnements}
+                    onChange={setConditionnements}
+                    prixUnitaire={Number(prixSaisi) || 0}
+                    coutUnitaire={Number(coutSaisi) || 0}
+                    unite={typeof uniteSaisie === "string" ? uniteSaisie : undefined}
+                    onError={(texte) => msg.error(texte)}
+                  />
+                )}
               </div>
 
               <div className="space-y-6">
-                <Card title="Image de l'Article" className="!rounded-xl shadow-sm border-gray-100">
+                <Card title="Image de l'article" className="!rounded-xl shadow-sm border-gray-100">
                   <div className="flex flex-col items-center">
                     <div className="w-full aspect-square bg-gray-50 rounded-xl border-2 border-dashed flex items-center justify-center overflow-hidden relative group transition-colors border-gray-300">
                       {selectedImageUrl ? (
@@ -791,7 +764,7 @@ const AddProduct: React.FC = () => {
                         style={{ backgroundColor: APP_COLOR, borderColor: APP_COLOR }}
                         className="h-12 text-lg font-semibold"
                       >
-                        Créer l'Article
+                        Créer l'article
                       </Button>
                       <Button size="large" block className="!bg-gray-200 !text-gray-700 hover:!bg-gray-300 !border-none" onClick={() => navigate(-1)}>
                         Annuler

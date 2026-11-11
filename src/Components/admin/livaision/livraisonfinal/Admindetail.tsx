@@ -396,7 +396,7 @@ export default function LivraisonDetailsPage() {
                         <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-7">
                             <h3 className="text-xl font-bold text-gray-900 mb-5 flex items-center gap-3">
                                 <Package className="w-6 h-6 text-[#0F172A]" />
-                                Produits Commandés ({livraison.produits.length})
+                                Articles Commandés ({livraison.produits.length})
                             </h3>
                             <div className="space-y-5">
                                 {livraison.produits.map((produit, index) => (
@@ -450,12 +450,12 @@ export default function LivraisonDetailsPage() {
                                                 <p className="text-base text-gray-800 italic">"{retour.motif}"</p>
                                             </div>
                                             <div>
-                                                <p className="text-sm text-gray-600 mb-2">Produits retournés ({retour.produits.length})</p>
+                                                <p className="text-sm text-gray-600 mb-2">Articles retournés ({retour.produits.length})</p>
                                                 <div className="space-y-2">
                                                     {retour.produits.map((produitRetour, produitIndex) => (
                                                         <div key={produitIndex} className="flex items-center justify-between text-sm text-gray-700 bg-red-100 p-3 rounded">
                                                             <span className="font-medium">
-                                                                Produit ID: <span className="font-mono text-gray-800">{produitRetour.produit_id.substring(0, 10)}...</span>
+                                                                Article ID: <span className="font-mono text-gray-800">{produitRetour.produit_id.substring(0, 10)}...</span>
                                                             </span>
                                                             <span className="font-semibold text-red-700">Quantité: {produitRetour.quantite}</span>
                                                         </div>

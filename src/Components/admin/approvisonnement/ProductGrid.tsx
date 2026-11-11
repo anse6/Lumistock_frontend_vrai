@@ -5,7 +5,7 @@ import defaultImage from '../../../Modules/Delivery/images/riz.png';
 import { getConditioningId, type ConditioningId } from './conditioning';
 
 const APP_COLOR = '#3b1558';
-const MIN_TOTAL_MESSAGE = 'La quantité totale doit être d\'au moins 1. Retirez le produit pour l\'enlever de la sélection.';
+const MIN_TOTAL_MESSAGE = 'La quantité totale doit être d\'au moins 1. Retirez l\'article pour l\'enlever de la sélection.';
 
 interface Conditioning {
   _id: ConditioningId;

@@ -27,7 +27,7 @@ const fr = {
     titre1: "Gérez votre commerce,",
     titre2: "du comptoir à la comptabilité.",
     sousTitre:
-      "Lumistock réunit la vente au comptoir, le stock, le crédit client et la comptabilité SYSCOHADA dans un seul logiciel, pensé pour les commerces d'Afrique centrale.",
+      "Lumistock réunit la vente au comptoir, le stock, le crédit client et la comptabilité dans un seul logiciel, pour les commerces du monde entier.",
     cta: "Créer mon magasin",
     ctaSecondaire: "Se connecter",
     garanties: ["Montants en FCFA", "Orange Money et MTN MoMo", "Comptabilité SYSCOHADA"],
@@ -38,7 +38,7 @@ const fr = {
     apercuTitre: "Votre tableau de bord, en un coup d'œil",
   },
   apercu: {
-    menu: ["Accueil", "Tableau de bord", "Ventes", "Produits", "Clients", "Équipe", "Rapports", "Caisses"],
+    menu: ["Accueil", "Tableau de bord", "Ventes", "Articles", "Clients", "Équipe", "Rapports", "Caisses"],
     magasin: "Quincaillerie du Marché",
     statuts: { paye: "Payée", partiel: "Partielle", credit: "À crédit" },
     titre: "Tableau de bord",
@@ -97,7 +97,7 @@ const fr = {
     {
       surtitre: "Droits d'accès",
       titre: "Chacun voit ce qu'il doit voir",
-      texte: "Activez ou retirez un droit d'un clic : créer des produits, annuler une vente, voir la comptabilité… Le serveur applique vos choix, même si quelqu'un essaie de passer outre.",
+      texte: "Activez ou retirez un droit d'un clic : créer des articles, annuler une vente, voir la comptabilité… Le serveur applique vos choix, même si quelqu'un essaie de passer outre.",
       points: ["Réglage par rôle", "Valeurs par défaut sûres", "L'administrateur garde toujours la main"],
     },
   ],
@@ -113,7 +113,7 @@ const fr = {
     ventesImpayees: "Ventes impayées",
     totalDu: "Total dû",
     reglement: "Encaisser un règlement",
-    droits: ["Créer des produits", "Annuler une vente", "Voir la comptabilité"],
+    droits: ["Créer des articles", "Annuler une vente", "Voir la comptabilité"],
     roles: ["Manager", "Gérant", "Caissier"],
   },
   etapes: {
@@ -122,7 +122,7 @@ const fr = {
     liste: [
       { titre: "Inscrivez votre magasin", desc: "Quelques minutes suffisent : votre magasin, l'administrateur et, si vous le souhaitez, vos informations légales." },
       { titre: "Nous validons votre compte", desc: "Notre équipe vérifie la demande. L'administrateur reçoit ensuite un email pour choisir son mot de passe." },
-      { titre: "Vendez", desc: "Ajoutez vos produits, invitez votre équipe, ouvrez la caisse. Vos données sont prêtes dès la première vente." },
+      { titre: "Vendez", desc: "Ajoutez vos articles, invitez votre équipe, ouvrez la caisse. Vos données sont prêtes dès la première vente." },
     ],
   },
   securite: {
@@ -148,7 +148,7 @@ const fr = {
           { q: "Combien coûte Lumistock ?", r: "Le tarif dépend de la taille de votre magasin et du nombre de comptes. Inscrivez votre magasin ou contactez-nous : nous vous proposerons l'offre adaptée." },
           { q: "Combien de temps faut-il pour que mon magasin soit validé ?", r: "Notre équipe examine chaque inscription. Dès la validation, l'administrateur reçoit un email avec un lien pour choisir son mot de passe." },
           { q: "Puis-je créer plusieurs magasins ?", r: "Oui, autant que vous voulez. Chaque magasin s'inscrit séparément, avec son propre email et son administrateur : son stock, son équipe, ses clients et sa comptabilité restent séparés." },
-          { q: "Sur quels appareils fonctionne Lumistock ?", r: "Dans un navigateur web, sur ordinateur, tablette ou téléphone. Rien à installer." },
+          { q: "Sur quels appareils fonctionne Lumistock ?", r: "Sur ordinateur, tablette et téléphone, avec le même compte et les mêmes données sur chaque appareil." },
           { q: "En quelles langues Lumistock existe-t-il ?", r: "En français, anglais, espagnol, allemand, chinois et arabe. Chaque utilisateur choisit sa langue, à tout moment, depuis l'application." },
         ],
       },
@@ -166,7 +166,7 @@ const fr = {
       {
         titre: "Équipe et sécurité",
         questions: [
-          { q: "Puis-je choisir ce que chaque employé a le droit de faire ?", r: "Oui. Dans les paramètres, l'administrateur active ou retire chaque droit par rôle (manager, gérant, caissier) : créer des produits, annuler une vente, voir la comptabilité…" },
+          { q: "Puis-je choisir ce que chaque employé a le droit de faire ?", r: "Oui. Dans les paramètres, l'administrateur active ou retire chaque droit par rôle (manager, gérant, caissier) : créer des articles, annuler une vente, voir la comptabilité…" },
           { q: "Mes données sont-elles protégées ?", r: "Chaque utilisateur peut activer la double authentification. Après 5 mots de passe erronés, le compte est verrouillé 15 minutes, et aucun mot de passe n'est jamais envoyé par email." },
           { q: "Un employé quitte le magasin : que dois-je faire ?", r: "Désactivez son compte en un clic dans « Équipe » : toutes ses sessions ouvertes sont fermées immédiatement. Son historique de ventes reste consultable." },
           { q: "J'ai oublié mon mot de passe.", r: "Sur la page de connexion, cliquez sur « Mot de passe oublié ? » : vous recevez par email un lien pour en choisir un nouveau." },
@@ -225,8 +225,8 @@ const fr = {
     secondaire: "J'ai déjà un compte",
   },
   footer: {
-    accroche: "Le logiciel de gestion commerciale pour les commerces d'Afrique centrale : ventes, stock, caisse, crédit client et comptabilité.",
-    produit: "Produit",
+    accroche: "Le logiciel de gestion commerciale pour les commerces du monde entier : ventes, stock, caisse, crédit client et comptabilité.",
+    produit: "Article",
     compte: "Compte",
     contact: "Contact",
     oubli: "Mot de passe oublié",
@@ -322,7 +322,7 @@ const fr = {
     panneauTitre: "Chaque article compté. Chaque franc justifié.",
     panneauTexte: "Votre stock bouge à chaque vente, retour ou approvisionnement, et votre comptabilité OHADA s'écrit en même temps. Sans ressaisie, sans cahier.",
     piliers: [
-      { titre: "Le stock au produit près", texte: "Ruptures et seuils d'alerte suivis en direct, avaries et inventaires tracés." },
+      { titre: "Le stock à l'article près", texte: "Ruptures et seuils d'alerte suivis en direct, avaries et inventaires tracés." },
       { titre: "Le vrai coût de chaque vente", texte: "Valorisation CMUP, FIFO ou LIFO : vos marges sont exactes." },
       { titre: "Des écritures SYSCOHADA automatiques", texte: "Caisse, mobile money, clients, TVA : chaque vente passe au journal." },
     ],
@@ -401,7 +401,7 @@ const en: Contenu = {
     titre1: "Run your store,",
     titre2: "from the counter to the books.",
     sousTitre:
-      "Lumistock brings point of sale, inventory, customer credit and SYSCOHADA accounting together in one piece of software, built for businesses in Central Africa.",
+      "Lumistock brings point of sale, inventory, customer credit and accounting together in one piece of software, for businesses all over the world.",
     cta: "Create my store",
     ctaSecondaire: "Sign in",
     garanties: ["Amounts in FCFA", "Orange Money and MTN MoMo", "SYSCOHADA accounting"],
@@ -522,7 +522,7 @@ const en: Contenu = {
           { q: "How much does Lumistock cost?", r: "Pricing depends on the size of your store and the number of accounts. Register your store or contact us and we will suggest the right plan." },
           { q: "How long does it take to approve my store?", r: "Our team reviews every registration. Once approved, the administrator receives an email with a link to choose a password." },
           { q: "Can I create several stores?", r: "Yes, as many as you like. Each store registers separately, with its own email and administrator: its stock, team, customers and accounting stay separate." },
-          { q: "Which devices does Lumistock run on?", r: "In a web browser, on a computer, tablet or phone. Nothing to install." },
+          { q: "Which devices does Lumistock run on?", r: "On computers, tablets and phones, with the same account and the same data on every device." },
           { q: "Which languages is Lumistock available in?", r: "French, English, Spanish, German, Chinese and Arabic. Each user picks their language at any time from the application." },
         ],
       },
@@ -599,7 +599,7 @@ const en: Contenu = {
     secondaire: "I already have an account",
   },
   footer: {
-    accroche: "Retail management software for businesses in Central Africa: sales, stock, register, customer credit and accounting.",
+    accroche: "Business management software for stores all over the world: sales, stock, point of sale, customer credit and accounting.",
     produit: "Product",
     compte: "Account",
     contact: "Contact",
@@ -766,3 +766,17 @@ export const CONTACT = {
   telephoneLien: "+237695683485",
   email: "ansevernel@gmail.com",
 };
+
+// Réseaux sociaux affichés dans le pied de page du site public.
+// LIENS FICTIFS : remplacez-les par les vraies adresses de vos pages.
+// Laissez une chaîne vide ("") pour masquer un réseau.
+export const RESEAUX = {
+  facebook: "https://www.facebook.com/lumistock",
+  instagram: "https://www.instagram.com/lumistock",
+  tiktok: "https://www.tiktok.com/@lumistock",
+  youtube: "https://www.youtube.com/@lumistock",
+  linkedin: "https://www.linkedin.com/company/lumistock",
+  whatsapp: "https://wa.me/237695683485",
+  x: "https://x.com/lumistock",
+};
+

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Mail, Phone } from "lucide-react";
 import logo from "../../../assets/logo-lumistock.png";
 import LangueSwitch from "./LangueSwitch";
+import ReseauxSociaux from "./ReseauxSociaux";
 import { CONTACT } from "../contenu";
 import { useSite } from "../site";
 
@@ -66,9 +67,15 @@ const Footer: React.FC = () => {
         </div>
       </div>
       <div className="border-t border-white/10">
-        <p className="mx-auto max-w-7xl px-4 py-5 text-sm text-white/60 sm:px-6 lg:px-8">
-          © {new Date().getFullYear()} Lumistock. {s.footer.droits}
-        </p>
+        <div className="mx-auto flex max-w-7xl flex-col-reverse gap-5 px-4 py-6 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
+          <p className="text-sm text-white/60">
+            © {new Date().getFullYear()} Lumistock. {s.footer.droits}
+          </p>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+            <span className="text-xs font-bold uppercase tracking-[0.14em] text-white">{s.footer.suivre}</span>
+            <ReseauxSociaux libelle={s.footer.suivre} />
+          </div>
+        </div>
       </div>
     </footer>
   );

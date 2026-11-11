@@ -70,7 +70,7 @@ const InventoryReport: React.FC<{ devise: string }> = ({ devise }) => {
         filtres,
         signatures: true,
         chiffres: [
-          ["Produits", fmt(lignes.length)],
+          ["Articles", fmt(lignes.length)],
           ["Quantité en stock", fmt(t.quantite)],
           ["Valeur d'achat", argent(t.achat, devise)],
           ["Valeur de vente", argent(t.vente, devise)],
@@ -81,11 +81,11 @@ const InventoryReport: React.FC<{ devise: string }> = ({ devise }) => {
         ],
         sections: [
           {
-            titre: "État du stock par produit",
-            note: `${fmt(lignes.length)} produit(s)`,
+            titre: "État du stock par article",
+            note: `${fmt(lignes.length)} article(s)`,
             lignes,
             colonnes: [
-              { titre: "Produit", largeur: 32, valeur: (l: LigneInventaire) => l.produit, sous: (l: LigneInventaire) => [l.categorie, l.reference].filter(Boolean).join(" · "), gras: true },
+              { titre: "Article", largeur: 32, valeur: (l: LigneInventaire) => l.produit, sous: (l: LigneInventaire) => [l.categorie, l.reference].filter(Boolean).join(" · "), gras: true },
               {
                 titre: "Stock",
                 largeur: 11,
@@ -110,7 +110,7 @@ const InventoryReport: React.FC<{ devise: string }> = ({ devise }) => {
   const excel = () =>
     exporterCsv(
       `${nomFichier("Inventaire", dayjs().format("YYYY-MM-DD"))}.csv`,
-      ["Produit", "Référence", "Catégorie", "Unité", "Quantité", "Seuil d'alerte", "État", "Prix d'achat", "Prix de vente",
+      ["Article", "Référence", "Catégorie", "Unité", "Quantité", "Seuil d'alerte", "État", "Prix d'achat", "Prix de vente",
         "Valeur d'achat", "Valeur de vente", "Marge potentielle", "Péremption"],
       lignes.map((l) => [
         l.produit, l.reference, l.categorie, l.unite, l.quantite, l.seuil_alerte ?? "", LIBELLES_ETAT[l.etat], l.prix_achat,
@@ -120,7 +120,7 @@ const InventoryReport: React.FC<{ devise: string }> = ({ devise }) => {
 
   const colonnes: ColumnsType<LigneInventaire> = [
     {
-      title: "Produit",
+      title: "Article",
       key: "produit",
       render: (_, l) => (
         <div>
@@ -215,7 +215,7 @@ const InventoryReport: React.FC<{ devise: string }> = ({ devise }) => {
         <Input
           allowClear
           prefix={<Search size={14} className="text-slate-400" />}
-          placeholder="Produit, référence…"
+          placeholder="Article, référence…"
           value={recherche}
           onChange={(e) => setRecherche(e.target.value)}
           style={{ maxWidth: 240 }}
@@ -229,8 +229,8 @@ const InventoryReport: React.FC<{ devise: string }> = ({ devise }) => {
             className="mb-4"
             type="warning"
             showIcon
-            message={`${donnees.doublons.length} nom(s) de produit utilisés plusieurs fois`}
-            description={`Par exemple : ${donnees.doublons.slice(0, 4).join(", ")}${donnees.doublons.length > 4 ? "…" : ""}. Un même article enregistré en double fausse le stock et les ventes : vérifiez-les dans Produits (ils sont marqués « en double » ci-dessous).`}
+            message={`${donnees.doublons.length} nom(s) d'article utilisés plusieurs fois`}
+            description={`Par exemple : ${donnees.doublons.slice(0, 4).join(", ")}${donnees.doublons.length > 4 ? "…" : ""}. Un même article enregistré en double fausse le stock et les ventes : vérifiez-les dans Articles (ils sont marqués « en double » ci-dessous).`}
           />
         )}
         <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -238,7 +238,7 @@ const InventoryReport: React.FC<{ devise: string }> = ({ devise }) => {
             principale
             libelle="Valeur d'achat du stock"
             valeur={argent(t.achat, devise)}
-            detail={`${fmt(lignes.length)} produit(s) · ${fmt(t.quantite)} unités`}
+            detail={`${fmt(lignes.length)} article(s) · ${fmt(t.quantite)} unités`}
             icone={<Boxes size={16} />}
           />
           <CarteChiffre
@@ -264,15 +264,15 @@ const InventoryReport: React.FC<{ devise: string }> = ({ devise }) => {
           />
         </div>
 
-        <Section titre="État du stock par produit" note={`Au ${jour}`}>
+        <Section titre="État du stock par article" note={`Au ${jour}`}>
           <Table
             rowKey="produit_id"
             size="middle"
             columns={colonnes}
             dataSource={lignes}
-            pagination={{ pageSize: 15, showSizeChanger: true, showTotal: (n) => `${n} produit(s)` }}
+            pagination={{ pageSize: 15, showSizeChanger: true, showTotal: (n) => `${n} article(s)` }}
             scroll={{ x: 900 }}
-            locale={{ emptyText: <Empty description="Aucun produit pour cette sélection" /> }}
+            locale={{ emptyText: <Empty description="Aucun article pour cette sélection" /> }}
           />
         </Section>
       </Spin>

@@ -23,6 +23,7 @@ import {
   type Filtres,
   type Segment,
 } from "./messagerieService";
+import AvatarWithPopover from "../../Components/super-admin/users.tsx/components/AvatarWithPopover";
 
 const ICONES: Record<Segment, React.ReactNode> = {
   debiteurs: <Coins size={18} />,
@@ -142,9 +143,12 @@ const EnvoiMessages: React.FC<Props> = ({ config, devise, onEnvoye }) => {
       title: "Client",
       dataIndex: "nom",
       render: (nom: string, d) => (
-        <div>
-          <div className="font-semibold text-slate-800">{nom}</div>
-          <div className="text-xs text-slate-500">{[d.telephone, d.email].filter(Boolean).join(" · ") || "Aucun contact"}</div>
+        <div className="flex items-center gap-3">
+          <AvatarWithPopover name={nom} email={d.email} size={36} />
+          <div className="min-w-0">
+            <div className="font-semibold text-slate-800">{nom}</div>
+            <div className="text-xs text-slate-500">{[d.telephone, d.email].filter(Boolean).join(" · ") || "Aucun contact"}</div>
+          </div>
         </div>
       ),
     },

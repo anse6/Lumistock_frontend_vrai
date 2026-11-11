@@ -42,7 +42,7 @@ const CorbeilleProductDrawer: React.FC<CorbeilleProductDrawerProps> = ({
       setDeletedProducts(res.data || []);
     } catch (error) {
       console.error(
-        "Erreur lors du chargement de la corbeille produits:",
+        "Erreur lors du chargement de la corbeille articles:",
         error,
       );
       message.error(t("admin.products.corbeille.messages.loadError"));

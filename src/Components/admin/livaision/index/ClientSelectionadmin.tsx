@@ -68,7 +68,7 @@ export const SaleStepper: React.FC<{ etape2: string }> = ({ etape2 }) => (
       <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-white">
         <Check size={12} />
       </span>
-      Produits
+      Articles
     </span>
     <span className="h-px w-6 bg-slate-300" />
     <span className="flex items-center gap-1.5 text-purple-950">

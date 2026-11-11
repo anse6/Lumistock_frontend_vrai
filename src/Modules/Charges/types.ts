@@ -151,8 +151,13 @@ export interface SyntheseFinance {
   precedente: { debut: string; fin: string };
   compte_resultat: LigneResultat[];
   indicateurs: {
+    /** Chiffre d'affaires SYSCOHADA (701 à 707) : ventes nettes + frais de retour HT. */
     chiffre_affaires: number;
     chiffre_affaires_precedent: number;
+    /** Ventes nettes de marchandises (base des marges). */
+    ventes_marchandises?: number;
+    /** Frais de retour retenus aux clients, HT (compte 7078). */
+    frais_retour?: number;
     marge: number;
     marge_precedente: number;
     taux_marge: number;

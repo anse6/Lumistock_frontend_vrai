@@ -57,7 +57,7 @@ const DashboardStatsGrid = () => {
       indicatorColor: "bg-amber-500"
     },
     {
-      title: "Produits Total",
+      title: "Articles Total",
       value: "450",
       percentage: "-3.2%",
       description: "Par rapport au mois dernier",

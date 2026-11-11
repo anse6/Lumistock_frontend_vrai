@@ -13,8 +13,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery }) =>
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 size-4 pointer-events-none" />
       <input
         type="text"
-        placeholder="Rechercher un produit..."
-        aria-label="Rechercher un produit"
+        placeholder="Rechercher un article..."
+        aria-label="Rechercher un article"
         className="w-full h-9 pl-9 pr-8 border border-gray-200 bg-gray-50 rounded-xl text-sm focus:outline-none focus:border-purple-300 focus:bg-white transition-colors"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}

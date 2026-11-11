@@ -41,3 +41,10 @@ export const currencyOptions = [...new Set([...preferredCurrencies, ...currencyC
     }
     return left.label.localeCompare(right.label, 'fr');
   });
+
+// Devise par défaut selon le pays (zones franc CFA), pour la création d'un
+// magasin par le staff comme pour l'inscription publique.
+const PAYS_XAF = ['CM', 'GA', 'TD', 'CF', 'CG', 'GQ'];
+const PAYS_XOF = ['SN', 'CI', 'BJ', 'BF', 'ML', 'NE', 'TG', 'GW'];
+export const deviseDuPays = (code?: string) =>
+  code && PAYS_XAF.includes(code) ? 'XAF' : code && PAYS_XOF.includes(code) ? 'XOF' : undefined;

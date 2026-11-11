@@ -20,7 +20,7 @@ export const de: Contenu = {
     titre1: "Führen Sie Ihr Geschäft,",
     titre2: "von der Theke bis zur Buchhaltung.",
     sousTitre:
-      "Lumistock vereint Kasse, Lagerbestand, Kundenkredite und SYSCOHADA-Buchhaltung in einer einzigen Software – entwickelt für Unternehmen in Zentralafrika.",
+      "Lumistock vereint Kasse, Lagerbestand, Kundenkredite und Buchhaltung in einer einzigen Software – für Unternehmen auf der ganzen Welt.",
     cta: "Mein Geschäft anlegen",
     ctaSecondaire: "Anmelden",
     garanties: ["Beträge in FCFA", "Orange Money und MTN MoMo", "SYSCOHADA-Buchhaltung"],
@@ -141,7 +141,7 @@ export const de: Contenu = {
           { q: "Was kostet Lumistock?", r: "Der Preis hängt von der Größe Ihres Geschäfts und der Anzahl der Konten ab. Registrieren Sie Ihr Geschäft oder kontaktieren Sie uns, und wir schlagen Ihnen das passende Angebot vor." },
           { q: "Wie lange dauert die Freischaltung meines Geschäfts?", r: "Unser Team prüft jede Anmeldung. Nach der Freischaltung erhält der Administrator eine E-Mail mit einem Link zur Wahl eines Passworts." },
           { q: "Kann ich mehrere Geschäfte anlegen?", r: "Ja, so viele Sie möchten. Jedes Geschäft wird separat registriert, mit eigener E-Mail und eigenem Administrator: Bestand, Team, Kunden und Buchhaltung bleiben getrennt." },
-          { q: "Auf welchen Geräten läuft Lumistock?", r: "Im Webbrowser, auf Computer, Tablet oder Telefon. Keine Installation nötig." },
+          { q: "Auf welchen Geräten läuft Lumistock?", r: "Auf Computer, Tablet und Handy, mit demselben Konto und denselben Daten auf jedem Gerät." },
           { q: "In welchen Sprachen gibt es Lumistock?", r: "Auf Französisch, Englisch, Spanisch, Deutsch, Chinesisch und Arabisch. Jeder Benutzer wählt seine Sprache jederzeit in der Anwendung." },
         ],
       },
@@ -218,7 +218,7 @@ export const de: Contenu = {
     secondaire: "Ich habe bereits ein Konto",
   },
   footer: {
-    accroche: "Verwaltungssoftware für den Handel in Zentralafrika: Verkauf, Bestand, Kasse, Kundenkredit und Buchhaltung.",
+    accroche: "Die Verwaltungssoftware für Geschäfte auf der ganzen Welt: Verkauf, Bestand, Kasse, Kundenkredit und Buchhaltung.",
     produit: "Produkt",
     compte: "Konto",
     contact: "Kontakt",

@@ -19,7 +19,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery }) =>
 
         <input
           type="text"
-          placeholder={t('delivery.productSelection.searchPlaceholder', { defaultValue: 'Rechercher un produit...' })}
+          placeholder={t('delivery.productSelection.searchPlaceholder', { defaultValue: 'Rechercher un article...' })}
           className="w-full h-12 md:h-14 pl-12 pr-4 bg-gray-100/50 border-transparent rounded-2xl text-slate-700 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 shadow-sm text-base"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}

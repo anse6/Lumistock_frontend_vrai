@@ -411,7 +411,7 @@ export const siteZh: Site = {
   commun: {
     commencer: "创建我的店铺",
     conseiller: "咨询顾问",
-    garanties: ["无需安装", "上手全程协助"],
+    garanties: ["电脑、平板和手机", "上手全程协助"],
     decouvrir: "了解",
     toutesFonctions: "了解全部功能",
     fonctionsTitre: "每项功能都*经过精心设计*",
@@ -424,14 +424,20 @@ export const siteZh: Site = {
   accueil: {
     titreDoc: "Lumistock · 店铺的销售、库存、收银和会计",
     titre: "整个生意，*一款软件*搞定",
-    texte: "销售、收银、库存、客户赊账和 SYSCOHADA 会计：Lumistock 在浏览器中汇集了在中部非洲经营店铺所需的一切。",
-    notes: ["金额以 FCFA 计", "Orange Money 和 MTN MoMo"],
+    texte: "销售、收银、库存、客户赊账和会计：无论您身在世界何处，Lumistock 都汇集了经营店铺所需的一切。",
+    notes: ["按您所在国家计税", "支持六种语言"],
     modulesTitre: "一种需求，*一个模块*",
     modulesTexte: "九个协同工作的模块，每家店铺都包含。",
     ecranTitre: "店铺情况，*一目了然*",
     ecranNote: "管理员控制面板",
+    appareils: {
+      titre: "电脑、平板 *和手机* 都能用",
+      texte: "Lumistock 适用于所有屏幕。在柜台用平板销售，用手机随时查看店铺，在电脑上记账：所有设备使用同一个账户、同一套数据。",
+      note: "同一笔销售，每个屏幕都能看到",
+      points: [{ titre: "电脑", desc: "在大屏幕上查看仪表板、会计和报表。" }, { titre: "平板", desc: "柜台触屏收银：点选商品、收款、打印小票。" }, { titre: "手机", desc: "无论身在何处，都能录入销售、客户或补货。" }],
+    },
     realitesTitre: "为*您的经营方式*而设计",
-    realitesTexte: "Lumistock 不是匆忙翻译的外国软件：它为本地的销售方式而打造。",
+    realitesTexte: "本国增值税、货币、支付方式和语言：无论您的店铺在哪里，Lumistock 都能适应您的销售方式。",
     realites: [
       { titre: "CFA 法郎，精确到法郎", desc: "金额不带分位，按本国增值税（喀麦隆为 19.25%）计算，取整正确。" },
       { titre: "移动支付作为付款方式", desc: "Orange Money 和 MTN MoMo 与现金、银行并列，直至对账。" },
@@ -535,7 +541,7 @@ export const siteZh: Site = {
     questionTexte: "写信给我们：我们会说明您的数据是如何受到保护的。",
   },
   footer: {
-    accroche: "面向中部非洲店铺的商业管理软件：销售、库存、收银、客户赊账和会计。",
+    accroche: "面向全球商家的商业管理软件：销售、库存、收银、客户赊账和会计。",
     modules: "模块",
     decouvrir: "了解",
     compte: "账户",
@@ -543,7 +549,8 @@ export const siteZh: Site = {
     oubli: "忘记密码",
     faq: "常见问题",
     droits: "版权所有。",
-    ohada: "为 OHADA 地区打造 · 金额以 FCFA 计",
+    suivre: "关注我们",
+    ohada: "全球可用 · 内含 SYSCOHADA 会计",
   },
   modules,
 };

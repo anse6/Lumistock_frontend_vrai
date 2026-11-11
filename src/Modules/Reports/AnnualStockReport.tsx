@@ -67,7 +67,7 @@ const AnnualStockReport: React.FC<{ devise: string }> = ({ devise }) => {
   const categorie = donnees?.categories.find((c) => c.id === categorieId)?.nom;
   const filtres = [
     categorie && `catégorie ${categorie}`,
-    avecMouvements ? "produits mouvementés dans l'année" : "tous les produits",
+    avecMouvements ? "articles mouvementés dans l'année" : "tous les articles",
     recherche.trim() && `recherche « ${recherche.trim()} »`,
   ].filter(Boolean).join(", ");
   const mois = donnees?.mois || [];
@@ -117,7 +117,7 @@ const AnnualStockReport: React.FC<{ devise: string }> = ({ devise }) => {
             titre: "Récapitulatif par catégorie",
             lignes: parCategorie,
             colonnes: [
-              { titre: "Catégorie", largeur: 30, valeur: (c: (typeof parCategorie)[number]) => c.categorie, sous: (c: (typeof parCategorie)[number]) => `${c.produits} produit(s)`, gras: true },
+              { titre: "Catégorie", largeur: 30, valeur: (c: (typeof parCategorie)[number]) => c.categorie, sous: (c: (typeof parCategorie)[number]) => `${c.produits} article(s)`, gras: true },
               { titre: "Stock 01/01", largeur: 12, align: "right", valeur: (c: (typeof parCategorie)[number]) => fmt(c.stock_initial) },
               { titre: "Entrées", largeur: 12, align: "right", valeur: (c: (typeof parCategorie)[number]) => fmt(c.entrees), couleur: () => VERT },
               { titre: "Sorties", largeur: 12, align: "right", valeur: (c: (typeof parCategorie)[number]) => fmt(c.sorties), couleur: () => ROUGE },
@@ -127,11 +127,11 @@ const AnnualStockReport: React.FC<{ devise: string }> = ({ devise }) => {
             total: ["TOTAL", fmt(t.stock_initial), fmt(t.entrees), fmt(t.sorties), fmt(t.stock_final), fmt(t.valeur_finale)],
           },
           {
-            titre: "Détail par produit",
-            note: `${fmt(lignes.length)} produit(s) · Stock 31/12 = Stock 01/01 + entrées - sorties`,
+            titre: "Détail par article",
+            note: `${fmt(lignes.length)} article(s) · Stock 31/12 = Stock 01/01 + entrées - sorties`,
             lignes,
             colonnes: [
-              { titre: "Produit", largeur: 25, valeur: (l: LigneStockAnnuel) => l.produit, sous: (l: LigneStockAnnuel) => l.categorie + (l.supprime ? " · supprimé" : ""), gras: true },
+              { titre: "Article", largeur: 25, valeur: (l: LigneStockAnnuel) => l.produit, sous: (l: LigneStockAnnuel) => l.categorie + (l.supprime ? " · supprimé" : ""), gras: true },
               { titre: "Stock 01/01", largeur: 9, align: "right", valeur: (l: LigneStockAnnuel) => fmt(l.stock_initial) },
               { titre: "Création + appro.", largeur: 10, align: "right", valeur: (l: LigneStockAnnuel) => fmt(l.creation + l.approvisionnements), couleur: () => VERT },
               { titre: "Retours", largeur: 9, align: "right", valeur: (l: LigneStockAnnuel) => fmt(l.retours), couleur: () => VERT },
@@ -155,7 +155,7 @@ const AnnualStockReport: React.FC<{ devise: string }> = ({ devise }) => {
   const excel = () =>
     exporterCsv(
       `${nomFichier("Mouvement_de_stock_annuel", String(annee))}.csv`,
-      ["Produit", "Catégorie", "Unité", `Stock 01/01/${annee}`, "Stock à la création", "Approvisionnements", "Retours clients",
+      ["Article", "Catégorie", "Unité", `Stock 01/01/${annee}`, "Stock à la création", "Approvisionnements", "Retours clients",
         "Ventes", "Avaries et pertes", "Stock des livreurs (net)", "Ajustements", "Total entrées", "Total sorties",
         `Stock 31/12/${annee}`, "Prix d'achat", "Valeur 01/01", "Valeur 31/12", "Coût des ventes", "Supprimé"],
       lignes.map((l) => [
@@ -170,7 +170,7 @@ const AnnualStockReport: React.FC<{ devise: string }> = ({ devise }) => {
   );
   const colonnes: ColumnsType<LigneStockAnnuel> = [
     {
-      title: "Produit",
+      title: "Article",
       key: "produit",
       fixed: "left",
       width: 220,
@@ -275,7 +275,7 @@ const AnnualStockReport: React.FC<{ devise: string }> = ({ devise }) => {
         <Input
           allowClear
           prefix={<Search size={14} className="text-slate-400" />}
-          placeholder="Rechercher un produit…"
+          placeholder="Rechercher un article…"
           value={recherche}
           onChange={(e) => setRecherche(e.target.value)}
           style={{ maxWidth: 240 }}
@@ -283,7 +283,7 @@ const AnnualStockReport: React.FC<{ devise: string }> = ({ devise }) => {
         />
         <label className="flex cursor-pointer items-center gap-2 rounded-lg bg-white px-3 py-2 text-sm text-slate-700">
           <Switch size="small" checked={avecMouvements} onChange={setAvecMouvements} />
-          Produits mouvementés seulement
+          Articles mouvementés seulement
         </label>
       </BarreFiltres>
 
@@ -293,7 +293,7 @@ const AnnualStockReport: React.FC<{ devise: string }> = ({ devise }) => {
             className="mb-4"
             type="warning"
             showIcon
-            message={`${donnees.anomalies.length} produit(s) avec un stock reconstitué négatif`}
+            message={`${donnees.anomalies.length} article(s) avec un stock reconstitué négatif`}
             description={`${donnees.anomalies.slice(0, 5).map((a) => a.produit).join(", ")} : des mouvements anciens n'ont pas été enregistrés. Vérifiez leur stock par un inventaire.`}
           />
         )}
@@ -338,7 +338,7 @@ const AnnualStockReport: React.FC<{ devise: string }> = ({ devise }) => {
           />
           <CarteChiffre
             ton="gris"
-            libelle="Produits"
+            libelle="Articles"
             valeur={fmt(lignes.length)}
             detail={`${fmt(lignes.filter((l) => l.mouvements).length)} mouvementés dans l'année`}
             icone={<PackageCheck size={16} />}
@@ -367,16 +367,16 @@ const AnnualStockReport: React.FC<{ devise: string }> = ({ devise }) => {
           </Section>
         </div>
 
-        <Section titre="Détail par produit" note="Stock 31/12 = Stock 01/01 + entrées − sorties">
+        <Section titre="Détail par article" note="Stock 31/12 = Stock 01/01 + entrées − sorties">
           <Table
             rowKey="produit_id"
             size="small"
             bordered
             columns={colonnes}
             dataSource={lignes}
-            pagination={{ pageSize: 15, showSizeChanger: true, showTotal: (n) => `${n} produit(s)` }}
+            pagination={{ pageSize: 15, showSizeChanger: true, showTotal: (n) => `${n} article(s)` }}
             scroll={{ x: 1100 }}
-            locale={{ emptyText: <Empty description="Aucun produit pour cette sélection" /> }}
+            locale={{ emptyText: <Empty description="Aucun article pour cette sélection" /> }}
             summary={() =>
               lignes.length ? (
                 <Table.Summary fixed>

@@ -98,7 +98,7 @@
       "amountSubtext": "Valeur totale des ventes"
     },
     "report": {
-      "detailsTab": "Fiche Produit",
+      "detailsTab": "Fiche Article",
       "historyTab": "Historique"
     },
     "noOrders": "Aucune vente trouvée",
@@ -131,7 +131,7 @@
         "edit": "Modifier",
         "finalizePayment": "Finaliser paiement",
         "refundClient": "Rembourser client",
-        "returnItem": "Retour produit",
+        "returnItem": "Retour article",
         "cancel": "Annuler vente"
       },
       "messages": {
@@ -148,7 +148,7 @@
         "continueBtn": "Continuer",
         "cancelBtn": "Annuler",
         "orderLabel": "Commande #",
-        "totalAmount": "Montant total du produit :",
+        "totalAmount": "Montant total de l'article :",
         "alreadyPaid": "Déjà payé :",
         "remainingDue": "Reste à payer :",
         "amountToCollect": "Montant à percevoir :",
@@ -179,7 +179,7 @@
         "cancelBtn": "Annuler",
         "orderLabel": "Commande #",
         "amountLabel": "Montant à rembourser :",
-        "warningText": "Note : Ce montant correspond aux produits retournés et déjà payés par le client."
+        "warningText": "Note : Ce montant correspond aux articles retournés et déjà payés par le client."
       },
       "errorInvalidConditioningId": "ID Conditionnement invalide"
     },
@@ -194,21 +194,21 @@
       "prev": "Précédent",
       "next": "Suivant",
       "page": "Page",
-      "searchPlaceholder": "Rechercher un produit..."
+      "searchPlaceholder": "Rechercher un article..."
     },
     "newDelivery": {
-      "allProducts": "Tous les produits",
+      "allProducts": "Tous les articles",
       "error": "Erreur:",
       "errorFetch": "Erreur lors de la récupération des catégories",
       "sessionExpired": "Session expirée, veuillez vous reconnecter",
       "title": "Nouvelle Vente",
       "breadcrumbDelivery": "Vente",
-      "breadcrumbSelect": "Sélection des Produits",
-      "subtitle": "Sélectionner les Produits",
+      "breadcrumbSelect": "Sélection des Articles",
+      "subtitle": "Sélectionner les Articles",
       "itemsSelected": "{{count}} articles sélectionnés",
       "continueBtn": "Continuer la Vente",
-      "noProductSelected": "Aucun produit trouvé",
-      "scanPlaceholder": "Scanner un produit..."
+      "noProductSelected": "Aucun article trouvé",
+      "scanPlaceholder": "Scanner un article..."
     },
     "deliveryConfig": {
       "pageTitleNew": "Configuration de Vente",
@@ -219,7 +219,7 @@
       "breadcrumbEdit": "Édition",
       "titleNew": "Configuration de la Vente",
       "titleEdit": "Modifier la Vente #{{id}}",
-      "sectionProducts": "Produits Sélectionnés",
+      "sectionProducts": "Articles Sélectionnés",
       "sectionPayment": "Statut du Paiement",
       "sectionSummary": "Résumé de la Vente",
       "clientLabel": "Client Sélectionné",
@@ -249,12 +249,12 @@
       "productStock": "Stock :",
       "productPrice": "Prix :",
       "productUnits": "UNITÉS",
-      "productRemove": "Retirer le produit",
+      "productRemove": "Retirer l'article",
       "productUnitShort": "u",
       "productAddConditioning": "Ajouter un conditionnement...",
       "productAddBtn": "Ajouter",
       "productStockWarning": "Attention : Quantité supérieure au stock disponible",
-      "productsNoTarget": "Aucun produit sélectionné",
+      "productsNoTarget": "Aucun article sélectionné",
       "productsAddPrompt": "Veuillez ajouter des articles à votre vente",
       "paymentStatus": "Statut du Paiement",
       "paymentUnpaid": "Non payé (Dette)",
@@ -272,8 +272,8 @@
       "paymentMethodMomo": "Mobile Money",
       "paymentMethodBank": "Virement Bancaire",
       "actionErrorNoClient": "Veuillez sélectionner un client",
-      "actionErrorNoProduct": "Veuillez sélectionner au moins un produit",
-      "actionErrorNoQuantity": "Veuillez saisir des quantités pour les produits sélectionnés",
+      "actionErrorNoProduct": "Veuillez sélectionner au moins un article",
+      "actionErrorNoQuantity": "Veuillez saisir des quantités pour les articles sélectionnés",
       "actionSuccessNew": "Vente enregistrée avec succès",
       "actionSuccessEdit": "Vente mise à jour avec succès",
       "actionErrorSave": "Erreur lors de l'enregistrement",
@@ -342,10 +342,10 @@
       "empty": "Votre corbeille est vide"
     },
     "returnModal": {
-      "title": "Retour de Produits",
+      "title": "Retour d'articles",
       "orderLabel": "Commande #",
       "reasonLabel": "Motif du retour",
-      "productsLabel": "Produits correspondants",
+      "productsLabel": "Articles correspondants",
       "maxLabel": "max",
       "conditionedLabel": "Conditionné ?",
       "conditioningIdLabel": "ID Conditionnement",
@@ -353,7 +353,7 @@
       "cancelBtn": "Annuler",
       "confirmBtn": "Confirmer le retour",
       "savingBtn": "Enregistrement...",
-      "errorMissingReasonOrProduct": "Veuillez saisir un motif et au moins un produit",
+      "errorMissingReasonOrProduct": "Veuillez saisir un motif et au moins un article",
       "errorInvalidDeliveryPersonId": "ID Magasinier invalide",
       "errorInvalidConditioningId": "ID Conditionnement invalide"
     }
@@ -373,7 +373,7 @@
         "type": "Type d'opération"
       },
       "table": {
-        "product": "Produit",
+        "product": "Article",
         "type": "Opération",
         "qty": "Quantité",
         "date": "Date / Heure",
@@ -385,12 +385,12 @@
         "vente": "Vente",
         "approvisionnement_magasin": "Approvisionnement",
         "approvisionnement_livreur": "Approvisionnement magasinier",
-        "produit_perime": "Produit périmé",
-        "retour_produit": "Retour produit",
+        "produit_perime": "Article périmé",
+        "retour_produit": "Retour article",
         "livraison": "Vente",
         "retour_stock_magasin": "Retour en magasin",
-        "retour_produit_dans_stock_livreur": "Retour produit stock magasinier",
-        "modification_produit": "Modification produit",
+        "retour_produit_dans_stock_livreur": "Retour article stock magasinier",
+        "modification_produit": "Modification article",
         "modification_approvisionnement_ajout": "Modification appro. (ajout)",
         "annulation_approvisionnement": "Annulation approvisionnement",
         "restauration_approvisionnement": "Restauration approvisionnement",
@@ -398,7 +398,7 @@
       },
       "modal": {
         "title": "Détails du Mouvement",
-        "productInfo": "Information Produit",
+        "productInfo": "Information Article",
         "movementInfo": "Détails de l'Analyse",
         "actorInfo": "Acteur Responsable"
       }
@@ -418,7 +418,7 @@
     },
     "stats": {
       "revenue": "Chiffre d'Affaires",
-      "productsDelivered": "Produits Livrés",
+      "productsDelivered": "Articles Livrés",
       "deliveryCount": "Nombre de Ventes"
     },
     "print": {
@@ -438,7 +438,7 @@
       "date": "Date",
       "client": "Client",
       "deliveryPerson": "Livreur",
-      "product": "Produit",
+      "product": "Article",
       "qty": "Qté",
       "unitPrice": "P.U",
       "total": "Total",
@@ -618,7 +618,7 @@
     "accueil": "Accueil",
     "dashboard": "Tableau de bord",
     "delivery": "Ventes",
-    "products": "Produits",
+    "products": "Articles",
     "ai_assistant": "Assistant IA",
     "customers": "Clients",
     "sub_boutique": "Sous Boutique",
@@ -645,6 +645,8 @@
       "nouvelleVente": "Nouvelle vente",
       "approvisionnements": "Approvisionnements",
       "codesBarres": "Codes-barres",
+      "categories": "Catégories",
+      "fournisseurs": "Fournisseurs",
       "msgEnvoyer": "Envoyer un message",
       "msgPlanification": "Automatiques et programmés",
       "msgHistorique": "Historique",
@@ -776,7 +778,7 @@
             "errorFileSize": "L'image doit faire moins de 2 Mo."
           },
           "product": {
-            "unknown": "Produit inconnu",
+            "unknown": "Article inconnu",
             "unit": "Unité"
           }
         }
@@ -821,14 +823,14 @@
         "breadcrumb": "Nouvelle vente",
         "title": "Vente",
         "selectedCount": "{{count}} articles sélectionnés",
-        "allProducts": "Tous les produits",
+        "allProducts": "Tous les articles",
         "noSelectedProducts": "Aucun article sélectionné"
       },
       "stats": {
         "title": "Ventes",
         "total": "Total de la commande",
         "showAllHistory": "Affichage de tout l'historique",
-        "productValue": "Valeur Produit"
+        "productValue": "Valeur Article"
       },
       "client": {
         "label": "Client",
@@ -882,7 +884,7 @@
         }
       },
       "detail": {
-        "orderedProducts": "Produits Commandés"
+        "orderedProducts": "Articles Commandés"
       },
       "table": {
         "payment": "Paiement",
@@ -983,12 +985,12 @@
           "orderLabel": "Commande #",
           "motif": "Motif du retour",
           "motifPlaceholder": "Décrivez la raison du retour...",
-          "productsTitle": "Produits à retourner",
+          "productsTitle": "Articles à retourner",
           "maxQty": "Max: {{count}} unités",
           "maxConditioning": "Max: {{count}} {{name}}",
           "infoTitle": "Info",
           "infoConditioning": "Par conditionnement: Retourne des cartons/sacs entiers (ex: 1 = 1 carton complet)",
-          "infoUnit": "Par unité: Retourne des produits individuels (ex: 5 = 5 produits du carton)",
+          "infoUnit": "Par unité: Retourne des articles individuels (ex: 5 = 5 articles du carton)",
           "infoToggle": "Cliquez sur le bouton pour basculer entre les modes",
           "byUnit": "Par unité",
           "byConditioning": "Par conditionnement",
@@ -1062,11 +1064,11 @@
         "admin": {
           "stock": {
             "cat": "Stock",
-            "q": "Quels produits vont bientôt manquer et combien dois-je commander ?"
+            "q": "Quels articles vont bientôt manquer et combien dois-je commander ?"
           },
           "sales": {
             "cat": "Ventes",
-            "q": "Quels sont mes produits les plus vendus et leur marge ?"
+            "q": "Quels sont mes articles les plus vendus et leur marge ?"
           },
           "debts": {
             "cat": "Clients",
@@ -1074,7 +1076,7 @@
           },
           "margin": {
             "cat": "Marge",
-            "q": "Quels produits je vends sans marge ou à perte ?"
+            "q": "Quels articles je vends sans marge ou à perte ?"
           },
           "sleeping": {
             "cat": "Stock qui dort",
@@ -1100,7 +1102,7 @@
           },
           "push": {
             "cat": "Conseils",
-            "q": "Quels produits proposer en priorité à mes clients ?"
+            "q": "Quels articles proposer en priorité à mes clients ?"
           }
         },
         "cashier": {
@@ -1118,7 +1120,7 @@
           },
           "push": {
             "cat": "Conseils",
-            "q": "Quels produits se vendent le mieux à ma caisse ?"
+            "q": "Quels articles se vendent le mieux à ma caisse ?"
           }
         }
       },
@@ -1285,10 +1287,10 @@
       }
     },
     "products": {
-      "title": "Produits",
-      "new_product": "Nouveau Produit",
-      "edit_product": "Modifier Produit",
-      "product_name": "Nom du Produit",
+      "title": "Articles",
+      "new_product": "Nouvel Article",
+      "edit_product": "Modifier Article",
+      "product_name": "Nom de l'article",
       "description": "Description",
       "category": "Catégorie",
       "supplier": "Fournisseur",
@@ -1296,14 +1298,14 @@
       "initial_quantity": "Quantité Initiale",
       "quantity_instore": "Quantité en stock",
       "unit_price": "Prix de vente",
-      "purchase_price": "Prix d'Achat",
+      "purchase_price": "Coût d'achat",
       "stock_value": "Valeur du Stock",
-      "total_products": "Total Produits",
+      "total_products": "Total Articles",
       "purchase_value": "Valeur d'Achats Globale",
       "sale_value": "Valeur de Vente Globale",
       "different_references": "références différentes",
-      "search_placeholder": "Rechercher un produit...",
-      "create_btn": "Créer un produit",
+      "search_placeholder": "Rechercher un article...",
+      "create_btn": "Créer un article",
       "import_excel": "Import Excel",
       "export_excel": "Export Excel",
       "trash": "Corbeille",
@@ -1326,12 +1328,12 @@
         "none": "Aucun conditionnement ajouté"
       },
       "image": {
-        "title": "Image du Produit",
+        "title": "Image de l'article",
         "upload_btn": "Cliquer pour Uploader",
         "suggestions": "Suggestions",
         "none_suggestion": "Aucune suggestion",
         "required": "Une image est requise",
-        "tooltip_suggestions": "Images souvent utilisées pour ce type de produit",
+        "tooltip_suggestions": "Images souvent utilisées pour ce type d'article",
         "barcode": "Code-Barre",
         "generateBarcode": "Générer un code interne"
       },
@@ -1351,8 +1353,8 @@
         }
       },
       "form": {
-        "placeholder_name": "nom du produit",
-        "placeholder_desc": "Détails du produit, caractéristiques...",
+        "placeholder_name": "nom de l'article",
+        "placeholder_desc": "Détails de l'article, caractéristiques...",
         "choose_category": "Choisir une catégorie",
         "new_category": "Nouvelle catégorie",
         "bag": "Sac",
@@ -1375,7 +1377,7 @@
           "category": "Catégorie",
           "remaining": "Restant",
           "price_sale": "Prix Vente",
-          "price_purchase": "Prix Achat",
+          "price_purchase": "Coût d'achat",
           "status": "Statut",
           "action": "Action"
         },
@@ -1389,48 +1391,48 @@
           "edit": "Modifier",
           "details": "Voir détails",
           "expired": "Signaler les avaries",
-          "provision": "Ajouter un produit",
+          "provision": "Ajouter un article",
           "delete": "Supprimer"
         },
         "empty": {
-          "title": "Aucun produit",
+          "title": "Aucun article",
           "subtitle": "Veuillez ajouter des articles"
         }
       },
       "provision_modal": {
-        "title": "Approvisionner le Produit",
+        "title": "Approvisionner l'article",
         "ok_btn": "Approvisionner",
         "cancel_btn": "Annuler",
-        "product_id": "ID du produit:",
+        "product_id": "ID de l'article:",
         "quantity_label": "Quantité à ajouter:",
         "quantity_placeholder": "Entrez la quantité"
       },
       "messages": {
         "invalid_quantity": "Veuillez entrer une quantité valide (supérieure à 0).",
         "auth_required": "Authentification requise. Veuillez vous connecter.",
-        "success_provision": "Produit approvisionné avec succès.",
+        "success_provision": "Article approvisionné avec succès.",
         "error_unknown": "Une erreur inconnue est survenue.",
         "error_server": "Impossible de se connecter au serveur. Veuillez réessayer."
       },
       "corbeille": {
-        "title": "Corbeille des produits",
-        "subtitle": "Les produits supprimés seront effacés au-delà du délai de rétention.",
-        "empty": "La corbeille de produits est vide",
+        "title": "Corbeille des articles",
+        "subtitle": "Les articles supprimés seront effacés au-delà du délai de rétention.",
+        "empty": "La corbeille d'articles est vide",
         "restore": "Restaurer",
         "deleteDefinitive": "Supprimer définitivement",
-        "successDeleteDefinitive": "Produit supprimé définitivement",
+        "successDeleteDefinitive": "Article supprimé définitivement",
         "failDeleteDefinitive": "Échec de la suppression définitive",
         "confirmDeleteTitle": "Suppression définitive",
-        "confirmDeleteMessage": "Voulez-vous vraiment supprimer définitivement ce produit ? Cette action est irréversible.",
+        "confirmDeleteMessage": "Voulez-vous vraiment supprimer définitivement cet article ? Cette action est irréversible.",
         "table": {
-          "product": "Produit",
+          "product": "Article",
           "quantity": "Quantité",
           "price": "Prix (Revente)",
           "action": "Action"
         },
         "messages": {
           "loadError": "Impossible de charger la corbeille.",
-          "restoreSuccess": "Produit restauré avec succès",
+          "restoreSuccess": "Article restauré avec succès",
           "restoreError": "Échec de la restauration."
         }
       }
@@ -1441,7 +1443,7 @@
       "items_entered": "Articles Entrés",
       "total_amount": "Montant Total",
       "budget_invested": "Budget Investi",
-      "select_products": "Sélectionner des Produits",
+      "select_products": "Sélectionner des Articles",
       "deliverer": "Magasinier",
       "select_deliverer": "Sélectionner un Magasinier",
       "new_supply": "Nouvel Approvisionnement",
@@ -1449,7 +1451,7 @@
       "error": "Une erreur est survenue lors de l'approvisionnement",
       "confirm_title": "Confirmer l'Approvisionnement",
       "summary": "Résumé de l'Approvisionnement",
-      "allProducts": "Tous les produits",
+      "allProducts": "Tous les articles",
       "itemsCount": "article(s)",
       "table": {
         "columns": {
@@ -1478,13 +1480,13 @@
         "qty_supplied": "Qté approvisionnée",
         "stock_total_label": "Stock total",
         "date_label": "Date d'approvisionnement",
-        "product_details_title": "Détail des produits ({{count}})",
+        "product_details_title": "Détail des articles ({{count}})",
         "summary": "Résumé",
         "items_plural": "articles",
         "items_singular": "article",
         "download_invoice": "Télécharger la facture",
         "columns": {
-          "product": "Produit",
+          "product": "Article",
           "qty_supply": "Qté Approv.",
           "stock_deliverer": "Stock Livreur",
           "price_purchase": "Prix Achat",
@@ -1542,14 +1544,14 @@
       "revenue": "Revenus Totaux",
       "deliveries": "Ventes Totales",
       "clients": "Clients Totaux",
-      "products": "Produits Totaux",
+      "products": "Articles Totaux",
       "loading": "Chargement...",
       "no_data": "Aucune donnée disponible",
       "error": "Une erreur s'est produite",
-      "top_products": "Meilleurs Produits",
+      "top_products": "Meilleurs Articles",
       "sold": "Vendus",
       "of_total_revenue": "du revenu total",
-      "no_products_sold": "Aucun produit vendu",
+      "no_products_sold": "Aucun article vendu",
       "recent_deliveries": "Ventes Récentes",
       "access_delivery_page": "Accéder à la page de vente",
       "no_deliveries_recorded": "Aucune vente enregistrée",
@@ -1558,7 +1560,7 @@
       "period_total": "Total Période",
       "payment_volume": "Volume :",
       "payment_proportion": "Proportion :",
-      "pdf_col_product": "Produit",
+      "pdf_col_product": "Article",
       "pdf_col_sales": "Ventes (%)",
       "top_clients": "Meilleurs Clients",
       "top_debtors": "Principaux Débiteurs",
@@ -1601,7 +1603,7 @@
       },
       "retry": "Réessayer",
       "location": "Localisation",
-      "supplier_products": "Nombre de produits fournis",
+      "supplier_products": "Nombre d'articles fournis",
       "ref": "réf.",
       "risk": {
         "low": "Faible",
@@ -1610,7 +1612,7 @@
       },
       "tooltips": {
         "location": "Localisation",
-        "supplier_products": "Nombre de produits fournis"
+        "supplier_products": "Nombre d'articles fournis"
       },
       "out_of": "sur",
       "delivery_status": {
@@ -1693,7 +1695,7 @@
         "cash": "Cash en main",
         "numDeliveries": "Nombre de ventes",
         "date": "Date",
-        "products": "Produits",
+        "products": "Articles",
         "amount": "Montant",
         "status": "Statut",
         "delivered": "LIVRÉ",
@@ -1844,12 +1846,12 @@
           "loading": "Chargement des données...",
           "date": "Date :",
           "remainder": "Reste :",
-          "productsDelivered": "Produits livrés :",
+          "productsDelivered": "Articles livrés :",
           "oldDebtIncluded": "Ancienne dette :",
           "totalDue": "Total dû :",
           "paid": "Payé :",
           "remainingToPay": "Reste à payer :",
-          "productDetails": "Détails des produits",
+          "productDetails": "Détails des articles",
           "qty": "Qté :",
           "amountToPay": "Montant à payer",
           "payButton": "Payer"
@@ -2031,7 +2033,7 @@
     "paginationInfo": "Affichage de {{start}} à {{end}} sur {{total}} éléments"
   },
   "inventory": {
-    "pageTitle": "Inventaire des Produits",
+    "pageTitle": "Inventaire des Articles",
     "stats": {
       "totalQuantity": "Quantité en Stock",
       "articles": "Articles",
@@ -2047,16 +2049,16 @@
       "category": "Catégorie",
       "allCategories": "Toutes les catégories",
       "availability": "Disponibilité",
-      "allProducts": "Tous les produits",
+      "allProducts": "Tous les articles",
       "inStock": "En stock",
       "outOfStock": "Rupture de stock",
       "reset": "Réinitialiser",
       "apply": "Appliquer les filtres"
     },
     "table": {
-      "noData": "Aucun produit trouvé",
+      "noData": "Aucun article trouvé",
       "adjustFilters": "Ajustez vos filtres ou effectuez une nouvelle recherche",
-      "emptyInventory": "Aucun produit dans votre inventaire",
+      "emptyInventory": "Aucun article dans votre inventaire",
       "columns": {
         "alert": "Alerte Stock",
         "image": "Image",
@@ -2080,12 +2082,12 @@
       }
     },
     "details": {
-      "title": "Détails des Produits",
+      "title": "Détails des Articles",
       "livreurTitle": "Détails (Magasinier)",
       "back": "Retour",
-      "breadcrumb": "Produits",
+      "breadcrumb": "Articles",
       "loading": "Chargement des détails...",
-      "notFound": "Produit non trouvé",
+      "notFound": "Article non trouvé",
       "tabs": {
         "info": "Informations",
         "history": "Mes Ventes & Sorties"
@@ -2097,7 +2099,7 @@
         "unit": "Unité de mesure",
         "description": "Description",
         "noCategory": "Sans catégorie",
-        "noDesc": "Aucune description fournie pour ce produit.",
+        "noDesc": "Aucune description fournie pour cet article.",
         "pricingByPack": "Tarifs par Conditionnement",
         "available": "DISPONIBLE",
         "outOfStock": "RUPTURE",
@@ -2118,7 +2120,7 @@
         "empty": "Aucune vente ou sortie enregistrée pour vous."
       },
       "error": "Erreur",
-      "loadingErrorDesc": "Impossible de charger les détails du produit"
+      "loadingErrorDesc": "Impossible de charger les détails de l'article"
     },
     "returnModal": {
       "title": "Retourner au magasin",
@@ -2190,13 +2192,13 @@
       "subtitle": "Notre IA intégrée analyse vos ventes et détecte les opportunités. Posez des questions en langage naturel et obtenez des réponses stratégiques instantanément.",
       "items": [
         "Prévision automatique des ruptures",
-        "Analyse de rentabilité par produit",
+        "Analyse de rentabilité par article",
         "Détection d'anomalies financières"
       ],
       "assistant": "Assistant Lumistock",
       "status": "Online & Analyzing",
       "chat": {
-        "question": "\"Quels sont mes produits les plus rentables ce mois-ci ?\"",
+        "question": "\"Quels sont mes articles les plus rentables ce mois-ci ?\"",
         "answer": "Basé sur vos rapports, le **Sucre** génère 40% de votre marge brute. Une hausse de 5% de la demande est prévue la semaine prochaine."
       }
     },

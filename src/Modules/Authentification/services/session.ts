@@ -1,7 +1,7 @@
 // src/Modules/Authentification/services/session.ts
 // Session de l'utilisateur : stockage des tokens, rafraîchissement
 // automatique et déconnexion réelle (révocation côté serveur).
-import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import { jwtDecode } from "jwt-decode";
 import { getUrlServer } from "../../../configServer";
 
@@ -54,6 +54,11 @@ export const rafraichirToken = (): Promise<string | null> => {
       const token = response.data?.access_token;
       if (typeof token !== "string") return null;
       localStorage.setItem("access_token", token);
+      // Session glissante : le serveur remplace le refresh token passé la
+      // moitié de sa durée, pour qu'un utilisateur actif reste connecté.
+      if (typeof response.data?.refresh_token === "string") {
+        localStorage.setItem("refresh_token", response.data.refresh_token);
+      }
       return token;
     })
     .catch(() => null)
@@ -106,18 +111,52 @@ export const enregistrerTokens = (data: { access_token?: string; refresh_token?:
 
 const ROUTES_AUTH = ["/auth/login", "/auth/refresh", "/auth/logout", "/auth/reset_password", "/auth/forgot_password"];
 
-let intercepteurInstalle = false;
+/** Session terminée sans retour possible : on repart sur la page de connexion. */
+const finDeSession = () => {
+  effacerSession();
+  if (window.location.pathname !== "/login") window.location.href = "/login";
+};
+
+/** La requête vise-t-elle le backend avec un token (hors routes de connexion) ? */
+const estAppelAuthentifie = (url: string) =>
+  url.startsWith(getUrlServer()) && !ROUTES_AUTH.some((r) => url.includes(r));
+
+/** Un token qui expire dans moins de 15 s est renouvelé avant l'envoi. */
+const MARGE_ENVOI = 15;
 
 /**
- * Intercepteur global d'axios : sur une réponse 401, renouvelle l'access token
- * une fois et rejoue la requête ; si la session est terminée, renvoie vers la
- * page de connexion.
+ * En-tête Authorization à utiliser pour une requête qui part maintenant.
+ * Si le token de l'en-tête est expiré (ou presque), il est renouvelé AVANT
+ * l'envoi : la requête ne part pas pour revenir en 401. Un écran qui avait
+ * gardé un ancien token reçoit aussi le token courant.
+ * @returns le nouvel en-tête, ou null pour garder celui de la requête.
  */
-export const installerIntercepteurSession = () => {
-  if (intercepteurInstalle) return;
-  intercepteurInstalle = true;
+const enteteAJour = async (entete: string | null): Promise<string | null> => {
+  if (!entete?.startsWith("Bearer ") || !localStorage.getItem("refresh_token")) return null;
+  const courant = localStorage.getItem("access_token");
+  if (secondesRestantes(entete.slice(7)) > MARGE_ENVOI) return null;
+  if (courant && secondesRestantes(courant) > MARGE_ENVOI) return `Bearer ${courant}`;
+  const token = await rafraichirToken();
+  return token ? `Bearer ${token}` : null;
+};
 
-  axios.interceptors.response.use(undefined, async (error: AxiosError) => {
+/**
+ * Renouvelle le token avant l'envoi s'il expire, et sur une réponse 401
+ * renouvelle une fois puis rejoue la requête ; si la session est terminée,
+ * renvoie vers la page de connexion. Installé sur l'instance axios globale
+ * et sur chaque instance créée (``axios.create``), qui n'hérite pas des
+ * intercepteurs globaux.
+ */
+export const brancherSession = (instance: AxiosInstance) => {
+  instance.interceptors.request.use(async (config) => {
+    const url = `${config.baseURL && !/^https?:/.test(config.url || "") ? config.baseURL : ""}${config.url || ""}`;
+    if (estAppelAuthentifie(url)) {
+      const entete = await enteteAJour(config.headers.get("Authorization") as string | null);
+      if (entete) config.headers.set("Authorization", entete);
+    }
+    return config;
+  });
+  instance.interceptors.response.use(undefined, async (error: AxiosError) => {
     const config = error.config as (InternalAxiosRequestConfig & { _rejoue?: boolean }) | undefined;
     const url = config?.url || "";
     if (error.response?.status !== 401 || !config || config._rejoue || ROUTES_AUTH.some((r) => url.includes(r))) {
@@ -128,11 +167,63 @@ export const installerIntercepteurSession = () => {
     config._rejoue = true;
     const token = await rafraichirToken();
     if (!token) {
-      effacerSession();
-      window.location.href = "/login";
+      finDeSession();
       return Promise.reject(error);
     }
     config.headers.set("Authorization", `Bearer ${token}`);
-    return axios(config);
+    return instance(config);
+  });
+  return instance;
+};
+
+/**
+ * Mêmes règles pour les appels ``fetch`` (une soixantaine d'écrans) : avant,
+ * un token expiré y donnait une erreur sans nouvelle tentative.
+ */
+const installerIntercepteurFetch = () => {
+  const fetchOriginal = window.fetch.bind(window);
+  window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+    const url = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
+    if (!estAppelAuthentifie(url)) return fetchOriginal(input, init);
+
+    const entetes = new Headers(init?.headers ?? (input instanceof Request ? input.headers : undefined));
+    const avantEnvoi = await enteteAJour(entetes.get("Authorization"));
+    if (avantEnvoi) {
+      entetes.set("Authorization", avantEnvoi);
+      init = { ...init, headers: entetes };
+    }
+    // Une requête Request ne se lit qu'une fois : copie gardée pour la rejouer.
+    const copie = input instanceof Request ? input.clone() : input;
+    const reponse = await fetchOriginal(input, init);
+    if (reponse.status !== 401 || !entetes.has("Authorization") || !localStorage.getItem("refresh_token")) {
+      return reponse;
+    }
+    const token = await rafraichirToken();
+    if (!token) {
+      finDeSession();
+      return reponse;
+    }
+    entetes.set("Authorization", `Bearer ${token}`);
+    return fetchOriginal(copie, { ...init, headers: entetes });
+  };
+};
+
+let intercepteurInstalle = false;
+
+/**
+ * À appeler une fois au démarrage : renouvellement sur 401 pour axios et
+ * fetch, et déconnexion synchronisée entre les onglets.
+ */
+export const installerIntercepteurSession = () => {
+  if (intercepteurInstalle) return;
+  intercepteurInstalle = true;
+  brancherSession(axios);
+  installerIntercepteurFetch();
+
+  // Déconnexion dans un autre onglet : celui-ci ne garde pas une session morte.
+  window.addEventListener("storage", (event) => {
+    if (event.key === "access_token" && event.newValue === null && window.location.pathname !== "/login") {
+      window.location.href = "/login";
+    }
   });
 };

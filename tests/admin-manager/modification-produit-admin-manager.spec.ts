@@ -15,10 +15,10 @@ test('test', async ({ page }) => {
   await page.getByRole('button', { name: 'Connectez-vous' }).click();
   await page.getByRole('button', { name: 'Tableau de bord' }).click();
   await page.getByRole('button', { name: 'Tableau de bord' }).click();
-  await page.getByRole('button', { name: 'Produits' }).click();
+  await page.getByRole('button', { name: 'Articles' }).click();
   await page.getByRole('row', { name: '6890d7f0ba569b92ac1bb649' }).getByRole('button').click();
   await page.getByRole('link', { name: 'Modifier' }).click();
   await page.getByRole('textbox', { name: 'Description' }).click();
-  await page.getByRole('textbox', { name: 'Description' }).fill('le produits coùùe j et eparele');
+  await page.getByRole('textbox', { name: 'Description' }).fill('l\'articles coùùe j et eparele');
   await page.getByRole('button', { name: 'Enregistrer les modifications' }).click()
   });

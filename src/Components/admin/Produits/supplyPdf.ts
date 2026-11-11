@@ -495,7 +495,7 @@ export async function generateSupplyPdf(
   // ======================= REPÈRES (4 cartes) =======================
   const chips: [string, string][] = [
     ["Date d'émission", formatDate(supply.created_at)],
-    ["Produits", formatNumber(supply.produits.length)],
+    ["Articles", formatNumber(supply.produits.length)],
     ["Quantité totale", formatNumber(supply.quantite)],
     ["Montant total", `${formatNumber(supply.montant)} ${currency}`],
   ];
@@ -549,7 +549,7 @@ export async function generateSupplyPdf(
 
   // ======================= TABLEAU =======================
   setText(11, TEXT, "bold");
-  pdf.text("Détail des produits", MARGIN, y);
+  pdf.text("Détail des articles", MARGIN, y);
   y += 4;
 
   const cols = [
@@ -580,7 +580,7 @@ export async function generateSupplyPdf(
   drawTableHeader();
   supply.produits.forEach((produit, index) => {
     setText(9.5, TEXT, "bold");
-    const lines = pdf.splitTextToSize(clean(produit.nom) || "Produit", cols[1].w - 6) as string[];
+    const lines = pdf.splitTextToSize(clean(produit.nom) || "Article", cols[1].w - 6) as string[];
     const rowH = lines.length * 4.4 + 4.4;
     if (y + rowH > FOOTER_TOP - 8) {
       newPage();

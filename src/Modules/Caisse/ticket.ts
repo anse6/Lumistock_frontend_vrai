@@ -15,8 +15,11 @@ export const htmlTicket = (vente: VenteCaisse, ctx: EnteteTicket, monnaieRendue 
   const lignes = vente.lignes
     .map((l) => {
       const qte = l.conditionnement ? `${l.quantite_conditionnement} × ${l.conditionnement} (${l.facteur})` : `${l.quantite} × ${m(l.prix_unitaire)}`;
+      const series = l.numeros_serie?.length
+        ? `<tr><td colspan="2" class="qte">N° de série : ${echapper(l.numeros_serie.join(", "))}</td></tr>`
+        : "";
       return `<tr><td colspan="2" class="nom">${echapper(l.nom)}</td></tr>
-        <tr><td class="qte">${echapper(qte)}</td><td class="r">${m(l.total)}</td></tr>`;
+        <tr><td class="qte">${echapper(qte)}</td><td class="r">${m(l.total)}</td></tr>${series}`;
     })
     .join("");
   const reductions = vente.reductions

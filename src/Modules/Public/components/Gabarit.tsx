@@ -29,7 +29,7 @@ export const PageSite: React.FC<{ titreDoc: string; cle?: string; children: Reac
 export const Garanties: React.FC<{ centre?: boolean }> = ({ centre = true }) => {
   const s = useSite();
   return (
-    <ul className={`mt-6 flex flex-wrap gap-x-6 gap-y-2 ${centre ? "justify-center" : ""}`}>
+    <ul className={`mt-6 flex flex-wrap gap-x-6 gap-y-2 ${centre ? "justify-center" : "justify-center lg:justify-start"}`}>
       {s.commun.garanties.map((g) => (
         <li key={g} className="flex items-center gap-2 text-[15px] text-texte">
           <Check size={16} strokeWidth={2.5} aria-hidden="true" className="text-stock" />
@@ -40,11 +40,14 @@ export const Garanties: React.FC<{ centre?: boolean }> = ({ centre = true }) => 
   );
 };
 
-export const BoutonsAction: React.FC<{ secondaire?: { to: string; libelle: string } }> = ({ secondaire }) => {
+export const BoutonsAction: React.FC<{ secondaire?: { to: string; libelle: string }; centre?: boolean }> = ({
+  secondaire,
+  centre = true,
+}) => {
   const s = useSite();
   const sec = secondaire ?? { to: "/contact?sujet=demonstration", libelle: s.commun.conseiller };
   return (
-    <div className="flex flex-col justify-center gap-3 sm:flex-row">
+    <div className={`flex flex-col justify-center gap-3 sm:flex-row ${centre ? "" : "lg:justify-start"}`}>
       <BoutonPrincipal to="/register-store" grand>{s.commun.commencer}</BoutonPrincipal>
       <BoutonSecondaire to={sec.to} grand>{sec.libelle}</BoutonSecondaire>
     </div>

@@ -73,6 +73,8 @@ export const ProductsSection: React.FC = () => {
             quantite_magasin_initiale={product.quantite_magasin_initiale}
             conditionnements={product.conditionnements}
             conditionconfig={product.conditionconfig}
+            suiviSerie={product.suiviSerie}
+            numerosSerie={product.numerosSerie}
           />
         </LigneScannee>
       ))}

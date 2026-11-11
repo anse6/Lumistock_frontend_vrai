@@ -18,6 +18,9 @@ export interface ProduitScanne {
   code_barre?: string | null;
   conditionnements?: ConditionnementScanne[];
   conditionnement_scanne?: ConditionnementScanne | null;
+  /** Article suivi par numéro de série, et numéro de l'unité scannée le cas échéant. */
+  suivi_serie?: boolean;
+  numero_serie_scanne?: string | null;
 }
 
 const entetes = () => ({ Authorization: `Bearer ${localStorage.getItem("access_token")}` });

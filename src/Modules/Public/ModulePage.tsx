@@ -9,6 +9,7 @@ import { BoutonsAction, CtaFinal, Garanties, PageSite } from "./components/Gabar
 import { IconeModule, LienFleche, Note, TexteSurligne, TitreSection } from "./components/Elements";
 import { delai } from "./outils";
 import { Ecran } from "./components/Ecrans";
+import { PhotoModule } from "./components/Photos";
 import { trouverModule, useSite, type Module } from "./site";
 
 /** Bandeau sous la navigation : nom du module + onglets, comme chez Odoo. */
@@ -54,19 +55,31 @@ const ModulePage: React.FC = () => {
 
       {/* ------------------------------------------------------------ bandeau */}
       <section className="bg-white pb-8 pt-14 sm:pt-20">
-        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <div className="flex justify-center" data-apparition>
-            <IconeModule slug={m.slug} taille="l" />
+        {/* texte à gauche, photo du module à droite */}
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:px-8">
+          <div className="text-center lg:text-start">
+            <p className="font-titre text-sm font-bold uppercase tracking-[0.14em] text-marque" data-apparition>
+              {m.nom}
+            </p>
+            <h1 className="mt-4 text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.4rem]" data-apparition>
+              <TexteSurligne texte={m.titre} />
+            </h1>
+            <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-texte sm:text-xl lg:mx-0" data-apparition style={delai(40)}>
+              {m.texte}
+            </p>
+            <div className="mt-9" data-apparition style={delai(80)}>
+              <BoutonsAction centre={false} />
+              <Garanties centre={false} />
+            </div>
           </div>
-          <div className="mt-6">
-            <TitreSection titre={m.titre} texte={m.texte} niveau="h1" />
-          </div>
-          <div className="mt-10" data-apparition style={delai(80)}>
-            <BoutonsAction />
-            <Garanties />
+          <div className="relative mx-auto w-full max-w-xl lg:max-w-none" data-apparition style={delai(120)}>
+            <div aria-hidden="true" className="absolute -bottom-3 -end-3 h-full w-full rounded-[2rem] bg-marque-100 sm:-bottom-5 sm:-end-5" />
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] bg-marque-50 shadow-[0_40px_80px_-40px_rgba(59,7,100,0.5)] ring-1 ring-trait">
+              <PhotoModule slug={m.slug} prioritaire />
+            </div>
           </div>
         </div>
-        <div className="relative mx-auto mt-14 max-w-5xl px-4 sm:px-6" data-apparition style={delai(140)}>
+        <div className="relative mx-auto mt-20 max-w-5xl px-4 sm:mt-24 sm:px-6" data-apparition style={delai(140)}>
           <div className="absolute -left-2 -top-16 hidden xl:block">
             <Note sens="bas-droite">{m.note}</Note>
           </div>
@@ -159,14 +172,18 @@ const ModulePage: React.FC = () => {
                 <li key={slugLie} data-apparition style={delai(i * 70)}>
                   <Link
                     to={`/modules/${slugLie}`}
-                    className="group flex h-full flex-col rounded-2xl border border-trait !bg-white p-7 transition-[border-color,box-shadow] duration-200 hover:border-marque-200 hover:shadow-[0_20px_40px_-24px_rgba(59,7,100,0.35)]"
+                    className="group flex h-full flex-col overflow-hidden rounded-2xl border border-trait !bg-white transition-[border-color,box-shadow] duration-200 hover:border-marque-200 hover:shadow-[0_20px_40px_-24px_rgba(59,7,100,0.35)]"
                   >
-                    <IconeModule slug={slugLie} />
-                    <h3 className="mt-5 text-xl font-bold">{lie.nom}</h3>
-                    <p className="mt-2 flex-1 text-[15px] leading-relaxed !text-texte">{lie.accroche}</p>
-                    <span className="mt-5 text-[15px] font-semibold !text-marque">
-                      {s.commun.decouvrir} <span aria-hidden="true" className="inline-block transition-transform duration-150 group-hover:translate-x-1">→</span>
-                    </span>
+                    <div className="aspect-[16/10] overflow-hidden bg-marque-50">
+                      <PhotoModule slug={slugLie} className="transition-transform duration-500 ease-out group-hover:scale-[1.04]" />
+                    </div>
+                    <div className="flex flex-1 flex-col p-7">
+                      <h3 className="text-xl font-bold">{lie.nom}</h3>
+                      <p className="mt-2 flex-1 text-[15px] leading-relaxed !text-texte">{lie.accroche}</p>
+                      <span className="mt-5 text-[15px] font-semibold !text-marque">
+                        {s.commun.decouvrir} <span aria-hidden="true" className="inline-block transition-transform duration-150 group-hover:translate-x-1 rtl:-scale-x-100">→</span>
+                      </span>
+                    </div>
                   </Link>
                 </li>
               );

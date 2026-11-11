@@ -6,6 +6,7 @@ import { Button, Select, Tooltip } from 'antd';
 import { DeleteOutlined, PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { Conditioning } from './../NewDelivery';
 import { useTranslation } from 'react-i18next';
+import { contenuConditionnement, getConditioningId } from '../../../Components/admin/approvisonnement/conditioning';
 
 interface ProductItemProps {
   id: string;
@@ -113,7 +114,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({
   const handleAddConditioning = () => {
     if (!selectedConditioningId) return;
 
-    const selectedCond = conditionnements.find(c => c._id['$oid'] === selectedConditioningId);
+    const selectedCond = conditionnements.find(c => getConditioningId(c._id) === selectedConditioningId);
     if (!selectedCond) return;
 
     const qty = parseInt(tempConditionedQuantity) || 1;
@@ -124,11 +125,11 @@ export const ProductItem: React.FC<ProductItemProps> = ({
   };
 
   const handleIncrementConditioned = (conditioningId: string) => {
-    const config = conditionconfig.find(c => c.selectedConditioning._id['$oid'] === conditioningId);
+    const config = conditionconfig.find(c => getConditioningId(c.selectedConditioning._id) === conditioningId);
     if (!config) return;
 
     const totalOtherUnits = conditionconfig.reduce(
-      (sum, c) => sum + (c.selectedConditioning._id['$oid'] !== conditioningId ? c.conditionedQuantity * c.selectedConditioning.facteur : 0),
+      (sum, c) => sum + (getConditioningId(c.selectedConditioning._id) !== conditioningId ? c.conditionedQuantity * c.selectedConditioning.facteur : 0),
       0
     ) + quantity;
     const maxPossible = Math.floor((maxIndividualStock - totalOtherUnits) / config.selectedConditioning.facteur);
@@ -140,7 +141,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({
   };
 
   const handleDecrementConditioned = (conditioningId: string) => {
-    const config = conditionconfig.find(c => c.selectedConditioning._id['$oid'] === conditioningId);
+    const config = conditionconfig.find(c => getConditioningId(c.selectedConditioning._id) === conditioningId);
     if (!config || config.conditionedQuantity <= 0) return;
 
     const newQty = config.conditionedQuantity - 1;
@@ -283,7 +284,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({
             {/* List of active conditionings */}
             <div className="space-y-2 mb-3">
                 {conditionconfig.map((config) => (
-                    <div key={config.selectedConditioning._id['$oid']} className="flex items-center justify-between text-sm bg-gray-50 px-3 py-2 rounded-md">
+                    <div key={getConditioningId(config.selectedConditioning._id)} className="flex items-center justify-between text-sm bg-gray-50 px-3 py-2 rounded-md">
                         <div className="flex items-center gap-2">
                             <span className="font-medium text-gray-700">{config.selectedConditioning.nom}</span>
                             <span className="text-xs text-gray-400">({config.selectedConditioning.facteur} {t('delivery.deliveryConfig.productUnitShort')})</span>
@@ -291,12 +292,12 @@ export const ProductItem: React.FC<ProductItemProps> = ({
                          <div className="flex items-center gap-3">
                              <div className="flex items-center bg-white rounded border border-gray-200 h-7">
                                   <button 
-                                    onClick={() => handleDecrementConditioned(config.selectedConditioning._id['$oid'])}
+                                    onClick={() => handleDecrementConditioned(getConditioningId(config.selectedConditioning._id))}
                                     className="px-2 hover:bg-gray-100 text-gray-500"
                                 >-</button>
                                   <span className="px-2 font-medium text-gray-700 min-w-[20px] text-center">{config.conditionedQuantity}</span>
                                    <button 
-                                    onClick={() => handleIncrementConditioned(config.selectedConditioning._id['$oid'])}
+                                    onClick={() => handleIncrementConditioned(getConditioningId(config.selectedConditioning._id))}
                                     disabled={
                                         config.conditionedQuantity * config.selectedConditioning.facteur >=
                                         maxIndividualStock - totalUsedUnits + config.conditionedQuantity * config.selectedConditioning.facteur
@@ -305,7 +306,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({
                                 >+</button>
                              </div>
                              <button 
-                                onClick={() => handleRemoveConditioning(config.selectedConditioning._id['$oid'])}
+                                onClick={() => handleRemoveConditioning(getConditioningId(config.selectedConditioning._id))}
                                 className="text-gray-400 hover:text-red-500"
                             >
                                 <DeleteOutlined />
@@ -326,7 +327,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({
                     placeholder={t('delivery.deliveryConfig.productAddConditioning')}
                     className="flex-1"
                     size="small"
-                    options={conditionnements.map(c => ({ label: `${c.nom} (${c.facteur} u)`, value: c._id['$oid'] }))}
+                    options={conditionnements.map(c => ({ label: `${c.nom} (${contenuConditionnement(c)} u)`, value: getConditioningId(c._id) }))}
                  />
                  {selectedConditioningId && (
                     <>

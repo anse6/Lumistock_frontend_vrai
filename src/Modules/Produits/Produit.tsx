@@ -30,7 +30,7 @@ const ProductsInventory: React.FC = () => {
       const data = await fetchProducts();
       setProducts(data);
     } catch (error) {
-      console.error("Erreur lors du chargement des produits:", error);
+      console.error("Erreur lors du chargement des articles:", error);
     } finally {
       setLoading(false);
     }

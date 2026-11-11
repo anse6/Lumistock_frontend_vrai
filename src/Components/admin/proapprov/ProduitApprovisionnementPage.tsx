@@ -147,7 +147,7 @@ const ProduitApprovisionnementPage: React.FC = () => {
         setProduits(formattedProduits);
         formattedProduits.forEach((p) => {
           console.log(`Image URL for ${p.name}: ${p.image}`);
-          console.log("Produits récupérés :", formattedProduits);
+          console.log("Articles récupérés :", formattedProduits);
         });
       } catch (err) {
         setError(err instanceof Error ? err.message : "Erreur inconnue");
@@ -160,7 +160,7 @@ const ProduitApprovisionnementPage: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-center py-8">Chargement des produits...</div>;
+    return <div className="text-center py-8">Chargement des articles...</div>;
   }
 
   if (error) {
@@ -169,7 +169,7 @@ const ProduitApprovisionnementPage: React.FC = () => {
 
   return (
     <>
-      <PageTitle>Produits</PageTitle>
+      <PageTitle>Articles</PageTitle>
       <ProduitApprovisionnement
         produits={produits}
         approvisionnements={approvisionnements}

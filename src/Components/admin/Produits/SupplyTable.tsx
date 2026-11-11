@@ -612,7 +612,7 @@ const SupplyTable: React.FC<SupplyTableProps> = ({
                   </Title>
                   <Text className="!text-white !font-medium !text-base">
                     {supplyDetails.produits.length}{" "}
-                    {i18n.language === "fr" ? "produit" : "product"}
+                    {i18n.language === "fr" ? "article" : "product"}
                     {supplyDetails.produits.length > 1 ? "s" : ""} •{" "}
                     {supplyDetails.quantite.toLocaleString(
                       i18n.language === "fr" ? "fr-FR" : "en-US",

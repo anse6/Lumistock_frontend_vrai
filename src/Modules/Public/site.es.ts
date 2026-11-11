@@ -14,20 +14,32 @@ const modules: Module[] = [
       {
         titre: "Rebaja, descuento, bonificación: *cada reducción* en su sitio",
         texte: "Lumistock usa las tres reducciones que conocen los contables. Cada una se registra con su motivo y después el IVA se aplica sobre el importe neto: tus facturas y tus libros siguen siendo exactos.",
-        points: ["Rebaja por defecto, descuento a buen cliente, bonificación por volumen", "IVA añadido después de las reducciones, nunca antes", "Bonificaciones limitadas para evitar errores"],
+        points: [
+          "Rebaja por defecto, descuento a buen cliente, bonificación por volumen",
+          "IVA añadido después de las reducciones, nunca antes",
+          "Bonificaciones limitadas para evitar errores",
+        ],
         ecran: "vente",
       },
       {
         titre: "Varios pagos, *un saldo siempre al día*",
         texte: "Un cliente paga una parte en efectivo y el resto por Orange Money la semana siguiente: cada pago se fecha con su método y el saldo pasa a la cuenta del cliente.",
-        points: ["Efectivo, Orange Money, MTN MoMo, banco, cheque", "Pagar el resto más tarde, desde la venta o la ficha del cliente", "Factura y recibo en PDF para imprimir"],
+        points: [
+          "Efectivo, Orange Money, MTN MoMo, banco, cheque",
+          "Pagar el resto más tarde, desde la venta o la ficha del cliente",
+          "Factura y recibo en PDF para imprimir",
+        ],
         ecran: "ticket",
         note: "Impreso en papel de 80 mm",
       },
       {
         titre: "Devoluciones y anulaciones *sin complicaciones*",
         texte: "Un cliente devuelve un artículo: la devolución lo vuelve a poner en stock y tú eliges reembolsar al cliente o abonarlo en su cuenta. Una venta anulada va a la papelera y puede restaurarse.",
-        points: ["Estado de cada venta: confirmada, devuelta en parte, devuelta, anulada", "Un pago excesivo nunca se pierde: queda pendiente de reembolso", "Política de devolución definida por la tienda"],
+        points: [
+          "Estado de cada venta: confirmada, devuelta en parte, devuelta, anulada",
+          "Un pago excesivo nunca se pierde: queda pendiente de reembolso",
+          "Política de devolución definida por la tienda",
+        ],
         ecran: "mouvements",
       },
     ],
@@ -70,7 +82,11 @@ const modules: Module[] = [
       {
         titre: "Un cajero solo ve *su caja*",
         texte: "Un cajero solo accede a sus ventas, su sesión y sus estadísticas: ni precios de compra, ni márgenes, ni finanzas de la tienda. El servidor lo comprueba en cada solicitud.",
-        points: ["Descuentos solo si el administrador lo permite", "Anulación posible en los minutos siguientes a la venta", "Crédito reservado a clientes registrados"],
+        points: [
+          "Descuentos solo si el administrador lo permite",
+          "Anulación posible en los minutos siguientes a la venta",
+          "Crédito reservado a clientes registrados",
+        ],
         ecran: "droits",
       },
     ],
@@ -113,7 +129,11 @@ const modules: Module[] = [
       {
         titre: "Reclamar *en el momento justo*",
         texte: "El panel enumera tus deudores y los clientes que no compran desde hace 60 días. Se envía un recordatorio por SMS o correo, con el importe exacto adeudado.",
-        points: ["Deudores, clientes con saldo a favor, clientes a recuperar", "Mensaje personalizado con la deuda del cliente", "Historial de compras en cada ficha"],
+        points: [
+          "Deudores, clientes con saldo a favor, clientes a recuperar",
+          "Mensaje personalizado con la deuda del cliente",
+          "Historial de compras en cada ficha",
+        ],
         ecran: "messagerie",
       },
     ],
@@ -191,7 +211,11 @@ const modules: Module[] = [
       {
         titre: "El coste real: *CMP, FIFO o LIFO*",
         texte: "Cada entrada en stock crea un lote con su precio de compra. En cada venta, Lumistock consume los lotes según el método elegido: el coste de la venta y el margen son exactos.",
-        points: ["Coste medio ponderado por defecto, FIFO o LIFO", "Coste registrado en cada línea vendida", "Cuenta de resultados y márgenes siguen el método"],
+        points: [
+          "Coste medio ponderado por defecto, FIFO o LIFO",
+          "Coste registrado en cada línea vendida",
+          "Cuenta de resultados y márgenes siguen el método",
+        ],
         ecran: "valorisation",
         note: "Cambiar el método = cambiar el cálculo de los márgenes",
       },
@@ -401,17 +425,29 @@ export const siteEs: Site = {
     principale: "Navegación principal",
     tousModules: "Ver todas las funciones",
     groupes: [
-      { titre: "Vender", modules: ["ventes", "caisse", "clients", "messagerie"] },
-      { titre: "Gestionar el stock", modules: ["stock", "achats"] },
-      { titre: "Finanzas", modules: ["comptabilite"] },
-      { titre: "Dirigir", modules: ["pilotage", "equipe"] },
+      {
+        titre: "Vender",
+        modules: ["ventes", "caisse", "clients", "messagerie"],
+      },
+      {
+        titre: "Gestionar el stock",
+        modules: ["stock", "achats"],
+      },
+      {
+        titre: "Finanzas",
+        modules: ["comptabilite"],
+      },
+      {
+        titre: "Dirigir",
+        modules: ["pilotage", "equipe"],
+      },
     ],
     apercu: "Visión general",
   },
   commun: {
     commencer: "Crear mi tienda",
     conseiller: "Hablar con un asesor",
-    garanties: ["Nada que instalar", "Acompañamiento al empezar"],
+    garanties: ["Ordenador, tableta y teléfono", "Acompañamiento al empezar"],
     decouvrir: "Descubrir",
     toutesFonctions: "Descubrir todas las funciones",
     fonctionsTitre: "Cada función, *bien pensada*",
@@ -424,14 +460,24 @@ export const siteEs: Site = {
   accueil: {
     titreDoc: "Lumistock · Ventas, stock, caja y contabilidad para tu tienda",
     titre: "Todo tu negocio en *un solo software*",
-    texte: "Ventas, caja, stock, crédito a clientes y contabilidad SYSCOHADA: Lumistock reúne todo lo que necesitas para llevar una tienda en África Central, en tu navegador.",
-    notes: ["Importes en FCFA", "Orange Money y MTN MoMo"],
+    texte: "Ventas, caja, stock, crédito a clientes y contabilidad: Lumistock reúne todo lo que necesitas para llevar un comercio, estés donde estés en el mundo.",
+    notes: ["El IVA de tu país", "En seis idiomas"],
     modulesTitre: "Una necesidad, *un módulo*",
     modulesTexte: "Nueve módulos que trabajan juntos, incluidos para todas las tiendas.",
     ecranTitre: "Tu tienda, *de un vistazo*",
     ecranNote: "El panel del administrador",
+    appareils: {
+      titre: "En el ordenador, la tableta *y el teléfono*",
+      texte: "Lumistock se usa en todas las pantallas. Venda en el mostrador con una tableta, siga su tienda desde el teléfono y lleve la contabilidad en el ordenador: la misma cuenta y las mismas cifras en todas partes.",
+      note: "La misma venta, en cada pantalla",
+      points: [
+        { titre: "Ordenador", desc: "El panel, la contabilidad y los informes, en pantalla grande." },
+        { titre: "Tableta", desc: "Una caja táctil en el mostrador: toque los artículos, cobre e imprima el ticket." },
+        { titre: "Teléfono", desc: "Una venta, un cliente o una reposición, esté donde esté." },
+      ],
+    },
     realitesTitre: "Pensado para *tu forma de trabajar*",
-    realitesTexte: "Lumistock no es un software extranjero traducido a toda prisa: está hecho para la forma en que se vende aquí.",
+    realitesTexte: "IVA de tu país, moneda, formas de pago e idioma: Lumistock se adapta a tu forma de vender, esté donde esté tu tienda.",
     realites: [
       { titre: "Francos CFA, al franco", desc: "Importes sin céntimos, el IVA del país (19,25 % en Camerún), redondeos correctos." },
       { titre: "El dinero móvil como medio de pago", desc: "Orange Money y MTN MoMo junto al efectivo y al banco, hasta la conciliación de extractos." },
@@ -441,12 +487,32 @@ export const siteEs: Site = {
       { titre: "Seis idiomas", desc: "Francés, inglés, español, alemán, chino y árabe: cada usuario elige su idioma en cualquier momento." },
     ],
     zooms: [
-      { slug: "caisse", index: 1 },
-      { slug: "clients", index: 1 },
-      { slug: "comptabilite", index: 0 },
+      {
+        slug: "caisse",
+        index: 1,
+      },
+      {
+        slug: "clients",
+        index: 1,
+      },
+      {
+        slug: "comptabilite",
+        index: 0,
+      },
     ],
     secteursTitre: "Para la tienda de barrio y para *el mayorista*",
-    secteurs: ["Tiendas", "Ferreterías", "Supermercados", "Mayoristas", "Depósitos de bebidas", "Farmacias", "Cosmética", "Librerías", "Materiales de construcción", "Recambios"],
+    secteurs: [
+      "Tiendas",
+      "Ferreterías",
+      "Supermercados",
+      "Mayoristas",
+      "Depósitos de bebidas",
+      "Farmacias",
+      "Cosmética",
+      "Librerías",
+      "Materiales de construcción",
+      "Recambios",
+    ],
     etapesTitre: "En marcha en *tres pasos*",
     etapes: [
       { titre: "Registra tu tienda", desc: "Basta con unos minutos: tu tienda, el administrador y, si quieres, tus datos legales." },
@@ -484,11 +550,26 @@ export const siteEs: Site = {
     ],
     faqTitre: "Preguntas sobre *los precios*",
     faq: [
-      { q: "¿Hay módulos de pago adicionales?", r: "No. Ventas, caja, stock, clientes, mensajes, contabilidad, informes, asistente IA y permisos: todas las tiendas tienen todos los módulos." },
-      { q: "¿Qué cambia de una licencia a otra?", r: "El número de cuentas: gerentes, vendedores y cajeros. El administrador de la tienda siempre está incluido." },
-      { q: "Mi equipo crece: ¿qué pasa?", r: "Contáctanos: ajustamos tu licencia para añadir cuentas, sin cambiar tus datos ni tus ajustes." },
-      { q: "Tengo varias tiendas.", r: "Cada tienda se registra por separado, con su propio administrador: su stock, equipo, clientes y contabilidad son independientes. Cuéntanos tu proyecto." },
-      { q: "¿Están incluidos los SMS?", r: "Los SMS pasan por un proveedor (Orange o Twilio) y pueden limitarse con un cupo mensual. Lo hablamos cuando pidas tu presupuesto." },
+      {
+        q: "¿Hay módulos de pago adicionales?",
+        r: "No. Ventas, caja, stock, clientes, mensajes, contabilidad, informes, asistente IA y permisos: todas las tiendas tienen todos los módulos.",
+      },
+      {
+        q: "¿Qué cambia de una licencia a otra?",
+        r: "El número de cuentas: gerentes, vendedores y cajeros. El administrador de la tienda siempre está incluido.",
+      },
+      {
+        q: "Mi equipo crece: ¿qué pasa?",
+        r: "Contáctanos: ajustamos tu licencia para añadir cuentas, sin cambiar tus datos ni tus ajustes.",
+      },
+      {
+        q: "Tengo varias tiendas.",
+        r: "Cada tienda se registra por separado, con su propio administrador: su stock, equipo, clientes y contabilidad son independientes. Cuéntanos tu proyecto.",
+      },
+      {
+        q: "¿Están incluidos los SMS?",
+        r: "Los SMS pasan por un proveedor (Orange o Twilio) y pueden limitarse con un cupo mensual. Lo hablamos cuando pidas tu presupuesto.",
+      },
     ],
   },
   securite: {
@@ -535,7 +616,7 @@ export const siteEs: Site = {
     questionTexte: "Escríbenos: te explicaremos cómo se protegen tus datos.",
   },
   footer: {
-    accroche: "El software de gestión comercial para las tiendas de África Central: ventas, stock, caja, crédito a clientes y contabilidad.",
+    accroche: "El software de gestión comercial para comercios de todo el mundo: ventas, stock, caja, crédito a clientes y contabilidad.",
     modules: "Módulos",
     decouvrir: "Descubrir",
     compte: "Cuenta",
@@ -543,7 +624,8 @@ export const siteEs: Site = {
     oubli: "Contraseña olvidada",
     faq: "Preguntas",
     droits: "Todos los derechos reservados.",
-    ohada: "Pensado para el espacio OHADA · Importes en FCFA",
+    suivre: "Síganos",
+    ohada: "Disponible en todo el mundo · Contabilidad SYSCOHADA incluida",
   },
   modules,
 };

@@ -31,6 +31,8 @@ import CompanyProfiles from "./Components/admin/parameters/CompanyProfiles";
 import AddClient from "./Components/admin/livaision/Customer/add_clients";
 import Parents from "./Components/admin/Parents";
 import PageCodesBarres from "./Modules/CodeBarre/PageCodesBarres";
+import PageFournisseurs from "./Modules/Referentiels/PageFournisseurs";
+import PageCategories from "./Modules/Referentiels/PageCategories";
 import ConfirmationDeconnexion from "./Modules/Authentification/ConfirmationDeconnexion";
 import DashboardLayoutes from "./layouts/DashboardLayoutes";
 import Superadmindashboard from "./Modules/Dashboard/index2";
@@ -126,6 +128,16 @@ const App = () => {
           Input: {
             borderRadius: 8,
             controlHeight: 40,
+          },
+          // Couleurs de sélection fixées : antd les dérive de colorPrimary, et
+          // à partir du bleu nuit par défaut il obtient un gris-violet foncé
+          // qui rend illisibles les lignes cochées et les options choisies.
+          Table: {
+            rowSelectedBg: "#F5F3FF",
+            rowSelectedHoverBg: "#EDE9FE",
+          },
+          Select: {
+            optionSelectedBg: "#F5F3FF",
           },
         },
       }}
@@ -226,6 +238,8 @@ const App = () => {
                 <Route index element={<Parents />} />
                 <Route path="add_product" element={<AddProduct />} />
                 <Route path="codes-barres" element={<PageCodesBarres />} />
+                <Route path="fournisseurs" element={<PageFournisseurs />} />
+                <Route path="categories" element={<PageCategories />} />
                 <Route path="productselect" element={<ProductSelect />} />
                 <Route
                   path="edit_approv/:id"

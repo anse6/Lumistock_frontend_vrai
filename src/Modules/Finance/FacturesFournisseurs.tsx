@@ -1,5 +1,6 @@
 // Factures fournisseurs : achats de marchandises à crédit. La facture fait
 // entrer les articles en stock ; la dette est réglée en un ou plusieurs fois.
+import SaisieNumeros from "../NumerosSerie/SaisieNumeros";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { App, AutoComplete, Button, Checkbox, DatePicker, Empty, Form, Input, InputNumber, Modal, Popconfirm, Select, Table, Tooltip } from "antd";
 import type { ColumnsType } from "antd/es/table";
@@ -34,7 +35,7 @@ const FacturesFournisseurs: React.FC<{ devise: string; onChange: () => void }> =
   const [form] = Form.useForm();
   const [factures, setFactures] = useState<FactureFournisseur[]>([]);
   const [chargement, setChargement] = useState(true);
-  const [produits, setProduits] = useState<{ id: string; nom: string; prix_achat: number }[]>([]);
+  const [produits, setProduits] = useState<{ id: string; nom: string; prix_achat: number; suivi_serie?: boolean }[]>([]);
   const [fournisseurs, setFournisseurs] = useState<{ _id: string; nom: string }[]>([]);
   const [creation, setCreation] = useState(false);
   const [envoi, setEnvoi] = useState(false);
@@ -70,14 +71,15 @@ const FacturesFournisseurs: React.FC<{ devise: string; onChange: () => void }> =
     setCreation(true);
     try {
       const [inventaire, liste] = await Promise.all([lireRapport<RapportInventaire>("inventaire", {}), getFournisseurs().catch(() => [])]);
-      setProduits(inventaire.produits.map((p) => ({ id: p.produit_id, nom: p.produit, prix_achat: p.prix_achat })));
+      setProduits(inventaire.produits.map((p) => ({ id: p.produit_id, nom: p.produit, prix_achat: p.prix_achat,
+        suivi_serie: p.suivi_serie })));
       setFournisseurs(liste);
     } catch (err) {
-      message.error(messageErreur(err, "La liste des produits n'a pas pu être chargée."));
+      message.error(messageErreur(err, "La liste des articles n'a pas pu être chargée."));
     }
   };
 
-  const lignesSaisies = Form.useWatch("lignes", form) as { produit_id?: string; quantite?: number; prix_achat?: number }[] | undefined;
+  const lignesSaisies = Form.useWatch("lignes", form) as { produit_id?: string; quantite?: number; prix_achat?: number; numeros_serie?: string[] }[] | undefined;
   const tvaSaisie = Form.useWatch("montant_tva", form) as number | undefined;
   const totalHt = (lignesSaisies || []).reduce((s, l) => s + (l?.quantite || 0) * (l?.prix_achat || 0), 0);
   const fiscalite = useFiscalite();
@@ -100,10 +102,11 @@ const FacturesFournisseurs: React.FC<{ devise: string; onChange: () => void }> =
         date_echeance: v.date_echeance ? v.date_echeance.format("YYYY-MM-DD") : null,
         montant_tva: v.montant_tva || 0,
         note: v.note,
-        lignes: v.lignes.map((l: { produit_id: string; quantite: number; prix_achat: number }) => ({
+        lignes: v.lignes.map((l: { produit_id: string; quantite: number; prix_achat: number; numeros_serie?: string[] }) => ({
           produit_id: l.produit_id,
           quantite: l.quantite,
           prix_achat: l.prix_achat,
+          ...(produits.find((p) => p.id === l.produit_id)?.suivi_serie ? { numeros_serie: l.numeros_serie || [] } : {}),
         })),
         paiement: v.acompte ? { montant: v.acompte, mode: v.acompte_mode } : undefined,
       });
@@ -311,7 +314,7 @@ const FacturesFournisseurs: React.FC<{ devise: string; onChange: () => void }> =
           pagination={false}
           dataSource={f.lignes}
           columns={[
-            { title: "Produit", dataIndex: "nom" },
+            { title: "Article", dataIndex: "nom" },
             { title: "Qté", dataIndex: "quantite", align: "right", render: (n: number) => fmt(n) },
             { title: "Prix HT", dataIndex: "prix_achat", align: "right", render: (n: number) => fmt(n) },
             { title: "Total", dataIndex: "total", align: "right", render: (n: number) => <b>{fmt(n)}</b> },
@@ -398,7 +401,7 @@ const FacturesFournisseurs: React.FC<{ devise: string; onChange: () => void }> =
         <Input
           allowClear
           prefix={<Search size={14} className="text-slate-400" />}
-          placeholder="Fournisseur, n°, produit…"
+          placeholder="Fournisseur, n°, article…"
           value={recherche}
           onChange={(e) => setRecherche(e.target.value)}
           className="w-full sm:!w-64"
@@ -456,11 +459,11 @@ const FacturesFournisseurs: React.FC<{ devise: string; onChange: () => void }> =
               <div className="space-y-2">
                 {champs.map((champ) => (
                   <div key={champ.key} className="grid grid-cols-[1fr_90px_130px_32px] items-start gap-2">
-                    <Form.Item name={[champ.name, "produit_id"]} rules={[{ required: true, message: "Produit" }]} className="!mb-0">
+                    <Form.Item name={[champ.name, "produit_id"]} rules={[{ required: true, message: "Article" }]} className="!mb-0">
                       <Select
                         showSearch
                         optionFilterProp="label"
-                        placeholder="Produit"
+                        placeholder="Article"
                         options={produits.map((p) => ({ value: p.id, label: p.nom }))}
                         onChange={(id) => {
                           const p = produits.find((x) => x.id === id);
@@ -475,6 +478,19 @@ const FacturesFournisseurs: React.FC<{ devise: string; onChange: () => void }> =
                       <InputNumber min={0} placeholder="Prix HT" className="!w-full" />
                     </Form.Item>
                     <Button type="text" danger icon={<Trash2 size={14} />} disabled={champs.length === 1} onClick={() => remove(champ.name)} />
+                    {produits.find((p) => p.id === lignesSaisies?.[champ.name]?.produit_id)?.suivi_serie && (
+                      <Form.Item
+                        name={[champ.name, "numeros_serie"]}
+                        className="col-span-4 !mb-1"
+                        rules={[{
+                          validator: (_, v: string[] = []) => v.length === (Number(lignesSaisies?.[champ.name]?.quantite) || 0)
+                            ? Promise.resolve()
+                            : Promise.reject(new Error("Un numéro de série par unité reçue.")),
+                        }]}
+                      >
+                        <SaisieNumeros attendu={Number(lignesSaisies?.[champ.name]?.quantite) || 0} />
+                      </Form.Item>
+                    )}
                   </div>
                 ))}
                 <Button type="dashed" block icon={<Plus size={14} />} onClick={() => add({})}>

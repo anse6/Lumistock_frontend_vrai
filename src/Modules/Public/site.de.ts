@@ -411,7 +411,7 @@ export const siteDe: Site = {
   commun: {
     commencer: "Mein Geschäft anlegen",
     conseiller: "Mit einem Berater sprechen",
-    garanties: ["Keine Installation", "Begleitung beim Start"],
+    garanties: ["Computer, Tablet und Handy", "Begleitung beim Start"],
     decouvrir: "Entdecken",
     toutesFonctions: "Alle Funktionen entdecken",
     fonctionsTitre: "Jede Funktion, *gut durchdacht*",
@@ -424,14 +424,20 @@ export const siteDe: Site = {
   accueil: {
     titreDoc: "Lumistock · Verkauf, Bestand, Kasse und Buchhaltung für Ihr Geschäft",
     titre: "Ihr ganzes Geschäft in *einer Software*",
-    texte: "Verkauf, Kasse, Bestand, Kundenkredit und SYSCOHADA-Buchhaltung: Lumistock vereint alles, was Sie zum Führen eines Geschäfts in Zentralafrika brauchen, in Ihrem Browser.",
-    notes: ["Beträge in FCFA", "Orange Money und MTN MoMo"],
+    texte: "Verkauf, Kasse, Bestand, Kundenkredit und Buchhaltung: Lumistock vereint alles, was Sie zum Führen eines Geschäfts brauchen – egal, wo auf der Welt Sie sind.",
+    notes: ["Die MwSt. Ihres Landes", "In sechs Sprachen"],
     modulesTitre: "Ein Bedarf, *ein Modul*",
     modulesTexte: "Neun Module, die zusammenarbeiten – für jedes Geschäft enthalten.",
     ecranTitre: "Ihr Geschäft *auf einen Blick*",
     ecranNote: "Das Dashboard des Administrators",
+    appareils: {
+      titre: "Am Computer, auf dem Tablet *und dem Handy*",
+      texte: "Lumistock läuft auf jedem Bildschirm. Verkaufen Sie an der Theke mit dem Tablet, verfolgen Sie Ihr Geschäft auf dem Handy und führen Sie die Buchhaltung am Computer: überall dasselbe Konto und dieselben Zahlen.",
+      note: "Derselbe Verkauf, auf jedem Bildschirm",
+      points: [{ titre: "Computer", desc: "Dashboard, Buchhaltung und Berichte auf dem großen Bildschirm." }, { titre: "Tablet", desc: "Eine Touch-Kasse an der Theke: Artikel antippen, kassieren, Beleg drucken." }, { titre: "Handy", desc: "Ein Verkauf, ein Kunde oder eine Nachbestellung, wo immer Sie sind." }],
+    },
     realitesTitre: "Gemacht für *Ihre Arbeitsweise*",
-    realitesTexte: "Lumistock ist keine eilig übersetzte ausländische Software: Es ist für die Art gebaut, wie hier verkauft wird.",
+    realitesTexte: "Mehrwertsteuer Ihres Landes, Währung, Zahlungsarten und Sprache: Lumistock passt sich Ihrer Verkaufsweise an, wo auch immer Ihr Geschäft liegt.",
     realites: [
       { titre: "CFA-Franc, auf den Franc genau", desc: "Beträge ohne Centimes, die MwSt. des Landes (19,25 % in Kamerun), korrekte Rundung." },
       { titre: "Mobile Money als Zahlungsart", desc: "Orange Money und MTN MoMo neben Bargeld und Bank, bis zur Abstimmung der Auszüge." },
@@ -535,7 +541,7 @@ export const siteDe: Site = {
     questionTexte: "Schreiben Sie uns: Wir erklären Ihnen, wie Ihre Daten geschützt sind.",
   },
   footer: {
-    accroche: "Die Verwaltungssoftware für Geschäfte in Zentralafrika: Verkauf, Bestand, Kasse, Kundenkredit und Buchhaltung.",
+    accroche: "Die Verwaltungssoftware für Geschäfte auf der ganzen Welt: Verkauf, Bestand, Kasse, Kundenkredit und Buchhaltung.",
     modules: "Module",
     decouvrir: "Entdecken",
     compte: "Konto",
@@ -543,7 +549,8 @@ export const siteDe: Site = {
     oubli: "Passwort vergessen",
     faq: "Fragen",
     droits: "Alle Rechte vorbehalten.",
-    ohada: "Entwickelt für den OHADA-Raum · Beträge in FCFA",
+    suivre: "Folgen Sie uns",
+    ohada: "Weltweit nutzbar · SYSCOHADA-Buchhaltung inklusive",
   },
   modules,
 };

@@ -5,7 +5,9 @@
 import React, { useEffect, useState } from "react";
 import { useOngletUrl } from "../../hooks/useOngletUrl";
 import { ConfigProvider, Tabs } from "antd";
-import { BarChart3, CalendarRange, ArrowLeftRight, ClipboardList, Receipt, Wallet } from "lucide-react";
+import { BarChart3, CalendarRange, ArrowLeftRight, ClipboardList, Hash, Receipt, Wallet } from "lucide-react";
+import RapportNumerosSerie from "../NumerosSerie/RapportNumerosSerie";
+import { useSuiviSerieActif } from "../NumerosSerie/api";
 import dayjs from "dayjs";
 import "dayjs/locale/fr";
 import { useTranslation } from "react-i18next";
@@ -37,7 +39,7 @@ const DeliveryReportPage: React.FC = () => {
   const [devise, setDevise] = useState("FCFA");
   // Onglet relié à l'adresse (?onglet=inventaire) : le menu latéral ouvre le rapport voulu.
   const [onglet, changerOnglet] = useOngletUrl(
-    estLivreur ? ["ventes", "encaissements"] : ["ventes", "encaissements", "mouvements", "annuel", "inventaire"],
+    estLivreur ? ["ventes", "encaissements"] : ["ventes", "encaissements", "mouvements", "annuel", "inventaire", "numeros-serie"],
     "ventes",
     CLE_ONGLET,
   );
@@ -51,6 +53,7 @@ const DeliveryReportPage: React.FC = () => {
   }, []);
 
 
+  const optionSerie = useSuiviSerieActif() && !estLivreur;
   const libelle = (icone: React.ReactNode, texte: string) => (
     <span className="flex items-center gap-2">
       {icone}
@@ -74,6 +77,10 @@ const DeliveryReportPage: React.FC = () => {
             children: <AnnualStockReport devise={devise} />,
           },
           { key: "inventaire", label: libelle(<ClipboardList size={16} />, "Inventaire"), children: <InventoryReport devise={devise} /> },
+          ...(optionSerie
+            ? [{ key: "numeros-serie", label: libelle(<Hash size={16} />, "Numéros de série"),
+                 children: <RapportNumerosSerie devise={devise} /> }]
+            : []),
         ]),
   ];
   const actif = onglets.some((o) => o.key === onglet) ? onglet : "ventes";

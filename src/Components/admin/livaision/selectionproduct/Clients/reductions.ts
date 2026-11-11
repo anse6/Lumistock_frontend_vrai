@@ -25,7 +25,7 @@ export const TYPES_REDUCTION: { type: TypeReduction; libelle: string; aide: stri
   {
     type: "rabais",
     libelle: "Rabais",
-    aide: "Réduction exceptionnelle pour un défaut : produit abîmé, non conforme, livraison en retard…",
+    aide: "Réduction exceptionnelle pour un défaut : article abîmé, non conforme, livraison en retard…",
     exemple: "Ex. : sacs déchirés",
   },
   {

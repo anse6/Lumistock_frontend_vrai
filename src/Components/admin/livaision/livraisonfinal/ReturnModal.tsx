@@ -5,6 +5,7 @@ import { getUrlServer } from '../../../../configServer';
 import { Minus, Package, Plus, RotateCcw, Undo2 } from 'lucide-react';
 import { Order } from './types';
 import { appliquerReductions, Reduction } from '../selectionproduct/Clients/reductions';
+import ChoixNumeros from '../../../../Modules/NumerosSerie/ChoixNumeros';
 
 const { TextArea } = Input;
 const PURPLE_950 = '#3b0764';
@@ -14,6 +15,8 @@ export interface ProduitRetour {
   quantite: number; // en unités
   is_conditionne: boolean;
   conditionnement_id?: string;
+  /** Unités retournées d'un article suivi par numéro de série. */
+  numeros_serie?: string[];
 }
 
 interface ReturnModalProps {
@@ -36,6 +39,9 @@ interface Ligne {
   facteur: number;
   parConditionnement: boolean;
   saisie: number; // valeur saisie (unités ou conditionnements selon le mode)
+  /** Article suivi : numéros encore vendus sur la ligne, et ceux qui reviennent. */
+  numeros?: string[];
+  choisis: string[];
 }
 
 const extraireId = (id: unknown): string => {
@@ -74,7 +80,7 @@ const ReturnModal: React.FC<ReturnModalProps> = ({ order, onConfirm, onCancel })
       return {
         key: `${extraireId(p.produit_id)}-${extraireId(p.conditionnement_id) || 'u'}-${i}`,
         produit_id: extraireId(p.produit_id),
-        nom: p.nom || `Produit ${i + 1}`,
+        nom: p.nom || `Article ${i + 1}`,
         unite: p.unite || 'unité',
         prix: Number(p.prix) || 0,
         vendu: Number(p.quantite) || 0,
@@ -84,6 +90,10 @@ const ReturnModal: React.FC<ReturnModalProps> = ({ order, onConfirm, onCancel })
         facteur,
         parConditionnement: Boolean(p.is_conditionne) && facteur > 1,
         saisie: 0,
+        numeros: Array.isArray((p as { numeros_serie?: string[] }).numeros_serie)
+          ? (p as { numeros_serie?: string[] }).numeros_serie
+          : undefined,
+        choisis: [],
       };
     }),
   );
@@ -136,6 +146,7 @@ const ReturnModal: React.FC<ReturnModalProps> = ({ order, onConfirm, onCancel })
             quantite: unites(l),
             is_conditionne: l.is_conditionne,
             ...(l.is_conditionne && l.conditionnement_id ? { conditionnement_id: l.conditionnement_id } : {}),
+            ...(l.numeros ? { numeros_serie: l.choisis } : {}),
           })),
         retenue,
       );
@@ -187,6 +198,18 @@ const ReturnModal: React.FC<ReturnModalProps> = ({ order, onConfirm, onCancel })
                           {l.vendu} {l.unite}(s) vendu(s) · {fmt(l.prix)} / {l.unite}
                         </div>
                       </div>
+                      {l.numeros ? (
+                        <div className="w-full sm:w-72">
+                          <ChoixNumeros
+                            articleId={l.produit_id}
+                            parmi={l.numeros}
+                            value={l.choisis}
+                            onChange={(choisis) => changer(l.key, { choisis, saisie: choisis.length })}
+                            placeholder="Numéros de série retournés"
+                            disabled={envoi}
+                          />
+                        </div>
+                      ) : (
                       <div className="flex items-center gap-2">
                         <div className="flex items-center overflow-hidden rounded-lg border border-slate-200">
                           <button
@@ -223,6 +246,7 @@ const ReturnModal: React.FC<ReturnModalProps> = ({ order, onConfirm, onCancel })
                           max {maxSaisie(l)} {l.parConditionnement ? (l.conditionnement_nom || 'cond.').toLowerCase() : l.unite}
                         </span>
                       </div>
+                      )}
                     </div>
                     {l.is_conditionne && l.facteur > 1 && (
                       <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
@@ -261,7 +285,7 @@ const ReturnModal: React.FC<ReturnModalProps> = ({ order, onConfirm, onCancel })
               onChange={(e) => setMotif(e.target.value)}
               rows={2}
               maxLength={300}
-              placeholder="Ex. : produit défectueux, erreur de commande…"
+              placeholder="Ex. : article défectueux, erreur de commande…"
               disabled={envoi}
             />
           </label>

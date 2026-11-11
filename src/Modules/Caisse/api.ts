@@ -66,6 +66,8 @@ export interface ContexteCaisse {
 
 export interface LigneVente {
   produit_id: string; nom: string; quantite: number; prix_unitaire: number; total: number;
+  /** Unités vendues d'un article suivi par numéro de série. */
+  numeros_serie?: string[];
   conditionnement?: string; facteur?: number; quantite_conditionnement?: number; prix_conditionnement?: number;
 }
 export interface Reduction { type: string; libelle: string; mode: string; valeur: number; montant: number; motif?: string }

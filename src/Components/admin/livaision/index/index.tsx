@@ -23,7 +23,7 @@ import {
   DatePicker,
   App,
 } from "antd";
-import { Package, BarChart3 } from "lucide-react";
+import { Package, BarChart3, Wallet, Clock } from "lucide-react";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 import advancedFormat from "dayjs/plugin/advancedFormat";
@@ -105,6 +105,8 @@ const OrderTable: React.FC = () => {
           amount: livraison.montant_total || 0,
           montant_total: livraison.montant_total || 0,
           montant_produits: livraison.montant_produits || 0,
+          montant_tva: Number(livraison.montant_tva) || 0,
+          frais_retour: Number(livraison.frais_retour) || 0,
           montant_restant: livraison.montant_restant ?? 0,
           montant_paye: livraison.montant_paye ?? 0,
           date: livraison.date_commande
@@ -366,16 +368,20 @@ const OrderTable: React.FC = () => {
   };
 
   const getStats = useCallback(() => {
-    const totalProducts = filteredOrders.reduce(
-      (sum, order) => sum + order.quantity,
-      0,
-    );
-    const totalItemsValue = filteredOrders.reduce(
-      (sum, order) => sum + (order.montant_produits || 0),
-      0,
-    );
-
-    return { totalProducts, totalItemsValue };
+    const somme = (champ: (o: Order) => number) => filteredOrders.reduce((sum, o) => sum + (Number(champ(o)) || 0), 0);
+    return {
+      nbVentes: filteredOrders.length,
+      totalProducts: somme((o) => o.quantity),
+      // Chiffre d'affaires HT : articles seuls, après remises et retours,
+      // sans TVA ni frais de retour (même règle que le tableau de bord).
+      ca: Math.round(somme((o) => o.montant_produits)),
+      tva: Math.round(somme((o) => o.montant_tva ?? 0)),
+      frais: Math.round(somme((o) => o.frais_retour ?? 0)),
+      // Ce que les clients doivent au total (TTC + frais) = Payé + Reste.
+      total: Math.round(somme((o) => o.montant_total)),
+      paye: Math.round(somme((o) => Math.min(o.montant_paye, o.montant_total))),
+      reste: Math.round(somme((o) => Math.max(o.montant_total - o.montant_paye, 0))),
+    };
   }, [filteredOrders]);
 
   const stats = getStats();
@@ -462,7 +468,14 @@ const OrderTable: React.FC = () => {
               <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-xl border border-blue-100">
                 <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
                 <Text className="text-[12px] font-bold text-blue-600 uppercase tracking-widest">
-                  {t("admin.deliveries.stats.showAllHistory")}
+                  {/* Période réellement affichée (le badge disait toujours « tout l'historique »). */}
+                  {statsPeriod === "all" || !selectedDate
+                    ? t("admin.deliveries.stats.showAllHistory")
+                    : statsPeriod === "jour"
+                      ? selectedDate.format("dddd D MMMM YYYY")
+                      : statsPeriod === "semaine"
+                        ? `${selectedDate.startOf("week").format("D MMM")} – ${selectedDate.endOf("week").format("D MMM YYYY")}`
+                        : selectedDate.format("MMMM YYYY")}
                 </Text>
               </div>
             </div>
@@ -507,56 +520,48 @@ const OrderTable: React.FC = () => {
             </div>
           </div>
 
+          {/* Chiffre d'affaires HT = articles (comme le tableau de bord).
+              À encaisser = CA + TVA + frais de retour = Payé + Reste à payer. */}
           <Row gutter={[16, 16]}>
-            {/* Couleurs en style direct : le fond des Card antd écrase les classes bg-*. */}
-            <Col xs={24} sm={12}>
-              <Card
-                className="shadow-sm"
-                style={{ backgroundColor: "#faf5ff", borderColor: "#e9d5ff" }}
-              >
-                <div className="flex items-center gap-4">
-                  <span
-                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white shadow-md shadow-purple-950/20"
-                    style={{ backgroundColor: "#3b0764" }}
-                  >
-                    <Package className="h-6 w-6" />
-                  </span>
-                  <Statistic
-                    title={
-                      <span className="font-semibold text-purple-900">
-                        {t("delivery.stats.articlesDelivered")}
-                      </span>
-                    }
-                    value={stats.totalProducts}
-                    formatter={(v) => Number(v).toLocaleString("fr-FR")}
-                    valueStyle={{ color: "#3b0764", fontWeight: 800 }}
-                  />
-                </div>
-              </Card>
-            </Col>
-            <Col xs={24} sm={12}>
-              <Card
-                className="shadow-sm"
-                style={{ backgroundColor: "#ecfdf5", borderColor: "#a7f3d0" }}
-              >
-                <div className="flex items-center gap-4">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-md shadow-emerald-600/20">
-                    <BarChart3 className="h-6 w-6" />
-                  </span>
-                  <Statistic
-                    title={
-                      <span className="font-semibold text-emerald-800">
-                        {t("admin.deliveries.stats.productValue")}
-                      </span>
-                    }
-                    value={stats.totalItemsValue}
-                    formatter={(v) => Number(v).toLocaleString("fr-FR")}
-                    suffix={<span className="text-base font-bold">{t("delivery.productSelection.currency").toUpperCase()}</span>}
-                    valueStyle={{ color: "#047857", fontWeight: 800 }}
-                  />
-                </div>
-              </Card>
-            </Col>
+            {[
+              { titre: t("delivery.stats.articlesDelivered"), valeur: stats.totalProducts, argent: false,
+                icone: <Package className="h-6 w-6" />, fond: "#faf5ff", bord: "#e9d5ff", accent: "#3b0764",
+                aide: `${stats.nbVentes.toLocaleString("fr-FR")} vente(s)` },
+              { titre: "Ventes HT", valeur: stats.ca, argent: true,
+                icone: <BarChart3 className="h-6 w-6" />, fond: "#eff6ff", bord: "#bfdbfe", accent: "#1d4ed8",
+                aide: stats.tva || stats.frais
+                  ? [stats.tva ? `TVA ${stats.tva.toLocaleString("fr-FR")}` : "", stats.frais ? `frais de retour ${stats.frais.toLocaleString("fr-FR")}` : ""]
+                      .filter(Boolean).join(" · ") + " à part"
+                  : "Articles vendus, hors TVA" },
+              { titre: "Payé", valeur: stats.paye, argent: true,
+                icone: <Wallet className="h-6 w-6" />, fond: "#ecfdf5", bord: "#a7f3d0", accent: "#047857",
+                aide: `Sur ${stats.total.toLocaleString("fr-FR")} à encaisser (TTC)` },
+              { titre: "Reste à payer", valeur: stats.reste, argent: true,
+                icone: <Clock className="h-6 w-6" />, fond: "#fff7ed", bord: "#fed7aa", accent: "#c2410c",
+                aide: "Ventes non payées ou en partie" },
+            ].map((c) => (
+              <Col xs={24} sm={12} xl={6} key={c.titre}>
+                {/* Couleurs en style direct : le fond des Card antd écrase les classes bg-*. */}
+                <Card className="h-full shadow-sm" style={{ backgroundColor: c.fond, borderColor: c.bord }}>
+                  <div className="flex items-center gap-4">
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white shadow-md"
+                      style={{ backgroundColor: c.accent }}>
+                      {c.icone}
+                    </span>
+                    <div className="min-w-0">
+                      <Statistic
+                        title={<span className="font-semibold" style={{ color: c.accent }}>{c.titre}</span>}
+                        value={c.valeur}
+                        formatter={(v) => Math.round(Number(v)).toLocaleString("fr-FR")}
+                        suffix={c.argent ? <span className="text-base font-bold">{t("delivery.productSelection.currency").toUpperCase()}</span> : undefined}
+                        valueStyle={{ color: c.accent, fontWeight: 800 }}
+                      />
+                      <div className="mt-0.5 text-xs text-slate-500">{c.aide}</div>
+                    </div>
+                  </div>
+                </Card>
+              </Col>
+            ))}
           </Row>
         </div>
 

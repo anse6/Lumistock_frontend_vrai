@@ -41,7 +41,7 @@ export const fetchProducts = async (): Promise<Product[]> => {
       status: item.etat === 'en stock' ? 'En stock' : 'En rupture'
     }));
   } catch (error) {
-    console.error('Erreur lors du chargement des produits :', error);
+    console.error('Erreur lors du chargement des articles :', error);
     return [];
   }
 };

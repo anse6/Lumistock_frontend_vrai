@@ -17,6 +17,7 @@ import {
   type Campagne,
   type MessageEnvoye,
 } from "./messagerieService";
+import AvatarWithPopover from "../../Components/super-admin/users.tsx/components/AvatarWithPopover";
 
 const STATUTS_CAMPAGNE = {
   en_cours: { ton: "orange", libelle: "En cours" },
@@ -184,9 +185,12 @@ const HistoriqueMessages: React.FC<Props> = ({ rafraichir, plage, onProgramme })
       title: "Client",
       dataIndex: "client_nom",
       render: (nom: string, m) => (
-        <div>
-          <div className="font-semibold">{nom}</div>
-          <div className="text-xs text-slate-500">{LIBELLES_CANAUX[m.canal]} · {m.destinataire}</div>
+        <div className="flex items-center gap-3">
+          <AvatarWithPopover name={nom} email={m.canal === "email" ? m.destinataire : null} size={36} />
+          <div className="min-w-0">
+            <div className="font-semibold">{nom}</div>
+            <div className="text-xs text-slate-500">{LIBELLES_CANAUX[m.canal]} · {m.destinataire}</div>
+          </div>
         </div>
       ),
     },

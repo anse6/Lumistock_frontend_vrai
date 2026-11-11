@@ -11,6 +11,7 @@ import { useSearchParams } from "react-router-dom";
 import { App, Empty, Form, Input, Modal, Select, Skeleton } from "antd";
 import { ArrowLeft, CheckCheck, CircleCheck, LifeBuoy, MessageSquarePlus, RotateCcw, Search, Send, Store } from "lucide-react";
 import dayjs from "dayjs";
+import AvatarWithPopover from "../super-admin/users.tsx/components/AvatarWithPopover";
 import "dayjs/locale/fr";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {
@@ -37,8 +38,6 @@ const RELEVE_LISTE = 8000;
 const RELEVE_CONVERSATION = 4000;
 const VIOLET = "#3b1558";
 
-const initiales = (nom?: string | null) =>
-  (nom || "?").split(/\s+/).filter(Boolean).slice(0, 2).map((m) => m[0]?.toUpperCase()).join("");
 const quand = (iso?: string | null) => (iso ? dayjs(iso).locale("fr").fromNow() : "");
 const heure = (iso: string) => dayjs(iso).locale("fr").format("D MMM · HH:mm");
 const annoncer = () => window.dispatchEvent(new Event(EVENEMENT_SUPPORT));
@@ -50,11 +49,12 @@ const Bulle: React.FC<{ m: MessageSupport; moi: boolean; conv: ConversationSuppo
   const precision = m.auteur === "staff" ? "Équipe Lumistock" : conv.magasin_nom || "Administrateur";
   return (
     <div className={`flex items-end gap-2.5 ${moi ? "flex-row-reverse" : ""}`}>
-      <span
-        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[12px] font-bold ${m.auteur === "staff" ? "bg-emerald-600 text-white" : "bg-slate-200 text-slate-700"}`}
-      >
-        {initiales(m.auteur_nom)}
-      </span>
+      {/* Même avatar que la liste des utilisateurs : initiales, couleur du nom, fiche au survol. */}
+      <AvatarWithPopover
+        name={m.auteur_nom || (m.auteur === "staff" ? "Équipe Lumistock" : conv.admin_nom || "Administrateur")}
+        email={m.auteur === "admin" ? conv.admin_email : null}
+        size={32}
+      />
       <div className="max-w-[75%]">
         <p className={`mb-1 text-[12px] text-slate-500 ${moi ? "text-right" : ""}`}>
           <span className="font-semibold text-slate-700">{moi ? "Vous" : m.auteur_nom}</span> · {precision} · {heure(m.created_at)}
@@ -145,7 +145,7 @@ const NouvelleConversation: React.FC<{ cote: Cote; ouvert: boolean; fermer: () =
           </Form.Item>
         )}
         <Form.Item name="sujet" label="Sujet" rules={[{ required: true, whitespace: true, message: "Indiquez le sujet." }]}>
-          <Input maxLength={150} placeholder={cote === "staff" ? "Ex. : Renouvellement de votre licence" : "Ex. : Problème d'import de produits"} />
+          <Input maxLength={150} placeholder={cote === "staff" ? "Ex. : Renouvellement de votre licence" : "Ex. : Problème d'import d'articles"} />
         </Form.Item>
         <Form.Item name="texte" label="Message" rules={[{ required: true, whitespace: true, message: "Écrivez votre message." }]}>
           <Input.TextArea autoSize={{ minRows: 4, maxRows: 10 }} maxLength={4000} showCount placeholder="Votre message…" />
@@ -349,9 +349,11 @@ const MessagerieSupport: React.FC<{ cote: Cote }> = ({ cote }) => {
                 onClick={() => ouvrir(c.id)}
                 className={`flex w-full cursor-pointer gap-3 border-b border-slate-100 px-4 py-3.5 text-left transition-colors ${c.id === choisie ? "bg-purple-50" : "hover:bg-slate-50"}`}
               >
-                <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[13px] font-bold ${cote === "staff" ? "bg-slate-200 text-slate-700" : "bg-emerald-600 text-white"}`}>
-                  {cote === "staff" ? initiales(c.admin_nom) : "L"}
-                </span>
+                <AvatarWithPopover
+                  name={cote === "staff" ? c.admin_nom || "Administrateur" : "Équipe Lumistock"}
+                  email={cote === "staff" ? c.admin_email : null}
+                  size={40}
+                />
                 <span className="min-w-0 flex-1">
                   <span className="flex items-center justify-between gap-2">
                     <span className={`truncate text-[14px] ${c.non_lus ? "font-bold text-slate-900" : "font-semibold text-slate-800"}`}>{c.sujet}</span>

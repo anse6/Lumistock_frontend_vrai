@@ -200,7 +200,8 @@ const FinanceIndex: React.FC = () => {
 const TableauDeBord: React.FC<{ d: SyntheseFinance; devise: string }> = ({ d, devise }) => {
   const i = d.indicateurs;
   const seuil = i.seuil_rentabilite;
-  const atteint = seuil != null && i.chiffre_affaires >= seuil;
+  const ventesSeules = i.ventes_marchandises ?? i.chiffre_affaires;
+  const atteint = seuil != null && ventesSeules >= seuil;
   const mois = d.evolution.mois.map((m) => ({ ...m, nom: MOIS_COURTS[m.mois - 1] }));
   return (
     <div>
@@ -235,6 +236,12 @@ const TableauDeBord: React.FC<{ d: SyntheseFinance; devise: string }> = ({ d, de
           valeur={argent(i.chiffre_affaires, devise)}
           detail={
             <span>
+              {(i.frais_retour ?? 0) > 0 && (
+                <>
+                  Ventes {argent(i.ventes_marchandises ?? 0, devise)} + frais de retour {argent(i.frais_retour ?? 0, devise)}
+                  <br />
+                </>
+              )}
               {i.ventes} vente(s) ·{" "}
               {variation(i.chiffre_affaires, i.chiffre_affaires_precedent) === null
                 ? "pas de comparaison"
@@ -309,11 +316,11 @@ const TableauDeBord: React.FC<{ d: SyntheseFinance; devise: string }> = ({ d, de
                 <div className="flex items-baseline justify-between gap-2">
                   <span className="text-xl font-bold text-purple-950">{argent(seuil, devise)}</span>
                   <span className={atteint ? "text-sm font-semibold text-emerald-600" : "text-sm font-semibold text-orange-600"}>
-                    {atteint ? "Atteint" : `Il manque ${argent(seuil - i.chiffre_affaires, devise)}`}
+                    {atteint ? "Atteint" : `Il manque ${argent(seuil - ventesSeules, devise)}`}
                   </span>
                 </div>
                 <Progress
-                  percent={Math.min(100, Math.round((i.chiffre_affaires / (seuil || 1)) * 100))}
+                  percent={Math.min(100, Math.round((ventesSeules / (seuil || 1)) * 100))}
                   strokeColor={atteint ? "#16a34a" : "#f97316"}
                   showInfo={false}
                 />

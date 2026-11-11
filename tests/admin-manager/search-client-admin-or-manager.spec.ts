@@ -10,7 +10,7 @@ test('test', async ({ page }) => {
   await page.getByRole('button', { name: 'Tableau de bord' }).click();
   await page.getByRole('button', { name: 'Livraison' }).click();
   await page.getByRole('button', { name: 'Livraison' }).click();
-  await page.getByRole('button', { name: 'Produits' }).click();
+  await page.getByRole('button', { name: 'Articles' }).click();
   await page.getByRole('button', { name: 'Clients' }).click();
   await page.getByRole('textbox', { name: 'Rechercher par nom, téléphone' }).click();
   await page.getByRole('textbox', { name: 'Rechercher par nom, téléphone' }).fill('borel');

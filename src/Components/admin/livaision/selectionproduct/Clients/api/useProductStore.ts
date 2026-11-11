@@ -19,6 +19,9 @@ export interface SelectedProduct {
   conditionnements?: Conditioning[]
   conditionconfig: { selectedConditioning: Conditioning, conditionedQuantity: number, quantity: number }[]
   quantite_livreur_initiale?: number // For mapping from store data
+  /** Article suivi par numéro de série : la quantité = nombre de numéros choisis. */
+  suiviSerie?: boolean
+  numerosSerie?: string[]
 }
 
 interface UpdateStockFunction {
@@ -34,6 +37,8 @@ interface ProductStore {
   updateConditionedQuantity: (productId: string, conditioningId: string, newConditionedAmount: number) => void
   removeConditioning: (productId: string, conditioningId: string) => void
   updatePrice: (id: string, newPrice: number) => void
+  /** Unités choisies d'un article suivi par numéro de série. */
+  setNumerosSerie: (id: string, numeros: string[]) => void
   clearProducts: () => void
   totalAmount: number
   updateProductStock?: UpdateStockFunction
@@ -239,6 +244,19 @@ export const useProductStore = create<ProductStore>()(
         })
       },
 
+      setNumerosSerie: (id, numeros) => {
+        const state = get()
+        const product = state.selectedProducts.find(p => p.id === id)
+        if (!product) return
+        const uniques = [...new Map(numeros.map(n => [n.trim().toUpperCase(), n.trim()])).values()].filter(Boolean)
+        const updatedProduct = { ...product, numerosSerie: uniques, quantity: uniques.length, conditionconfig: [] }
+        updatedProduct.total = calculateProductTotals(updatedProduct).newTotal
+        set({
+          selectedProducts: state.selectedProducts.map(p => p.id === id ? updatedProduct : p),
+          totalAmount: state.selectedProducts.reduce((sum, p) => sum + (p.id === id ? updatedProduct.total : p.total), 0),
+        })
+      },
+
       clearProducts: () => set({ selectedProducts: [], totalAmount: 0 }),
 
       refreshProductsFromServer: async () => {
@@ -249,9 +267,9 @@ export const useProductStore = create<ProductStore>()(
             },
           })
           const data = await res.json()
-          console.log('🟢 Produits mis à jour depuis le serveur :', data)
+          console.log('🟢 Articles mis à jour depuis le serveur :', data)
         } catch (err) {
-          console.error('Erreur lors du rechargement des produits :', err)
+          console.error('Erreur lors du rechargement des articles :', err)
         }
       },
     }),
@@ -290,7 +308,9 @@ export const useProductSelection = () => {
             image: foundProduct.image || null,
             size: foundProduct.unite,
             quantite_magasin_initiale: foundProduct.quantite_magasin ?? foundProduct.quantite_livreur ?? 0,
-            conditionnements: foundProduct.conditionnements || [],
+            conditionnements: foundProduct.suivi_serie ? [] : foundProduct.conditionnements || [],
+            suiviSerie: Boolean(foundProduct.suivi_serie),
+            numerosSerie: [],
           })
           break
         }
@@ -307,7 +327,7 @@ export const useProductSelection = () => {
     const avant = new Set(useProductStore.getState().selectedProducts.map(p => p.id))
     addSelectedProductsFromIds(selectedIds)
     useProductStore.getState().selectedProducts
-      .filter(p => !avant.has(p.id) && p.quantity === 0 && p.conditionconfig.length === 0)
+      .filter(p => !avant.has(p.id) && !p.suiviSerie && p.quantity === 0 && p.conditionconfig.length === 0)
       .forEach(p => useProductStore.getState().updateUnitQuantity(p.id, 1))
   }
 

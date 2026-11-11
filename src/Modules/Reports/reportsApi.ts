@@ -156,6 +156,7 @@ export interface RapportStockAnnuel {
 
 export interface LigneInventaire {
   produit_id: string;
+  suivi_serie?: boolean;
   produit: string;
   reference: string;
   categorie: string;

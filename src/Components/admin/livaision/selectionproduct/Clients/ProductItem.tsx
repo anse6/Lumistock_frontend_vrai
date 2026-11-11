@@ -4,8 +4,9 @@ import { Select, Tooltip } from "antd";
 import { Minus, Plus, Trash2, Pencil, Package } from "lucide-react";
 import defaultImage from "./riz.png";
 import { useProductStore, Conditioning } from "./api/useProductStore";
-import { getConditioningId } from "../../../approvisonnement/conditioning";
+import { contenuConditionnement, decomposerStock, getConditioningId } from "../../../approvisonnement/conditioning";
 import { estCaissier } from "../../venteRole";
+import ChoixNumeros from "../../../../../Modules/NumerosSerie/ChoixNumeros";
 
 interface ProductItemProps {
   id: string;
@@ -21,6 +22,9 @@ interface ProductItemProps {
     conditionedQuantity: number;
     quantity: number;
   }[];
+  /** Article suivi par numéro de série : on choisit les unités vendues. */
+  suiviSerie?: boolean;
+  numerosSerie?: string[];
 }
 
 const formatCFA = (value: number) => `${Math.round(value || 0).toLocaleString("fr-FR")} CFA`;
@@ -36,10 +40,12 @@ export const ProductItem: React.FC<ProductItemProps> = ({
   total,
   conditionnements = [],
   conditionconfig,
+  suiviSerie = false,
+  numerosSerie = [],
 }) => {
   const { t } = useTranslation();
-  const { updateUnitQuantity, removeProduct, addConditioning, updateConditionedQuantity, removeConditioning, updatePrice } =
-    useProductStore();
+  const { updateUnitQuantity, removeProduct, addConditioning, updateConditionedQuantity, removeConditioning, updatePrice,
+    setNumerosSerie } = useProductStore();
 
   const [conditioningToAdd, setConditioningToAdd] = useState<string | null>(null);
   const [conditioningQty, setConditioningQty] = useState("1");
@@ -57,6 +63,8 @@ export const ProductItem: React.FC<ProductItemProps> = ({
   const totalUnits = unitsInConditionings + (quantity || 0);
   const maxUnits = Math.max(stock - unitsInConditionings, 0);
   const stockLow = stock > 0 && stock - totalUnits <= Math.max(2, stock * 0.1);
+  // Ex. : « 2 Palette + 3 Pack + 4 u » pour lire le stock comme on le range.
+  const stockDetaille = suiviSerie ? "" : decomposerStock(stock, conditionnements, "u");
 
   const setUnits = (value: number) => {
     const safe = Math.max(0, Math.min(value, maxUnits));
@@ -126,13 +134,21 @@ export const ProductItem: React.FC<ProductItemProps> = ({
                 </Tooltip>
               )}
               <span className="text-slate-300">•</span>
-              <span className={stockLow ? "font-semibold text-amber-600" : ""}>Stock : {stock}</span>
+              <span className={stockLow ? "font-semibold text-amber-600" : ""}>
+                Stock : {stock}
+                {stockDetaille && <span className="text-slate-400"> ({stockDetaille})</span>}
+              </span>
             </div>
           </div>
         </div>
 
         {/* Quantité et total : une ligne commune sous le produit sur mobile */}
         <div className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-end">
+        {suiviSerie ? (
+          <div className="flex h-8 items-center rounded-lg border border-purple-200 bg-purple-50 px-3 text-sm font-semibold text-purple-950">
+            {`× ${numerosSerie.length}`}
+          </div>
+        ) : (
         <div className="flex items-center overflow-hidden rounded-lg border border-slate-200">
           <button type="button" onClick={() => setUnits((quantity || 0) - 1)} disabled={(quantity || 0) <= 0}
             className="flex h-8 w-8 items-center justify-center bg-orange-500 text-white transition hover:bg-orange-600 disabled:opacity-40"
@@ -155,6 +171,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({
             <Plus size={14} />
           </button>
         </div>
+        )}
 
         {/* Total de la ligne */}
         <div className="flex items-center gap-2">
@@ -169,8 +186,19 @@ export const ProductItem: React.FC<ProductItemProps> = ({
         </div>
       </div>
 
+      {/* Numéros de série des unités vendues */}
+      {suiviSerie && (
+        <div className="mt-3 border-t border-dashed border-slate-200 pt-3">
+          <p className="mb-1 text-xs font-semibold text-slate-600">Numéros de série vendus</p>
+          <ChoixNumeros articleId={id} value={numerosSerie} onChange={(liste) => setNumerosSerie(id, liste)} />
+          {numerosSerie.length === 0 && (
+            <p className="mt-1 text-xs text-amber-700">Choisissez ou scannez au moins une unité.</p>
+          )}
+        </div>
+      )}
+
       {/* Conditionnements */}
-      {(conditionnements.length > 0 || conditionconfig.length > 0) && (
+      {!suiviSerie && (conditionnements.length > 0 || conditionconfig.length > 0) && (
         <div className="mt-3 border-t border-dashed border-slate-200 pt-3">
           {conditionconfig.map((config) => {
             const condId = getConditioningId(config.selectedConditioning._id);
@@ -179,7 +207,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({
                 <span className="flex min-w-0 items-center gap-1.5 text-slate-700">
                   <Package size={13} className="shrink-0 text-purple-950" />
                   <span className="truncate font-semibold">{config.selectedConditioning.nom}</span>
-                  <span className="text-slate-400">× {config.selectedConditioning.facteur}</span>
+                  <span className="text-slate-400">({contenuConditionnement(config.selectedConditioning)} u)</span>
                 </span>
                 <span className="flex items-center gap-1.5">
                   <button type="button" onClick={() => changeConditioned(condId, -1)}
@@ -205,7 +233,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({
                 className="flex-1"
                 size="small"
                 options={conditionnements.map((c) => ({
-                  label: `${c.nom} (× ${c.facteur}) — ${formatCFA(c.prix_conditionnement)}`,
+                  label: `${c.nom} (${contenuConditionnement(c)} u) — ${formatCFA(c.prix_conditionnement)}`,
                   value: getConditioningId(c._id),
                 }))}
               />

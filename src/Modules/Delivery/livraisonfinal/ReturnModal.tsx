@@ -27,7 +27,7 @@ const ReturnModal: React.FC<ReturnModalProps> = ({
   const [returnedProducts, setReturnedProducts] = useState(
     order.produits.map(p => ({
       produit_id: (p as any).produit_id || '',
-      nom: (p as any).nom || `Produit ${p}`,
+      nom: (p as any).nom || `Article ${p}`,
       quantite: 0,
       maxQuantite: (p as any).quantite || 0,
       is_conditionne: false,

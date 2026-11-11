@@ -17,7 +17,7 @@ import {
   useNeighborhoodsForCity,
 } from "../../Components/super-admin/magasin/locationData";
 import CitySelect from "../../Components/super-admin/magasin/CitySelect";
-import { currencyOptions } from "../../Components/super-admin/magasin/storeOptions";
+import { currencyOptions, deviseDuPays } from "../../Components/super-admin/magasin/storeOptions";
 import { getApiErrorMessage } from "../../Components/super-admin/magasin/apiErrors";
 import Logo from "./components/Logo";
 import LangueSwitch from "./components/LangueSwitch";
@@ -43,10 +43,6 @@ const ACTIVITES = [
   "Grossiste",
 ];
 
-// Devise par défaut selon le pays (zones franc CFA).
-const XAF = ["CM", "GA", "TD", "CF", "CG", "GQ"];
-const XOF = ["SN", "CI", "BJ", "BF", "ML", "NE", "TG", "GW"];
-const deviseDuPays = (code?: string) => (code && XAF.includes(code) ? "XAF" : code && XOF.includes(code) ? "XOF" : undefined);
 
 const RegisterStore: React.FC = () => {
   const c = useContenu();

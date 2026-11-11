@@ -19,6 +19,8 @@ import {
   SelectedProduct,
 } from "../selectionproduct/Clients/api/useProductStore";
 
+import { regrouperLignesVente } from "./editionVente";
+
 const API_URL = getUrlServer();
 
 const EditLivraisonFlow: React.FC = () => {
@@ -46,6 +48,9 @@ const EditLivraisonFlow: React.FC = () => {
   const { clearProducts, addProduct } = useProductStore();
 
   useEffect(() => {
+    // En développement, React lance cet effet deux fois : seul le dernier
+    // chargement remplit le panier (sinon les cartons apparaissent en double).
+    let annule = false;
     const fetchAndHydrate = async () => {
       if (!id) {
         setError(t("admin.deliveries.edit.missingId"));
@@ -114,48 +119,34 @@ const EditLivraisonFlow: React.FC = () => {
           ]);
         }
 
-        // 2. Hydrate ProductStore
-        if (data.produits && Array.isArray(data.produits)) {
-          data.produits.forEach((prod: any) => {
-            const productToAdd: Omit<
-              SelectedProduct,
-              "quantity" | "total" | "conditionconfig"
-            > & {
-              quantite_magasin_initiale: number;
-              conditionnements?: any[];
-            } = {
-              id: prod.produit_id,
-              name:
-                prod.nom || t("admin.deliveries.config.client.product.unknown"),
-              price: prod.prix || 0,
-              size:
-                prod.unite || t("admin.deliveries.config.client.product.unit"),
-              image: prod.image || null,
-              quantite_magasin_initiale: prod.quantite_magasin ?? 9999, // Fallback safely
-              conditionnements: prod.conditionnements || [],
-            };
-
-            addProduct(productToAdd);
-
-            // Accessing the Zustand store manually for direct quantity updates using existing actions
-            const store = useProductStore.getState();
-
-            if (prod.is_conditionne && prod.conditionnement_id) {
-              store.addConditioning(
-                prod.produit_id,
-                prod.conditionnement_id,
-                prod.quantite,
-                true,
-              );
-            } else {
-              store.updateUnitQuantity(
-                prod.produit_id,
-                prod.quantite,
-                undefined,
-                true,
-              );
+        // 2. Articles : une ligne par article, unités et cartons regroupés.
+        if (annule) return;
+        if (Array.isArray(data.produits)) {
+          const store = useProductStore.getState();
+          for (const article of regrouperLignesVente(data.produits)) {
+            const l = article.ligne;
+            const suivi = article.numerosSerie !== null;
+            addProduct({
+              id: article.produit_id,
+              name: l.nom || t("admin.deliveries.config.client.product.unknown"),
+              price: article.prixUnitaire,
+              size: l.unite || t("admin.deliveries.config.client.product.unit"),
+              image: l.image || null,
+              // Stock disponible pour cette vente : le magasin + ce que la vente a déjà pris.
+              quantite_magasin_initiale: (Number(l.quantite_magasin) || 0) + article.unitesDansLaVente,
+              conditionnements: suivi ? [] : article.conditionnements,
+              suiviSerie: suivi,
+              numerosSerie: [],
+            } as Omit<SelectedProduct, "quantity" | "total" | "conditionconfig"> & { quantite_magasin_initiale: number });
+            if (suivi) {
+              store.setNumerosSerie(article.produit_id, article.numerosSerie ?? []);
+              continue;
             }
-          });
+            if (article.unites > 0) store.updateUnitQuantity(article.produit_id, article.unites, undefined, true);
+            for (const carton of article.cartons) {
+              store.addConditioning(article.produit_id, carton.id, carton.nombre, true);
+            }
+          }
         }
       } catch (err: any) {
         console.error(err);
@@ -169,6 +160,7 @@ const EditLivraisonFlow: React.FC = () => {
 
     // Cleanup when leaving form
     return () => {
+      annule = true;
       setEditDeliveryId(null);
     };
   }, [

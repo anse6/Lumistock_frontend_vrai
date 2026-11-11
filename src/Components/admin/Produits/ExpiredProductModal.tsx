@@ -1,4 +1,5 @@
 // src/Components/admin/Produits/ExpiredProductModal.tsx
+import ChoixNumeros from "../../../Modules/NumerosSerie/ChoixNumeros";
 import React, { useState } from "react";
 import {
   Modal,
@@ -25,7 +26,7 @@ const APP_COLOR = "#3b1558";
 const APP_COLOR_LIGHT = "#f5f0fa";
 
 const AVARIE_TYPES = [
-  { value: "perime", label: "Produit périmé" },
+  { value: "perime", label: "Article périmé" },
   { value: "casse", label: "Casse / bris" },
   { value: "vol", label: "Vol / perte" },
   { value: "deteriore", label: "Détérioration / avarie" },
@@ -39,6 +40,8 @@ interface ExpiredProductModalProps {
   productId: string;
   productName: string;
   currentStock?: number;
+  /** Article suivi par numéro de série : on choisit les unités avariées. */
+  suiviSerie?: boolean;
 }
 
 const ExpiredProductModal: React.FC<ExpiredProductModalProps> = ({
@@ -48,6 +51,7 @@ const ExpiredProductModal: React.FC<ExpiredProductModalProps> = ({
   productId,
   productName,
   currentStock,
+  suiviSerie = false,
 }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
@@ -63,6 +67,7 @@ const ExpiredProductModal: React.FC<ExpiredProductModalProps> = ({
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
+      if (suiviSerie) values.quantity = (values.numeros_serie || []).length;
 
       // Validation frontend : quantité > stock actuel
       if (currentStock !== undefined && values.quantity > currentStock) {
@@ -83,6 +88,7 @@ const ExpiredProductModal: React.FC<ExpiredProductModalProps> = ({
       const payload: Record<string, any> = {
         quantite: values.quantity,
       };
+      if (suiviSerie) payload.numeros_serie = values.numeros_serie || [];
       if (values.avarie_type) payload.type_avarie = values.avarie_type;
       if (values.description) payload.description = values.description;
       if (values.responsable) payload.responsable = values.responsable;
@@ -236,7 +242,17 @@ const ExpiredProductModal: React.FC<ExpiredProductModalProps> = ({
                   </Select>
                 </Form.Item>
 
-                {/* Quantité */}
+                {/* Quantité (ou unités désignées pour un article suivi) */}
+                {suiviSerie ? (
+                <Form.Item
+                  name="numeros_serie"
+                  label={<span className="font-semibold text-gray-700 text-sm">Unités avariées (numéros de série) <span className="text-red-500 font-bold">*</span></span>}
+                  rules={[{ required: true, type: "array", min: 1, message: "Choisissez au moins une unité" }]}
+                  className="!mb-3"
+                >
+                  <ChoixNumeros articleId={productId} />
+                </Form.Item>
+                ) : (
                 <Form.Item
                   name="quantity"
                   label={
@@ -275,6 +291,7 @@ const ExpiredProductModal: React.FC<ExpiredProductModalProps> = ({
                     autoFocus
                   />
                 </Form.Item>
+                )}
               </div>
 
               {/* Description */}

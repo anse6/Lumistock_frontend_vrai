@@ -28,7 +28,7 @@ import {
   SaveOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Building, Check, Layers, Palette, Scan } from "lucide-react";
+import { Building, Check, Hash, Layers, Palette, Scan } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LANGUES, langueDe } from "../../../langues";
 import { changerLangue } from "../../../i18n";
@@ -69,6 +69,9 @@ const CompanyProfiles: React.FC = () => {
   const [stockMethod, setStockMethod] = useState<string>("CMUP");
   const [stockMethods, setStockMethods] = useState<{ code: string; nom: string; description: string }[]>([]);
   const [savingStockMethod, setSavingStockMethod] = useState<string | null>(null);
+  // Suivi des articles par numéro de série (machines…), désactivé par défaut.
+  const [suiviSerie, setSuiviSerie] = useState(false);
+  const [savingSuiviSerie, setSavingSuiviSerie] = useState(false);
 
   useEffect(() => {
     document.title = `${t("admin.parameters.title")} · Lumistock`;
@@ -86,6 +89,7 @@ const CompanyProfiles: React.FC = () => {
         if (!data) return;
         setStockMethod(data.methode);
         setStockMethods(data.methodes || []);
+        setSuiviSerie(Boolean(data.suivi_numeros_serie));
       })
       .catch(() => undefined);
   }, []);
@@ -160,6 +164,27 @@ const CompanyProfiles: React.FC = () => {
       message.error(error instanceof Error ? error.message : "Une erreur est survenue.");
     } finally {
       setSavingStockMethod(null);
+    }
+  };
+
+  const handleToggleSuiviSerie = async (checked: boolean) => {
+    setSavingSuiviSerie(true);
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await fetch(`${getUrlServer()}/magasin/parametres/stock`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ suivi_numeros_serie: checked }),
+      });
+      const data = await response.json().catch(() => null);
+      if (!response.ok) throw new Error(getApiError(data, "Impossible de changer ce réglage."));
+      setSuiviSerie(Boolean(data.suivi_numeros_serie));
+      window.dispatchEvent(new Event("suiviSerieChange"));
+      message.success(data.message || "Réglage enregistré.");
+    } catch (error) {
+      message.error(error instanceof Error ? error.message : "Une erreur est survenue.");
+    } finally {
+      setSavingSuiviSerie(false);
     }
   };
 
@@ -316,6 +341,29 @@ const CompanyProfiles: React.FC = () => {
             Vous n'avez pas le droit de changer la méthode (voir l'onglet Accès).
           </Text>
         )}
+      </Card>
+
+      <Card variant="borderless" className={carte}>
+        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+          <div>
+            <div className="mb-1 flex items-center gap-2">
+              <Hash size={18} style={{ color: APP_COLOR }} />
+              <Text strong>Numéros de série</Text>
+            </div>
+            <Text type="secondary" className="block max-w-2xl text-xs">
+              Pour les articles vendus à l'unité avec un numéro unique (machines, téléphones, ordinateurs…). Une fois
+              activé, cochez « Suivi par numéro de série » sur les articles concernés : chaque unité est enregistrée à
+              son arrivée, désignée à la vente (au scan ou dans une liste), et vous retrouvez dans les rapports quelle
+              unité est sortie, quand et pour quel client.
+            </Text>
+          </div>
+          <Switch
+            checked={suiviSerie}
+            loading={savingSuiviSerie}
+            disabled={!peut("stock.methode")}
+            onChange={handleToggleSuiviSerie}
+          />
+        </div>
       </Card>
 
       <Card variant="borderless" className={carte}>

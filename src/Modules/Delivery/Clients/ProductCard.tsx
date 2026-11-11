@@ -4,6 +4,7 @@ import { useProductStore, Conditioning } from '../../../Components/componentprod
 import { useDeliveryStore } from '../Clients/composantclient/deliveryStore';
 import { Select, Button } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { contenuConditionnement, getConditioningId } from '../../../Components/admin/approvisonnement/conditioning';
 
 interface ProductCardProps {
   id: string;
@@ -97,7 +98,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const handleAddConditioning = () => {
     if (!selectedConditioningId) return;
 
-    const selectedCond = conditionnements.find(c => c._id['$oid'] === selectedConditioningId);
+    const selectedCond = conditionnements.find(c => getConditioningId(c._id) === selectedConditioningId);
     if (!selectedCond) return;
 
     const qty = parseInt(tempConditionedQuantity) || 1;
@@ -108,11 +109,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   const handleIncrementConditioned = (conditioningId: string) => {
-    const config = conditionconfig.find(c => c.selectedConditioning._id['$oid'] === conditioningId);
+    const config = conditionconfig.find(c => getConditioningId(c.selectedConditioning._id) === conditioningId);
     if (!config) return;
 
     const totalOtherUnits = conditionconfig.reduce(
-      (sum, c) => sum + (c.selectedConditioning._id['$oid'] !== conditioningId ? c.conditionedQuantity * c.selectedConditioning.facteur : 0),
+      (sum, c) => sum + (getConditioningId(c.selectedConditioning._id) !== conditioningId ? c.conditionedQuantity * c.selectedConditioning.facteur : 0),
       0
     ) + quantity;
     const maxPossible = Math.floor((maxIndividualStock - totalOtherUnits) / config.selectedConditioning.facteur);
@@ -124,7 +125,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   const handleDecrementConditioned = (conditioningId: string) => {
-    const config = conditionconfig.find(c => c.selectedConditioning._id['$oid'] === conditioningId);
+    const config = conditionconfig.find(c => getConditioningId(c.selectedConditioning._id) === conditioningId);
     if (!config || config.conditionedQuantity <= 0) return;
 
     const newQty = config.conditionedQuantity - 1;
@@ -266,8 +267,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               onChange={handleConditioningChange}
               className="w-full text-sm border border-[#0F172A] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20 bg-white shadow-sm font-bold"
               options={conditionnements.map((elt) => ({
-                label: `${elt.nom} (${elt.facteur} ${t('delivery.deliveryConfig.productUnitShort')})`,
-                value: elt._id['$oid'],
+                label: `${elt.nom} (${contenuConditionnement(elt)} ${t('delivery.deliveryConfig.productUnitShort')})`,
+                value: getConditioningId(elt._id),
               }))}
               placeholder={t('delivery.deliveryConfig.productSelectConditioning')}
             />
@@ -342,7 +343,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               <div className="flex flex-col space-y-3">
                 <label className="text-sm font-medium text-[#1E293B]">{t('delivery.deliveryConfig.productSelectedConditionings')}</label>
                 {conditionconfig.map((config) => (
-                  <div key={config.selectedConditioning._id['$oid']} className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-slate-50 rounded-lg p-3">
+                  <div key={getConditioningId(config.selectedConditioning._id)} className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-slate-50 rounded-lg p-3">
                     <div className="mb-2 sm:mb-0">
                       <p className="text-sm font-semibold text-[#1E293B]">{config.selectedConditioning.nom}</p>
                       <p className="text-xs text-[#0F172A]">{t('delivery.deliveryConfig.productFactor')} {config.selectedConditioning.facteur} {t('delivery.deliveryConfig.productUnitShort')}</p>
@@ -350,7 +351,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     </div>
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => handleDecrementConditioned(config.selectedConditioning._id['$oid'])}
+                        onClick={() => handleDecrementConditioned(getConditioningId(config.selectedConditioning._id))}
                         disabled={config.conditionedQuantity <= 0}
                         className="w-10 h-10 bg-white border-2 border-slate-300 text-[#0F172A] rounded-lg hover:bg-slate-50 hover:border-[#0F172A]/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center shadow-sm"
                       >
@@ -360,7 +361,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                       </button>
                       <span className="font-bold text-slate-900">{config.conditionedQuantity}</span>
                       <button
-                        onClick={() => handleIncrementConditioned(config.selectedConditioning._id['$oid'])}
+                        onClick={() => handleIncrementConditioned(getConditioningId(config.selectedConditioning._id))}
                         disabled={
                           config.conditionedQuantity * config.selectedConditioning.facteur >=
                           maxIndividualStock - totalUsedUnits + config.conditionedQuantity * config.selectedConditioning.facteur
@@ -372,7 +373,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                         </svg>
                       </button>
                       <button
-                        onClick={() => handleRemoveConditioning(config.selectedConditioning._id['$oid'])}
+                        onClick={() => handleRemoveConditioning(getConditioningId(config.selectedConditioning._id))}
                         className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors duration-200"
                         title={t('delivery.deliveryConfig.productDeleteConditioning')}
                       >

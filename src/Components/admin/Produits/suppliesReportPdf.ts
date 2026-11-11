@@ -81,14 +81,14 @@ export async function generateSuppliesReportPdf(
   const logo = logoUrl ? await loadImage(logoUrl) : null;
   const bandH = drawCompanyBand(pdf, store, logo, {
     kicker: "RAPPORT D'APPROVISIONNEMENT",
-    title: "PRODUITS APPROVISIONNÉS",
+    title: "ARTICLES APPROVISIONNÉS",
     pill: period,
     clair: true, // même en-tête que la facture (logo rond au centre)
   });
   let y = bandH + 8;
   y += drawChips(pdf, y, [
     ["Approvisionnements", formatNumber(ordered.length)],
-    ["Produits distincts", formatNumber(produitsDistincts)],
+    ["Articles distincts", formatNumber(produitsDistincts)],
     ["Quantité totale", formatNumber(totalQuantite)],
     ["Montant total", `${formatNumber(totalMontant)} ${currency}`],
   ]);
@@ -99,7 +99,7 @@ export async function generateSuppliesReportPdf(
   }
   y += 9;
 
-  const continuation = "Rapport des produits approvisionnés — suite";
+  const continuation = "Rapport des articles approvisionnés — suite";
   const ensureSpace = (needed: number, onNewPage?: () => void) => {
     if (y + needed > FOOTER_TOP - 6) {
       pdf.addPage();
@@ -154,7 +154,7 @@ export async function generateSuppliesReportPdf(
   // ============ Détail par approvisionnement ============
   const detailCols: Column[] = [
     { title: "#", w: 10, align: "center" },
-    { title: "Produit", w: 78, align: "left" },
+    { title: "Article", w: 78, align: "left" },
     { title: "Unité", w: 20, align: "center" },
     { title: "Qté", w: 16, align: "right" },
     { title: "Prix unitaire", w: 28, align: "right" },
@@ -165,7 +165,7 @@ export async function generateSuppliesReportPdf(
     const receveur = supply.livreur?.nom_complet || `${supply.first_name ?? ""} ${supply.last_name ?? ""}`.trim() || "Non renseigné";
     const auteur = supply.approvisionne_par?.nom_complet || "Non renseigné";
     const firstRow = supply.produits[0]
-      ? tableRow(detailCols, ["01", clean(supply.produits[0].nom) || "Produit", "", "", "", ""]).rowH
+      ? tableRow(detailCols, ["01", clean(supply.produits[0].nom) || "Article", "", "", "", ""]).rowH
       : 0;
     // L'en-tête d'un approvisionnement reste toujours avec sa première ligne.
     ensureSpace(15 + 10.5 + firstRow + 2);
@@ -189,7 +189,7 @@ export async function generateSuppliesReportPdf(
     supply.produits.forEach((p, index) => {
       const row = tableRow(
         detailCols,
-        [String(index + 1).padStart(2, "0"), clean(p.nom) || "Produit", clean(p.unite) || "-", formatNumber(p.quantite), formatNumber(p.prix), formatNumber(p.prix * p.quantite)],
+        [String(index + 1).padStart(2, "0"), clean(p.nom) || "Article", clean(p.unite) || "-", formatNumber(p.quantite), formatNumber(p.prix), formatNumber(p.prix * p.quantite)],
         [false, true, false, false, false, true],
       );
       ensureSpace(row.rowH, () => tableHeader(detailCols));
@@ -241,7 +241,7 @@ export async function generateSuppliesReportPdf(
 
   const today = new Date();
   const pad = (n: number) => String(n).padStart(2, "0");
-  const fileName = `Produits_approvisionnes_${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}.pdf`;
+  const fileName = `Articles_approvisionnes_${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}.pdf`;
   if (options.save === false) return { fileName, data: pdf.output("arraybuffer") };
   pdf.save(fileName);
   return { fileName };

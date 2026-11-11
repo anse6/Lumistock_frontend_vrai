@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware'
 import { getUrlServer } from './../../../configServer'
 import { Conditioning } from './../../../Modules/Delivery/NewDelivery'
 import { useQueryClient } from '@tanstack/react-query'
+import { getConditioningId } from '../../admin/approvisonnement/conditioning';
 
 const API_URL = getUrlServer()
 
@@ -152,7 +153,7 @@ export const useProductStore = create<ProductStore>()(
         const product = state.selectedProducts.find(p => p.id === productId)
         if (!product || !product.conditionnements) return
 
-        const selectedCond = product.conditionnements.find(c => c._id['$oid'] === conditioningId)
+        const selectedCond = product.conditionnements.find(c => getConditioningId(c._id) === conditioningId)
         if (!selectedCond) return
 
         const totalUsedUnits = product.conditionconfig.reduce(
@@ -190,10 +191,10 @@ export const useProductStore = create<ProductStore>()(
         if (!product) return
 
         const totalUsedUnits = product.conditionconfig.reduce(
-          (sum, config) => sum + (config.selectedConditioning._id['$oid'] !== conditioningId ? config.conditionedQuantity * (config.selectedConditioning?.facteur || 1) : 0),
+          (sum, config) => sum + (getConditioningId(config.selectedConditioning._id) !== conditioningId ? config.conditionedQuantity * (config.selectedConditioning?.facteur || 1) : 0),
           0
         ) + product.quantity
-        const selectedCond = product.conditionnements?.find(c => c._id['$oid'] === conditioningId)
+        const selectedCond = product.conditionnements?.find(c => getConditioningId(c._id) === conditioningId)
         if (!selectedCond) return
 
         const maxPossible = Math.floor((product.quantite_livreur_initiale - totalUsedUnits) / selectedCond.facteur)
@@ -202,7 +203,7 @@ export const useProductStore = create<ProductStore>()(
         const updatedProduct = {
           ...product,
           conditionconfig: product.conditionconfig.map(config =>
-            config.selectedConditioning._id['$oid'] === conditioningId
+            getConditioningId(config.selectedConditioning._id) === conditioningId
               ? { ...config, conditionedQuantity: safeQty, quantity: safeQty * config.selectedConditioning.facteur }
               : config
           ),
@@ -224,7 +225,7 @@ export const useProductStore = create<ProductStore>()(
 
         const updatedProduct = {
           ...product,
-          conditionconfig: product.conditionconfig.filter(config => config.selectedConditioning._id['$oid'] !== conditioningId),
+          conditionconfig: product.conditionconfig.filter(config => getConditioningId(config.selectedConditioning._id) !== conditioningId),
         }
 
         const { newTotal } = calculateProductTotals(updatedProduct)
@@ -246,9 +247,9 @@ export const useProductStore = create<ProductStore>()(
             },
           })
           const data = await res.json()
-          console.log('🟢 Produits mis à jour depuis le serveur :', data)
+          console.log('🟢 Articles mis à jour depuis le serveur :', data)
         } catch (err) {
-          console.error('Erreur lors du rechargement des produits :', err)
+          console.error('Erreur lors du rechargement des articles :', err)
         }
       },
     }),

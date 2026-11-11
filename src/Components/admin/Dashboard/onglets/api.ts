@@ -66,7 +66,7 @@ export interface OngletFinances extends Base {
 }
 
 export interface MembreEquipe {
-  id: string; nom: string; role: string; actif: boolean;
+  id: string; nom: string; email?: string | null; role: string; actif: boolean;
   ventes: number; ca: number; articles: number; encaisse: number; reste: number;
   variation: number | null; panier_moyen: number; part: number;
   stock_unites: number; stock_valeur: number;

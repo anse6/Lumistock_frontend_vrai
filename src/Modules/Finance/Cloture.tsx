@@ -239,7 +239,7 @@ const Cloture: React.FC<{ devise: string; onChange: () => void }> = ({ devise, o
             <p className="m-0 min-w-0 flex-1 text-xs text-slate-500">
               Quand un client rapporte un article, le magasin peut garder un pourcentage de la valeur retournée (frais de
               retour). Ce taux est proposé à chaque retour : le vendeur peut y renoncer pour un client. Les frais retenus
-              sont comptés en produits (compte 7078). Un retour sur une vente d'une période clôturée est autorisé : il est
+              sont comptés en articles (compte 7078). Un retour sur une vente d'une période clôturée est autorisé : il est
               compté le jour du retour.
             </p>
             {estAdmin ? (

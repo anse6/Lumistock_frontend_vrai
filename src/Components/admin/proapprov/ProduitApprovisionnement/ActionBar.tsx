@@ -35,7 +35,7 @@ const ActionBar: React.FC<ActionBarProps> = ({ activeTab }) => {
             className="flex items-center px-4 py-2 bg-[#0F172A] text-white rounded-md text-sm whitespace-nowrap cursor-pointer hover:bg-[#0F172A] transition-colors"
           >
             <Plus className="mr-2 h-4 w-4" />
-            Ajouter un produit
+            Ajouter un article
           </Link>
         ) : (
            <Link 

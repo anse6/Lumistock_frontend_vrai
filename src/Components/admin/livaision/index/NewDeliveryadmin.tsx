@@ -30,6 +30,9 @@ export interface Conditioning {
   prix_conditionnement: number;
   prix_reference: number;
   economie: number;
+  /** Palette faite de packs : nom et nombre du conditionnement contenu. */
+  contenu_nom?: string | null;
+  contenu_nombre?: number | null;
 }
 
 interface Product {
@@ -142,7 +145,7 @@ const ProductSelectionInner: React.FC = () => {
 
   const handleContinue = () => {
     if (selectedProducts.length === 0) {
-      message.warning("Sélectionnez au moins un produit.");
+      message.warning("Sélectionnez au moins un article.");
       return;
     }
     // Le panier suit exactement la sélection : les produits décochés en sortent.
@@ -215,7 +218,7 @@ const ProductSelectionInner: React.FC = () => {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="min-w-0">
               <div className="text-[11px] font-bold uppercase tracking-wider text-purple-900/70">Étape 1 sur 2</div>
-              <h1 className="text-lg font-bold text-purple-950">Choisissez les produits à vendre</h1>
+              <h1 className="text-lg font-bold text-purple-950">Choisissez les articles à vendre</h1>
               <p className="text-xs text-slate-500">Les quantités, le client et le paiement se règlent à l'étape suivante.</p>
             </div>
             <div className="flex w-full items-center gap-2 sm:w-auto">
@@ -280,7 +283,7 @@ const ProductSelectionInner: React.FC = () => {
           ) : (
             <div className="flex flex-col items-center justify-center py-16">
               <img src={images} alt="" className="mb-3 h-32 w-32 object-contain opacity-80" />
-              <span className="text-sm text-gray-400">Aucun produit ne correspond à votre recherche.</span>
+              <span className="text-sm text-gray-400">Aucun article ne correspond à votre recherche.</span>
             </div>
           )}
         </div>

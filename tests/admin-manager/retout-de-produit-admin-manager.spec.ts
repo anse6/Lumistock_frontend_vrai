@@ -13,6 +13,6 @@ test('test', async ({ page }) => {
   await page.getByRole('button', { name: 'Effectuer un retour' }).click();
   await page.getByRole('button', { name: '+' }).click();
   await page.getByRole('textbox', { name: 'Décrivez la raison du retour' }).click();
-  await page.getByRole('textbox', { name: 'Décrivez la raison du retour' }).fill('le produit est de mauvais qualité');
+  await page.getByRole('textbox', { name: 'Décrivez la raison du retour' }).fill('l\'article est de mauvais qualité');
   await page.getByRole('button', { name: 'Confirmer le retour' }).click();
 });

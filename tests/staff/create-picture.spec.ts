@@ -28,7 +28,7 @@ test('ajout d’une image utilisateur', async ({ page }) => {
  await fileInput.setInputFiles(path.resolve(__dirname, 'assets/7.png'));
 
   // Remplissage des champs
-  await page.getByRole('textbox', { name: 'Ex: Produits, Logos, Bannières' }).fill('pep');
+  await page.getByRole('textbox', { name: 'Ex: Articles, Logos, Bannières' }).fill('pep');
   await page.getByRole('textbox', { name: 'Ajoutez une description dé' }).fill('jdjdjdjdjdj');
 
   // Soumettre

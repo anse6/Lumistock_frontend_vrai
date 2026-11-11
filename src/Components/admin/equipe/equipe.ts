@@ -51,7 +51,7 @@ export const ROLES: Record<RoleCreable | "admin", {
   manager: {
     libelle: "Manager", court: "Manager",
     description: "Gère le magasin avec vous : ventes, stock, clients et équipe.",
-    droits: ["Ventes, produits, approvisionnements", "Clients, rapports, caisses", "Pas d'accès à la comptabilité"],
+    droits: ["Ventes, articles, approvisionnements", "Clients, rapports, caisses", "Pas d'accès à la comptabilité"],
     badge: "bg-sky-50 text-sky-800 ring-sky-200", fond: "bg-sky-100", texte: "text-sky-800",
     endpoint: "/users/create_manager",
     fonctions: ["Manager du magasin", "Responsable des ventes", "Responsable des stocks", "Adjoint du gérant"],

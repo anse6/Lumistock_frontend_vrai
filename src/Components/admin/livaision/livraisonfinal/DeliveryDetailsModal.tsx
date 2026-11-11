@@ -372,7 +372,7 @@ const DeliveryDetailsModal: React.FC<DeliveryDetailsModalProps> = ({ order, onCl
                   <div className="space-y-1">
                     {r.produits?.map((rp, i) => (
                       <div key={i} className="flex justify-between text-xs">
-                        <span>{rp.nom || 'Produit'}</span>
+                        <span>{rp.nom || 'Article'}</span>
                         <span className="font-bold text-red-600">{rp.quantite}</span>
                       </div>
                     ))}

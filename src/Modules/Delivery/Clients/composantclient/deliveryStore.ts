@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { Conditioning } from './../../NewDelivery'
+import { getConditioningId } from '../../../../Components/admin/approvisonnement/conditioning';
 
 interface Payment {
   methode: string
@@ -102,7 +103,7 @@ export const useDeliveryStore = create<DeliveryState>((set, get) => ({
     set((state) => ({
       products: state.products.map((p) => {
         if (p.produit_id === productId) {
-          const selectedCond = p.conditionnements?.find((c) => c._id['$oid'] === conditioningId)
+          const selectedCond = p.conditionnements?.find((c) => getConditioningId(c._id) === conditioningId)
           if (!selectedCond) return p
 
           const totalUsedUnits = p.conditionconfig.reduce(
@@ -135,10 +136,10 @@ export const useDeliveryStore = create<DeliveryState>((set, get) => ({
       products: state.products.map((p) => {
         if (p.produit_id === productId) {
           const totalUsedUnits = p.conditionconfig.reduce(
-            (sum, config) => sum + (config.selectedConditioning._id['$oid'] !== conditioningId ? config.conditionedQuantity * (config.selectedConditioning?.facteur || 1) : 0),
+            (sum, config) => sum + (getConditioningId(config.selectedConditioning._id) !== conditioningId ? config.conditionedQuantity * (config.selectedConditioning?.facteur || 1) : 0),
             0
           ) + p.quantite
-          const selectedCond = p.conditionnements?.find((c) => c._id['$oid'] === conditioningId)
+          const selectedCond = p.conditionnements?.find((c) => getConditioningId(c._id) === conditioningId)
           if (!selectedCond) return p
 
           const maxPossible = Math.floor((p.quantite_livreur_initiale - totalUsedUnits) / selectedCond.facteur)
@@ -147,7 +148,7 @@ export const useDeliveryStore = create<DeliveryState>((set, get) => ({
           return {
             ...p,
             conditionconfig: p.conditionconfig.map((config) =>
-              config.selectedConditioning._id['$oid'] === conditioningId
+              getConditioningId(config.selectedConditioning._id) === conditioningId
                 ? { ...config, conditionedQuantity: safeQty, quantity: safeQty * config.selectedConditioning.facteur }
                 : config
             ),
@@ -163,7 +164,7 @@ export const useDeliveryStore = create<DeliveryState>((set, get) => ({
         if (p.produit_id === productId) {
           return {
             ...p,
-            conditionconfig: p.conditionconfig.filter((config) => config.selectedConditioning._id['$oid'] !== conditioningId),
+            conditionconfig: p.conditionconfig.filter((config) => getConditioningId(config.selectedConditioning._id) !== conditioningId),
           }
         }
         return p

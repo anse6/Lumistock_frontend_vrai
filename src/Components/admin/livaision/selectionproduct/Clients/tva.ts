@@ -1,5 +1,6 @@
 // TVA du pays du magasin (miroir de backend/services/tva_service.py).
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { getUrlServer } from "../../../../../configServer";
 
 export interface TvaMagasin {
@@ -17,9 +18,12 @@ let cache: Promise<TvaMagasin> | null = null;
 
 const chargerTva = (): Promise<TvaMagasin> => {
   if (!cache) {
-    const token = localStorage.getItem("access_token") || localStorage.getItem("token");
-    cache = fetch(`${getUrlServer()}/livraisons/tva`, { headers: { Authorization: `Bearer ${token}` } })
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+    // axios (et non fetch) : l'intercepteur de session renouvelle le token
+    // expiré et rejoue la requête, au lieu d'afficher « serveur injoignable ».
+    const token = localStorage.getItem("access_token");
+    cache = axios
+      .get<TvaMagasin>(`${getUrlServer()}/livraisons/tva`, { headers: { Authorization: `Bearer ${token}` } })
+      .then((r) => r.data)
       .catch((e) => {
         cache = null; // nouvel essai au prochain affichage
         throw e;

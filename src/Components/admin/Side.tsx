@@ -31,6 +31,8 @@ import {
   ChevronDown,
   Truck,
   ScanBarcode,
+  FolderTree,
+  Factory,
 } from "lucide-react";
 import logoLumistock from "@/assets/logo-lumistock.png";
 import { Link, useLocation } from "react-router-dom";
@@ -307,7 +309,11 @@ const Side: React.FC<{
           path: `${B}/produits_approvisionnements`,
           onglet: "produits",
           sousPages: true,
-          exclure: [`${B}/produits_approvisionnements/codes-barres`],
+          exclure: [
+            `${B}/produits_approvisionnements/codes-barres`,
+            `${B}/produits_approvisionnements/fournisseurs`,
+            `${B}/produits_approvisionnements/categories`,
+          ],
         }),
         lien({
           id: "approvisionnements",
@@ -316,6 +322,8 @@ const Side: React.FC<{
           path: `${B}/produits_approvisionnements`,
           onglet: "approvisionnements",
         }),
+        lien({ id: "categories", label: t("sidebar.items.categories"), icon: <FolderTree size={20} />, path: `${B}/produits_approvisionnements/categories` }),
+        lien({ id: "fournisseurs", label: t("sidebar.items.fournisseurs"), icon: <Factory size={20} />, path: `${B}/produits_approvisionnements/fournisseurs` }),
         ...(peut("produits.modifier")
           ? [lien({ id: "codes-barres", label: t("sidebar.items.codesBarres"), icon: <ScanBarcode size={20} />, path: `${B}/produits_approvisionnements/codes-barres` })]
           : []),

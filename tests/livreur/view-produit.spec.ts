@@ -9,7 +9,7 @@ test('test', async ({ page }) => {
   await page.getByRole('button', { name: 'Connectez-vous' }).click();
   await page.getByRole('button', { name: 'Livraison' }).click();
   await page.getByRole('button', { name: 'Livraison', exact: true }).click();
-  await page.getByRole('button', { name: 'Produits' }).click();
+  await page.getByRole('button', { name: 'Articles' }).click();
   await page.getByRole('row', { name: '68614afbe28c4ca207bc4824 anse' }).getByRole('button').click();
   await page.getByRole('button', { name: 'Voir les détails' }).click();
   await page.getByRole('button', { name: 'Fermer' }).click();

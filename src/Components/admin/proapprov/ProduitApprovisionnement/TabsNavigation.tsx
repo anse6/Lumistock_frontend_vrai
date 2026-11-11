@@ -13,7 +13,7 @@ const TabsNavigation: React.FC<TabsNavigationProps> = ({ activeTab, setActiveTab
           className={`py-3 px-8 font-medium text-sm ${activeTab === 'produits' ? 'bg-slate-100 text-[#0F172A]' : 'text-gray-600'}`}
           onClick={() => setActiveTab('produits')}
         >
-          Mes produits
+          Mes articles
         </button>
         <button
           className={`py-3 px-8 font-medium text-sm ${activeTab === 'approvisionnement' ? 'bg-slate-100 text-[#0F172A]' : 'text-gray-600'}`}

@@ -22,6 +22,7 @@ export interface ConversationSupport {
   initie_par: "admin" | "staff";
   admin_id: string;
   admin_nom: string;
+  admin_email?: string | null;
   magasin_id: string | null;
   magasin_nom: string | null;
   staff_nom: string | null;

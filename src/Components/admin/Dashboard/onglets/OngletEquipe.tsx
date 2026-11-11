@@ -6,8 +6,7 @@ import type { MembreEquipe, OngletEquipe as Donnees } from "./api";
 import { Carte, Evolution, MessageVide } from "../../../dashboard/ui";
 import { COULEURS, formatMontant, formatNombre } from "../../../dashboard/theme";
 import { useTextesOnglets } from "./textes";
-
-const initiales = (nom: string) => nom.split(/\s+/).filter(Boolean).slice(0, 2).map((m) => m[0]?.toUpperCase()).join("") || "?";
+import AvatarWithPopover from "../../../super-admin/users.tsx/components/AvatarWithPopover";
 
 /** Part de chaque membre : barre 100 % découpée + liste. */
 const Repartition: React.FC<{ d: Donnees }> = ({ d }) => {
@@ -54,7 +53,7 @@ const FicheMembre: React.FC<{ m: MembreEquipe; devise: string }> = ({ m, devise 
   return (
     <article className="flex min-w-0 flex-col rounded-2xl border border-purple-100/70 bg-white p-4 shadow-sm">
       <div className="flex items-start gap-3">
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-purple-950 text-sm font-bold text-white">{initiales(m.nom)}</span>
+        <AvatarWithPopover name={m.nom} email={m.email} size={44} />
         <div className="min-w-0 flex-1">
           <p className="truncate font-semibold text-slate-900">{m.nom}</p>
           <div className="mt-0.5 flex flex-wrap items-center gap-1.5">
