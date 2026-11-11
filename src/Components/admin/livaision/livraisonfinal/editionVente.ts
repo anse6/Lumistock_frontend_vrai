@@ -35,7 +35,34 @@ export interface ArticleEnEdition {
   /** Unités de cet article déjà prises par la vente (elles reviennent si on les retire). */
   unitesDansLaVente: number;
   numerosSerie: string[] | null;
+  /** Un carton entamé par un retour (ex. 5 bouteilles d'une palette de 6) :
+   *  il ne se décrit pas en cartons entiers, les articles ne sont pas modifiables. */
+  cartonEntame: boolean;
 }
+
+/** Ligne affichée telle quelle quand les articles de la vente sont figés. */
+export interface LigneFigee {
+  nom: string;
+  detail: string;
+  montant: number;
+}
+
+/** Lignes lisibles d'une vente : « 2 Palette (6) », « 5 bouteille(s) d'une Palette entamée »… */
+export const lignesFigees = (lignes: LigneVenteLue[]): LigneFigee[] =>
+  lignes.map((l) => {
+    const q = Number(l.quantite) || 0;
+    const f = Number(l.facteur) || 1;
+    const unite = l.unite || "unité";
+    let detail = `${q} ${unite}(s)`;
+    if (l.is_conditionne && f > 1) {
+      const entiers = Math.floor(q / f);
+      const reste = q - entiers * f;
+      const nom = l.conditionnement_nom || "Conditionnement";
+      detail = [entiers ? `${entiers} ${nom} (${f})` : "", reste ? `${reste} ${unite}(s) d'un ${nom} entamé` : ""]
+        .filter(Boolean).join(" + ");
+    }
+    return { nom: l.nom || "Article", detail, montant: Math.round(q * (Number(l.prix) || 0) * 100) / 100 };
+  });
 
 export const regrouperLignesVente = (lignes: LigneVenteLue[]): ArticleEnEdition[] => {
   const parArticle = new Map<string, ArticleEnEdition>();
@@ -51,6 +78,7 @@ export const regrouperLignesVente = (lignes: LigneVenteLue[]): ArticleEnEdition[
         conditionnements: (l.conditionnements || []).map((c) => ({ ...c })),
         unitesDansLaVente: 0,
         numerosSerie: null,
+        cartonEntame: false,
       };
       parArticle.set(l.produit_id, a);
     }
@@ -64,7 +92,8 @@ export const regrouperLignesVente = (lignes: LigneVenteLue[]): ArticleEnEdition[
     if (l.is_conditionne && l.conditionnement_id) {
       const facteur = Number(l.facteur) || 1;
       const id = String(l.conditionnement_id);
-      a.cartons.push({ id, nombre: Math.round(quantite / facteur) });
+      if (quantite % facteur !== 0) a.cartonEntame = true;
+      a.cartons.push({ id, nombre: Math.floor(quantite / facteur) });
       // Le carton garde le prix de la vente d'origine (le serveur fait de même),
       // même s'il a changé ou disparu de la fiche depuis.
       const prixVendu = Math.round(Number(l.prix) * facteur * 100) / 100;

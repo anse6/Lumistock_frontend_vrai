@@ -39,19 +39,21 @@ export const ActionsSection: React.FC = () => {
   const [enregistrement, setEnregistrement] = React.useState(false);
 
   const handleSaveDelivery = async () => {
-    if (selectedProducts.length === 0) {
+    // Articles figés (carton entamé par un retour) : on ne les renvoie pas.
+    const figes = !!useDeliveryStore.getState().lignesFigees;
+    if (!figes && selectedProducts.length === 0) {
       message.error(t("admin.deliveries.actions.validation.selectProduct"));
       return;
     }
     // Un article à 0 serait silencieusement ignoré : on le signale.
-    const sansNumero = selectedProducts.filter((p) => p.suiviSerie && !(p.numerosSerie ?? []).length);
+    const sansNumero = (figes ? [] : selectedProducts).filter((p) => p.suiviSerie && !(p.numerosSerie ?? []).length);
     if (sansNumero.length > 0) {
       message.error(
         `Choisissez le numéro de série des unités vendues pour : ${sansNumero.map((p) => p.name).join(", ")}.`,
       );
       return;
     }
-    const sansQuantite = selectedProducts.filter(
+    const sansQuantite = (figes ? [] : selectedProducts).filter(
       (p) => (Number(p.quantity) || 0) === 0 && !p.conditionconfig.some((c) => c.conditionedQuantity > 0),
     );
     if (sansQuantite.length > 0) {
@@ -105,7 +107,7 @@ export const ActionsSection: React.FC = () => {
       });
 
       const basePayload = {
-        produits: produitsPayload,
+        ...(figes ? {} : { produits: produitsPayload }),
         statut_paiement,
         // Inclure la liste des paiements si ce n'est pas "Non payé"
         ...(statut_paiement !== "non payé" && { paiements }),
@@ -193,7 +195,8 @@ export const ActionsSection: React.FC = () => {
 
   const isOverpaid = statut_paiement !== "non payé" && montant_paye > totalAPayer;
 
-  const desactive = selectedProducts.length === 0 || isOverpaid || enregistrement;
+  const articlesFiges = useDeliveryStore((s) => !!s.lignesFigees);
+  const desactive = (!articlesFiges && selectedProducts.length === 0) || isOverpaid || enregistrement;
 
   return (
     <div className="flex flex-col gap-2">

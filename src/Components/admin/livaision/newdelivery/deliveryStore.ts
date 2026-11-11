@@ -1,3 +1,4 @@
+import type { LigneFigee } from '../livraisonfinal/editionVente'
 import { create } from 'zustand';
 import { Conditioning } from '../index/NewDeliveryadmin';
 import { getConditioningId } from '../../approvisonnement/conditioning';
@@ -36,6 +37,10 @@ interface DeliveryState {
   aCouche: boolean
   editDeliveryId: string | null
   setEditDeliveryId: (id: string | null) => void
+  /** Modification d'une vente dont les articles ne sont pas modifiables
+   *  (carton entamé par un retour) : lignes affichées, et non renvoyées. */
+  lignesFigees: LigneFigee[] | null
+  setLignesFigees: (lignes: LigneFigee[] | null) => void
   setClientId: (id: string) => void
   addProduct: (product: Omit<ProductDelivery, 'quantite' | 'conditionconfig'> & { conditionnements?: Conditioning[] }) => void
   updateProductQuantity: (productId: string, newQuantity: number) => void
@@ -81,6 +86,8 @@ export const useDeliveryStore = create<DeliveryState>((set, get) => ({
   setTauxTvaVente: (taux) => set({ taux_tva_vente: taux }),
 
   setEditDeliveryId: (id) => set({ editDeliveryId: id }),
+  lignesFigees: null,
+  setLignesFigees: (lignes) => set({ lignesFigees: lignes }),
   setClientId: (id) => set({ clientId: id }),
 
   addProduct: (product) =>
@@ -266,6 +273,7 @@ export const useDeliveryStore = create<DeliveryState>((set, get) => ({
       taux_tva_vente: null,
       aCouche: false,
       editDeliveryId: null,
+      lignesFigees: null,
     }),
 }))
 

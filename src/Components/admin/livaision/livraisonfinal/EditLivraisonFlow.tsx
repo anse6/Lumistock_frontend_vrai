@@ -19,7 +19,9 @@ import {
   SelectedProduct,
 } from "../selectionproduct/Clients/api/useProductStore";
 
-import { regrouperLignesVente } from "./editionVente";
+import { lignesFigees, regrouperLignesVente } from "./editionVente";
+import ArticlesFiges from "./ArticlesFiges";
+
 
 const API_URL = getUrlServer();
 
@@ -46,6 +48,7 @@ const EditLivraisonFlow: React.FC = () => {
   } = useDeliveryStore();
 
   const { clearProducts, addProduct } = useProductStore();
+  const lignesFigeesVente = useDeliveryStore((s) => s.lignesFigees);
 
   useEffect(() => {
     // En développement, React lance cet effet deux fois : seul le dernier
@@ -121,9 +124,15 @@ const EditLivraisonFlow: React.FC = () => {
 
         // 2. Articles : une ligne par article, unités et cartons regroupés.
         if (annule) return;
-        if (Array.isArray(data.produits)) {
+        const articles = Array.isArray(data.produits) ? regrouperLignesVente(data.produits) : [];
+        if (articles.some((a) => a.cartonEntame)) {
+          // Un carton entamé par un retour ne se décrit pas en cartons entiers :
+          // les articles restent tels quels (seuls client, paiement, remises changent).
+          useDeliveryStore.getState().setLignesFigees(lignesFigees(data.produits));
+          useProductStore.setState({ totalAmount: Number(data.montant_brut ?? data.montant_produits) || 0 });
+        } else {
           const store = useProductStore.getState();
-          for (const article of regrouperLignesVente(data.produits)) {
+          for (const article of articles) {
             const l = article.ligne;
             const suivi = article.numerosSerie !== null;
             addProduct({
@@ -242,7 +251,7 @@ const EditLivraisonFlow: React.FC = () => {
               <ClientSection />
             </SaleCard>
             <SaleCard numero={2} icone={<ShoppingBag size={18} />} titre={t("admin.deliveries.detail.orderedProducts")}>
-              <ProductsSection />
+              {lignesFigeesVente ? <ArticlesFiges lignes={lignesFigeesVente} /> : <ProductsSection />}
             </SaleCard>
             <SaleCard
               numero={3}

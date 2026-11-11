@@ -18,12 +18,16 @@ export const ActionsSection: React.FC = () => {
   const { editDeliveryId, clientId, statut_paiement, paiements, montant_paye, relicat, ristourne, dette_ancienne, is_dette_ancienne_active, clearDelivery } = useDeliveryStore()
   const { selectedProducts, clearProducts, refreshProductsFromServer, totalAmount } = useProductStore()
 
+  const articlesFiges = useDeliveryStore((s) => !!s.lignesFigees);
+
   const handleSaveDelivery = async () => {
-    if (selectedProducts.length === 0) {
+    // Articles figés (carton entamé par un retour) : on ne les renvoie pas.
+    const figes = !!useDeliveryStore.getState().lignesFigees;
+    if (!figes && selectedProducts.length === 0) {
       message.error(t('delivery.deliveryConfig.actionErrorNoProduct'))
       return
     }
-    if (selectedProducts.every(p => p.quantity === 0 && p.conditionconfig.length === 0)) {
+    if (!figes && selectedProducts.every(p => p.quantity === 0 && p.conditionconfig.length === 0)) {
       message.error(t('delivery.deliveryConfig.actionErrorNoQuantity'))
       return
     }
@@ -63,7 +67,7 @@ export const ActionsSection: React.FC = () => {
       })
 
       const basePayload = {
-        produits: produitsPayload,
+        ...(figes ? {} : { produits: produitsPayload }),
         statut_paiement,
         // Inclure la liste des paiements si ce n'est pas "Non payé"
         ...(statut_paiement !== 'non payé' && { paiements }),
@@ -131,7 +135,7 @@ export const ActionsSection: React.FC = () => {
             ? 'bg-gray-400 cursor-not-allowed'
             : 'bg-[#0F172A] hover:bg-[#1e293b]'
         }`}
-        disabled={selectedProducts.length === 0 || isOverpaid}
+        disabled={(!articlesFiges && selectedProducts.length === 0) || isOverpaid}
       >
         {editDeliveryId ? t('delivery.deliveryConfig.actionBtnEdit') : t('delivery.deliveryConfig.actionBtnNew')}
       </button>

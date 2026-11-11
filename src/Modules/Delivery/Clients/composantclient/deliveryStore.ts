@@ -1,3 +1,4 @@
+import type { LigneFigee } from '../../../../Components/admin/livaision/livraisonfinal/editionVente'
 import { create } from 'zustand'
 import { Conditioning } from './../../NewDelivery'
 import { getConditioningId } from '../../../../Components/admin/approvisonnement/conditioning';
@@ -31,6 +32,9 @@ interface DeliveryState {
   aCouche: boolean
   editDeliveryId: string | null
   setEditDeliveryId: (id: string | null) => void
+  /** Articles figés (carton entamé par un retour) : affichés, pas renvoyés. */
+  lignesFigees: LigneFigee[] | null
+  setLignesFigees: (lignes: LigneFigee[] | null) => void
   setClientId: (id: string) => void
   addProduct: (product: Omit<ProductDelivery, 'quantite' | 'conditionconfig'> & { conditionnements?: Conditioning[] }) => void
   updateProductQuantity: (productId: string, newQuantity: number) => void
@@ -67,6 +71,8 @@ export const useDeliveryStore = create<DeliveryState>((set, get) => ({
 
 
   setEditDeliveryId: (id) => set({ editDeliveryId: id }),
+  lignesFigees: null,
+  setLignesFigees: (lignes) => set({ lignesFigees: lignes }),
   setClientId: (id) => set({ clientId: id }),
 
   addProduct: (product) =>
@@ -247,6 +253,7 @@ export const useDeliveryStore = create<DeliveryState>((set, get) => ({
       is_dette_ancienne_active: false,
       aCouche: false,
       editDeliveryId: null,
+      lignesFigees: null,
     }),
 }))
 

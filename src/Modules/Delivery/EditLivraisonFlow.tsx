@@ -13,7 +13,8 @@ import { useDeliveryStore } from './Clients/composantclient/deliveryStore';
 import { useProductStore, SelectedProduct } from '../../Components/componentproduitselection/stores/useProductStore';
 import { useTranslation } from 'react-i18next';
 
-import { regrouperLignesVente } from '../../Components/admin/livaision/livraisonfinal/editionVente';
+import { lignesFigees, regrouperLignesVente } from '../../Components/admin/livaision/livraisonfinal/editionVente';
+import ArticlesFiges from '../../Components/admin/livaision/livraisonfinal/ArticlesFiges';
 
 const API_URL = getUrlServer();
 
@@ -39,6 +40,7 @@ const EditLivraisonFlow: React.FC = () => {
   } = useDeliveryStore();
 
   const { clearProducts, addProduct } = useProductStore();
+  const lignesFigeesVente = useDeliveryStore((s) => s.lignesFigees);
 
   useEffect(() => {
     // En développement, React lance cet effet deux fois : seul le dernier chargement compte.
@@ -92,9 +94,14 @@ const EditLivraisonFlow: React.FC = () => {
 
         // 2. Articles : une ligne par article, unités et cartons regroupés.
         if (annule) return;
-        if (Array.isArray(data.produits)) {
+        const articles = Array.isArray(data.produits) ? regrouperLignesVente(data.produits) : [];
+        if (articles.some((a) => a.cartonEntame)) {
+          // Carton entamé par un retour : articles figés, seuls client et paiement changent.
+          useDeliveryStore.getState().setLignesFigees(lignesFigees(data.produits));
+          useProductStore.setState({ totalAmount: Number(data.montant_brut ?? data.montant_produits) || 0 });
+        } else {
           const store = useProductStore.getState();
-          for (const article of regrouperLignesVente(data.produits)) {
+          for (const article of articles) {
             const l = article.ligne;
             addProduct({
               id: article.produit_id,
@@ -170,7 +177,7 @@ const EditLivraisonFlow: React.FC = () => {
 
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
               <h3 className="text-lg font-semibold mb-4 text-[#0F172A]">{t('delivery.deliveryConfig.sectionProducts')}</h3>
-              <ProductsSection />
+              {lignesFigeesVente ? <ArticlesFiges lignes={lignesFigeesVente} /> : <ProductsSection />}
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
