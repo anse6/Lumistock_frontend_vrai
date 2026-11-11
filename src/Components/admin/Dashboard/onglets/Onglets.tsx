@@ -1,5 +1,5 @@
 // Barre d'onglets du tableau de bord et chargement des onglets détaillés (à la demande).
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Banknote, Boxes, LayoutDashboard, ShoppingBag, UsersRound, Contact } from "lucide-react";
 import type { Jours } from "../api";
@@ -25,29 +25,31 @@ const ICONES: Record<CleOnglet, React.ReactNode> = {
 
 export const BarreOnglets: React.FC<{ actif: CleOnglet; onChange: (o: CleOnglet) => void }> = ({ actif, onChange }) => {
   const { t } = useTextesOnglets();
-  const actifRef = useRef<HTMLButtonElement>(null);
-  // Sur mobile, la barre défile : l'onglet choisi est ramené au centre.
-  useEffect(() => {
-    actifRef.current?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
-  }, [actif]);
+  // Téléphone : grille 3 × 2, les six sections visibles d'un coup (icône au-dessus
+  // du nom). À partir de la tablette : une seule ligne, comme avant.
   return (
-    <nav aria-label="Sections du tableau de bord" className="-mx-1 overflow-x-auto px-1 pb-1 [scrollbar-width:none]">
-      <div role="tablist" className="flex w-max min-w-full gap-1 rounded-2xl border border-purple-100/70 bg-white p-1 shadow-sm">
+    <nav aria-label="Sections du tableau de bord">
+      <div
+        role="tablist"
+        className="grid grid-cols-3 gap-1.5 rounded-2xl border border-purple-100/70 bg-white p-1.5 shadow-sm md:flex md:gap-1 md:p-1"
+      >
         {CLES_ONGLETS.map((cle) => {
           const choisi = cle === actif;
           return (
             <button
               key={cle}
-              ref={choisi ? actifRef : undefined}
               type="button"
               role="tab"
               aria-selected={choisi}
               onClick={() => onChange(cle)}
-              className={`flex flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-xl px-3.5 py-2 text-sm font-medium transition-colors ${
-                choisi ? "bg-purple-950 text-white shadow-sm" : "text-slate-600 hover:bg-purple-50 hover:text-purple-950"
+              className={`flex min-h-[56px] min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-[12px] font-semibold leading-tight transition-colors md:min-h-0 md:flex-1 md:flex-row md:gap-2 md:whitespace-nowrap md:px-3.5 md:text-sm md:font-medium ${
+                choisi
+                  ? "bg-purple-950 text-white shadow-sm"
+                  : "bg-slate-50 text-slate-600 hover:bg-purple-50 hover:text-purple-950 md:bg-transparent"
               }`}
             >
-              {ICONES[cle]} {t.onglets[cle]}
+              <span className="shrink-0">{ICONES[cle]}</span>
+              <span className="max-w-full text-center [text-wrap:balance]">{t.onglets[cle]}</span>
             </button>
           );
         })}
