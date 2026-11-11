@@ -71,7 +71,19 @@ const ProductSelectionInner: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [barcodeInput, setBarcodeInput] = useState("");
-  const itemsPerPage = 12;
+  // 5 lignes d'articles par page, quelle que soit la largeur : même nombre de
+  // colonnes que la grille (2 / 3 / 4 / 5 / 6 selon l'écran).
+  const colonnesGrille = () => {
+    const l = typeof window === "undefined" ? 1280 : window.innerWidth;
+    return l >= 1280 ? 6 : l >= 1024 ? 5 : l >= 768 ? 4 : l >= 640 ? 3 : 2;
+  };
+  const [colonnes, setColonnes] = useState(colonnesGrille);
+  useEffect(() => {
+    const surRedimension = () => setColonnes(colonnesGrille());
+    window.addEventListener("resize", surRedimension);
+    return () => window.removeEventListener("resize", surRedimension);
+  }, []);
+  const itemsPerPage = colonnes * 5;
 
   const { syncSelectedProductsWithIds, selectedProducts: panier, _hasHydrated } = useProductSelection();
   // Caissier : on ne vend que caisse ouverte.
