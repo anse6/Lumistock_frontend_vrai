@@ -104,6 +104,8 @@ export interface Order {
     /** Valeur nette des articles retournés. */
     montant_retour?: number | null;
     montant_a_rembourser?: number | null;
+    /** Frais de retour retenus (TTC) sur ce retour. */
+    frais_retour?: number | null;
     produits: Array<{
       produit_id: string;
       nom?: string;
@@ -111,6 +113,8 @@ export interface Order {
       is_conditionne?: boolean;
       conditionnement_id?: string;
       conditionnement_nom?: string;
+      /** Unités par carton (retours enregistrés depuis le 11/11/2026). */
+      facteur?: number | null;
       quantite_par_conditionnement: number;
     }>;
   }>;

@@ -4054,5 +4054,12 @@
   "Frais de retour retenus aux clients (HT)": "向客户收取的退货费（不含税）",
   "Frais de retour retenus (HT)": "已收退货费（不含税）",
   "Marge commerciale (ventes − coût d'achat)": "商业毛利（销售 − 采购成本）",
-  "Ventes {0} + frais de retour {1}": "销售 {0} + 退货费 {1}"
+  "Ventes {0} + frais de retour {1}": "销售 {0} + 退货费 {1}",
+  "Frais de retour retenus : {0} {1}": "已收退货费：{0} {1}",
+  "Vendu en {0} de {1} (une partie rendue)": "按 {0}（{1}）出售（部分退回）",
+  "{0} de {1} {2}(s)": "{0}（{1} {2}）",
+  "{0} × {1} de {2}": "{0} × {1} {2}",
+  "Articles non modifiables": "商品不可修改",
+  "Un carton de cette vente a été entamé par un retour. Pour changer les articles, faites un nouveau retour ou une nouvelle vente. Le client, le paiement et les remises restent modifiables.": "此销售中的一个包装因退货已被拆开。如需修改商品，请登记新的退货或新的销售。客户、付款和折扣仍可修改。",
+  "{0} {1}(s) d'un {2} entamé": "{0} {1}（来自已拆开的 {2}）"
 }

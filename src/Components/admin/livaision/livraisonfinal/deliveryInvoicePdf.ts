@@ -201,8 +201,17 @@ export async function generateDeliveryInvoicePdf(
   produits.forEach((p, index) => {
     const nom = clean(p.nom) || "Article";
     const series = (p as { numeros_serie?: string[] }).numeros_serie;
-    const sous = p.is_conditionne && p.conditionnement_nom
-      ? `Vendu par ${clean(p.conditionnement_nom).toLowerCase()} de ${p.facteur}`
+    // Un carton se lit en cartons (« 2 Palette × 1 700 ») ; un carton entamé
+    // par un retour se lit en unités, avec une précision.
+    const facteur = Number(p.facteur) || 1;
+    const qUnites = Number(p.quantite) || 0;
+    const parCarton = !!p.is_conditionne && facteur > 1;
+    const cartonsEntiers = parCarton && qUnites % facteur === 0;
+    const nomCarton = clean(p.conditionnement_nom) || "Conditionnement";
+    const sous = parCarton
+      ? cartonsEntiers
+        ? `${nomCarton} de ${facteur} ${clean(p.unite) || "unité"}(s)`
+        : `Vendu en ${nomCarton} de ${facteur} (une partie rendue)`
       : series?.length ? `N° de série : ${series.map(clean).join(", ")}` : "";
     setPdfText(pdf, 9.5, TEXT, "bold");
     const lines = pdf.splitTextToSize(nom, cols[1].w - 6) as string[];
@@ -212,8 +221,11 @@ export async function generateDeliveryInvoicePdf(
       drawTableHeader();
     }
     const top = y + 4.6;
-    const quantite = Number(p.quantite) || 0;
-    const prix = Number(p.prix) || 0;
+    // Le franc CFA n'a pas de centimes : la ligne est arrondie comme le total.
+    const brutLigne = qUnites * (Number(p.prix) || 0);
+    const montantLigne = currency === "FCFA" ? Math.round(brutLigne) : Math.round(brutLigne * 100) / 100;
+    const quantite = cartonsEntiers ? qUnites / facteur : qUnites;
+    const prix = cartonsEntiers ? (Number(p.prix) || 0) * facteur : Number(p.prix) || 0;
     setPdfText(pdf, 8.5, MUTED);
     pdf.text(String(index + 1).padStart(2, "0"), cellX(0), top, { align: "center" });
     setPdfText(pdf, 9.5, TEXT, "bold");
@@ -223,12 +235,12 @@ export async function generateDeliveryInvoicePdf(
       pdf.text(sous, cellX(1), top + lines.length * 4.4);
     }
     setPdfText(pdf, 8.5, MUTED);
-    pdf.text(clean(p.unite) || "-", cellX(2), top, { align: "center" });
+    pdf.text(cartonsEntiers ? nomCarton : clean(p.unite) || "-", cellX(2), top, { align: "center" });
     setPdfText(pdf, 9.5, TEXT);
     pdf.text(formatNumber(quantite), cellX(3), top, { align: "right" });
     pdf.text(formatNumber(prix), cellX(4), top, { align: "right" });
     setPdfText(pdf, 9.5, TEXT, "bold");
-    pdf.text(formatNumber(quantite * prix), cellX(5), top, { align: "right" });
+    pdf.text(formatNumber(montantLigne), cellX(5), top, { align: "right" });
     y += rowH;
     pdf.setDrawColor(...LINE);
     pdf.setLineWidth(0.25);
@@ -259,6 +271,10 @@ export async function generateDeliveryInvoicePdf(
   } else if (reductions.length) {
     rows.push(["Net commercial", `${formatNumber(order.montant_produits)} ${currency}`]);
   }
+  // Frais de retour gardés par le magasin : sans cette ligne, le total
+  // dépasse les articles sans explication.
+  const fraisRetour = Number(order.frais_retour) || 0;
+  if (fraisRetour > 0) rows.push(["Frais de retour retenus", `+ ${formatNumber(fraisRetour)} ${currency}`]);
   if (dette > 0) rows.push(["Dette antérieure", `+ ${formatNumber(dette)} ${currency}`]);
 
   const totalsW = 82;
@@ -346,9 +362,16 @@ export async function generateDeliveryInvoicePdf(
         titre: "Retour d'articles",
         detail: [
           (r.produits || [])
-            .map((p) => `${formatNumber(Number(p.quantite) || 0)} × ${clean(p.nom) || "article"}`)
+            .map((p) => {
+              const f = Number(p.facteur) || 1;
+              const q = Number(p.quantite) || 0;
+              return p.is_conditionne && f > 1 && q % f === 0
+                ? `${formatNumber(q / f)} × ${clean(p.conditionnement_nom) || "carton"} de ${clean(p.nom) || "article"}`
+                : `${formatNumber(q)} × ${clean(p.nom) || "article"}`;
+            })
             .join(", "),
           r.motif ? `Motif : ${clean(r.motif)}` : "",
+          Number(r.frais_retour) > 0 ? `Frais de retour retenus : ${formatNumber(Number(r.frais_retour))} ${currency}` : "",
         ].filter(Boolean).join("  ·  "),
         montant: r.montant_retour != null ? `- ${formatNumber(Number(r.montant_retour))} ${currency}` : "",
         couleur: AMBER,
@@ -396,6 +419,7 @@ export async function generateDeliveryInvoicePdf(
       pdf.line(MARGIN, y - 1, right, y - 1);
     });
     if (resteARembourser > 0) {
+      if (y + resteH > FOOTER_TOP - 8) newPage();
       pdf.setFillColor(254, 243, 199);
       pdf.roundedRect(MARGIN, y + 1, CONTENT_W, 8, 2, 2, "F");
       setPdfText(pdf, 8.5, AMBER, "bold");
@@ -406,9 +430,12 @@ export async function generateDeliveryInvoicePdf(
     y += 6;
   }
 
+  // Plus de place au-dessus du pied de page : la phrase passe sur une
+  // nouvelle page au lieu de recouvrir le dernier bloc.
+  if (y > FOOTER_TOP - 6) newPage();
   setPdfText(pdf, 7.5, MUTED);
   pdf.text("Merci pour votre confiance. Les marchandises vendues restent soumises aux conditions de retour du magasin.",
-    MARGIN, Math.min(y, FOOTER_TOP - 4), { maxWidth: CONTENT_W });
+    MARGIN, y, { maxWidth: CONTENT_W });
 
   drawFooters(pdf, store);
 

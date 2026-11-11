@@ -4054,5 +4054,12 @@
   "Frais de retour retenus aux clients (HT)": "Gastos de devolución retenidos a clientes (sin IVA)",
   "Frais de retour retenus (HT)": "Gastos de devolución retenidos (sin IVA)",
   "Marge commerciale (ventes − coût d'achat)": "Margen comercial (ventas − coste de compra)",
-  "Ventes {0} + frais de retour {1}": "Ventas {0} + gastos de devolución {1}"
+  "Ventes {0} + frais de retour {1}": "Ventas {0} + gastos de devolución {1}",
+  "Frais de retour retenus : {0} {1}": "Gastos de devolución retenidos: {0} {1}",
+  "Vendu en {0} de {1} (une partie rendue)": "Vendido en {0} de {1} (parte devuelta)",
+  "{0} de {1} {2}(s)": "{0} de {1} {2}(s)",
+  "{0} × {1} de {2}": "{0} × {1} de {2}",
+  "Articles non modifiables": "Artículos no modificables",
+  "Un carton de cette vente a été entamé par un retour. Pour changer les articles, faites un nouveau retour ou une nouvelle vente. Le client, le paiement et les remises restent modifiables.": "Un paquete de esta venta fue abierto por una devolución. Para cambiar los artículos, registre una nueva devolución o una nueva venta. El cliente, el pago y los descuentos siguen siendo modificables.",
+  "{0} {1}(s) d'un {2} entamé": "{0} {1}(s) de un {2} abierto"
 }

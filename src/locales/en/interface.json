@@ -4054,5 +4054,12 @@
   "Frais de retour retenus aux clients (HT)": "Return fees withheld from customers (excl. VAT)",
   "Frais de retour retenus (HT)": "Return fees withheld (excl. VAT)",
   "Marge commerciale (ventes − coût d'achat)": "Gross margin (sales − purchase cost)",
-  "Ventes {0} + frais de retour {1}": "Sales {0} + return fees {1}"
+  "Ventes {0} + frais de retour {1}": "Sales {0} + return fees {1}",
+  "Frais de retour retenus : {0} {1}": "Return fees withheld: {0} {1}",
+  "Vendu en {0} de {1} (une partie rendue)": "Sold as {0} of {1} (partly returned)",
+  "{0} de {1} {2}(s)": "{0} of {1} {2}(s)",
+  "{0} × {1} de {2}": "{0} × {1} of {2}",
+  "Articles non modifiables": "Items cannot be changed",
+  "Un carton de cette vente a été entamé par un retour. Pour changer les articles, faites un nouveau retour ou une nouvelle vente. Le client, le paiement et les remises restent modifiables.": "A pack in this sale was opened by a return. To change the items, record a new return or a new sale. Customer, payment and discounts can still be changed.",
+  "{0} {1}(s) d'un {2} entamé": "{0} {1}(s) from an opened {2}"
 }

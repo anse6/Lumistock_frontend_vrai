@@ -4054,5 +4054,12 @@
   "Frais de retour retenus aux clients (HT)": "Einbehaltene Rücksendegebühren (netto)",
   "Frais de retour retenus (HT)": "Einbehaltene Rücksendegebühren (netto)",
   "Marge commerciale (ventes − coût d'achat)": "Handelsspanne (Verkäufe − Einkaufskosten)",
-  "Ventes {0} + frais de retour {1}": "Verkäufe {0} + Rücksendegebühren {1}"
+  "Ventes {0} + frais de retour {1}": "Verkäufe {0} + Rücksendegebühren {1}",
+  "Frais de retour retenus : {0} {1}": "Einbehaltene Rücksendegebühren: {0} {1}",
+  "Vendu en {0} de {1} (une partie rendue)": "Verkauft als {0} zu {1} (teilweise zurückgegeben)",
+  "{0} de {1} {2}(s)": "{0} mit {1} {2}",
+  "{0} × {1} de {2}": "{0} × {1} {2}",
+  "Articles non modifiables": "Artikel nicht änderbar",
+  "Un carton de cette vente a été entamé par un retour. Pour changer les articles, faites un nouveau retour ou une nouvelle vente. Le client, le paiement et les remises restent modifiables.": "Eine Packung dieses Verkaufs wurde durch eine Rückgabe angebrochen. Um die Artikel zu ändern, erfassen Sie eine neue Rückgabe oder einen neuen Verkauf. Kunde, Zahlung und Rabatte bleiben änderbar.",
+  "{0} {1}(s) d'un {2} entamé": "{0} {1} aus einer angebrochenen {2}"
 }

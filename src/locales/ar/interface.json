@@ -4054,5 +4054,12 @@
   "Frais de retour retenus aux clients (HT)": "رسوم الإرجاع المحتجزة من العملاء (بدون ضريبة)",
   "Frais de retour retenus (HT)": "رسوم الإرجاع المحتجزة (بدون ضريبة)",
   "Marge commerciale (ventes − coût d'achat)": "الهامش التجاري (المبيعات − تكلفة الشراء)",
-  "Ventes {0} + frais de retour {1}": "المبيعات {0} + رسوم الإرجاع {1}"
+  "Ventes {0} + frais de retour {1}": "المبيعات {0} + رسوم الإرجاع {1}",
+  "Frais de retour retenus : {0} {1}": "رسوم الإرجاع المحتجزة: {0} {1}",
+  "Vendu en {0} de {1} (une partie rendue)": "بيع في {0} من {1} (أعيد جزء منه)",
+  "{0} de {1} {2}(s)": "{0} من {1} {2}",
+  "{0} × {1} de {2}": "{0} × {1} من {2}",
+  "Articles non modifiables": "لا يمكن تعديل المواد",
+  "Un carton de cette vente a été entamé par un retour. Pour changer les articles, faites un nouveau retour ou une nouvelle vente. Le client, le paiement et les remises restent modifiables.": "تم فتح عبوة من هذا البيع بسبب إرجاع. لتغيير المواد، سجّل إرجاعًا جديدًا أو بيعًا جديدًا. يبقى العميل والدفع والخصومات قابلة للتعديل.",
+  "{0} {1}(s) d'un {2} entamé": "{0} {1} من {2} مفتوح"
 }
