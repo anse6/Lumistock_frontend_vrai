@@ -4,7 +4,7 @@
 // commerce en Afrique centrale, trois zooms, secteurs, étapes, FAQ et appel final.
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Banknote, BookOpenCheck, Monitor, Tablet, Languages, Landmark, Smartphone, Truck } from "lucide-react";
+import { ArrowRight, Banknote, BookOpenCheck, Monitor, Tablet, Languages, Landmark, Smartphone, Truck, WalletCards } from "lucide-react";
 import Faq from "./components/Faq";
 import { BoutonsAction, CtaFinal, Garanties, PageSite } from "./components/Gabarit";
 import { IconeModule, LienFleche, Note, TexteSurligne, TitreSection } from "./components/Elements";
@@ -15,7 +15,7 @@ import Appareils from "./components/Appareils";
 import { trouverModule, useSite } from "./site";
 
 const ICONES_APPAREILS = [Monitor, Tablet, Smartphone];
-const ICONES_REALITES = [Banknote, Smartphone, BookOpenCheck, Landmark, Truck, Languages];
+const ICONES_REALITES = [Banknote, WalletCards, BookOpenCheck, Landmark, Truck, Languages];
 
 const LandingPage: React.FC = () => {
   const s = useSite();
@@ -51,7 +51,10 @@ const LandingPage: React.FC = () => {
               src={PHOTO_ACCUEIL}
               alt=""
               aria-hidden="true"
+              width={2000}
+              height={1333}
               loading="eager"
+              fetchPriority="high"
               decoding="async"
               className="aspect-[4/3] w-full object-cover sm:aspect-[16/9] lg:aspect-[21/9]"
               style={{ objectPosition: "50% 38%" }}
@@ -61,10 +64,11 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* grille des modules, comme la grille d'applications d'Odoo */}
-        <div className="mx-auto mt-20 max-w-6xl px-4 sm:px-6 lg:px-8">
-          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+        <div className="mx-auto mt-20 max-w-6xl px-4 sm:mt-28 sm:px-6 lg:px-8">
+          <TitreSection id="titre-modules" titre={a.modulesTitre} texte={a.modulesTexte} />
+          <ul className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
             {s.modules.map((m, i) => (
-              <li key={m.slug} data-apparition style={delai((i % 3) * 50)}>
+              <li key={m.slug} className={i === s.modules.length - 1 && s.modules.length % 2 ? "col-span-2 sm:col-span-1" : undefined} data-apparition style={delai((i % 3) * 50)}>
                 {/* carte cliquable : bordure, ombre et flèche visibles d'emblée,
                     pour qu'on comprenne qu'elle mène à la page du module */}
                 <Link
@@ -103,8 +107,8 @@ const LandingPage: React.FC = () => {
           <h2 id="titre-ecran" className="mx-auto max-w-3xl text-center text-3xl font-bold tracking-tight !text-white sm:text-[2.6rem]" data-apparition>
             <TexteSurligne texte={a.ecranTitre} couleur="#a855f7" />
           </h2>
-          <div className="relative mx-auto mt-14 max-w-6xl" data-apparition style={delai(80)}>
-            <p className="font-main absolute -top-10 right-4 hidden text-[1.6rem] font-bold text-marque-200 lg:block">{a.ecranNote} ↓</p>
+          <div className="relative mx-auto mt-16 max-w-6xl" data-apparition style={delai(80)}>
+            <p className="font-main absolute -top-12 right-4 hidden text-[1.6rem] font-bold text-marque-200 lg:block">{a.ecranNote} ↓</p>
             <div className="rounded-2xl bg-white/10 p-2 ring-1 ring-white/20 sm:p-3">
               <Ecran cle="tableau" />
             </div>
@@ -148,9 +152,9 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ------------------------------------------------------------ réalités */}
-      <section className="bg-white py-20 sm:py-28">
+      <section className="border-t border-trait bg-fond py-20 sm:py-28" aria-labelledby="titre-realites">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <TitreSection titre={a.realitesTitre} texte={a.realitesTexte} />
+          <TitreSection id="titre-realites" titre={a.realitesTitre} texte={a.realitesTexte} />
           <ul className="mt-14 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
             {a.realites.map((r, i) => {
               const Icone = ICONES_REALITES[i];
@@ -174,7 +178,7 @@ const LandingPage: React.FC = () => {
           const m = trouverModule(s, z.slug)!;
           const sec = m.sections[z.index];
           return (
-            <section key={z.slug} className={`py-16 sm:py-24 ${i % 2 === 0 ? "bg-fond" : "bg-white"}`}>
+            <section key={z.slug} className={`py-16 sm:py-24 ${i % 2 === 0 ? "bg-white" : "bg-fond"}`}>
               <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
                 <div className={i % 2 ? "lg:order-2" : ""} data-apparition>
                   <Link to={`/modules/${m.slug}`} className="inline-flex items-center gap-2.5 rounded-full border border-trait !bg-white py-1 pl-1 pr-3.5 text-sm font-semibold !text-encre hover:border-marque-200">
@@ -224,7 +228,7 @@ const LandingPage: React.FC = () => {
           <ol className="mt-14 grid gap-6 md:grid-cols-3">
             {a.etapes.map((e, i) => (
               <li key={e.titre} className="rounded-2xl border border-trait bg-white p-7" data-apparition style={delai(i * 80)}>
-                <span className="font-main text-5xl font-bold leading-none text-marque-300">{i + 1}</span>
+                <span className="font-main text-5xl font-bold leading-none text-marque-600">{i + 1}</span>
                 <h3 className="mt-3 text-lg font-bold">{e.titre}</h3>
                 <p className="mt-2 text-[15px] leading-relaxed text-texte">{e.desc}</p>
               </li>

@@ -37,7 +37,7 @@ const Footer: React.FC = () => {
             <li><Link to="/fonctionnalites" className={lien}>{s.nav.fonctionnalites}</Link></li>
             <li><Link to="/tarifs" className={lien}>{s.nav.tarifs}</Link></li>
             <li><Link to="/securite" className={lien}>{s.nav.securite}</Link></li>
-            <li><a href="/#faq" className={lien}>{s.footer.faq}</a></li>
+            <li><Link to="/#faq" className={lien}>{s.footer.faq}</Link></li>
           </ul>
           <h2 className={`${titre} mt-6`}>{s.footer.compte}</h2>
           <ul className="mt-3">

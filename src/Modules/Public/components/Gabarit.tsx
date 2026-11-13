@@ -5,7 +5,7 @@ import { Check } from "lucide-react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import ChatNanse from "./ChatNanse";
-import { BoutonPrincipal, BoutonSecondaire, Note, TexteSurligne } from "./Elements";
+import { BoutonPrincipal, BoutonSecondaire, TexteSurligne } from "./Elements";
 import { sansMarques } from "../outils";
 import { useSite } from "../site";
 import { useApparition } from "../useApparition";
@@ -64,11 +64,9 @@ export const CtaFinal: React.FC = () => {
           <TexteSurligne texte={s.commun.ctaTitre} />
         </h2>
         <p className="mx-auto mt-5 max-w-2xl text-lg text-texte">{s.commun.ctaTexte}</p>
-        <div className="relative mt-10 inline-flex flex-col items-center">
+        <div className="mt-10">
           <BoutonsAction secondaire={{ to: "/login", libelle: s.commun.ctaDeja }} />
-          <Note sens="haut-gauche" className="absolute -right-4 top-full mt-2 hidden translate-x-full md:flex">
-            {s.commun.garanties[0]}
-          </Note>
+          <Garanties />
         </div>
       </div>
     </section>

@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import { Check, Minus, Plus, Store, Truck, UserCog, UsersRound } from "lucide-react";
 import { CtaFinal, PageSite } from "./components/Gabarit";
-import { BoutonPrincipal, BoutonSecondaire, IconeModule, Note, TexteSurligne, TitreSection } from "./components/Elements";
+import { BoutonPrincipal, BoutonSecondaire, IconeModule, TexteSurligne, TitreSection } from "./components/Elements";
 import { delai } from "./outils";
 import { useSite } from "./site";
 
@@ -65,9 +65,6 @@ const TarifsPage: React.FC = () => {
                 <UsersRound size={18} aria-hidden="true" className="text-stock" />
                 {t.variableNote}
               </p>
-              <div className="absolute -bottom-14 right-6 hidden lg:block">
-                <Note sens="haut-gauche">{s.commun.garanties[1]}</Note>
-              </div>
             </div>
           </div>
         </div>

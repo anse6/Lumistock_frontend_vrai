@@ -152,16 +152,17 @@ export const IconeModule: React.FC<{ slug: SlugModule; taille?: "s" | "m" | "l" 
 
 /* ------------------------------------------------------------ titres de section */
 
-export const TitreSection: React.FC<{ titre: string; texte?: string; centre?: boolean; niveau?: "h1" | "h2" }> = ({
+export const TitreSection: React.FC<{ titre: string; texte?: string; centre?: boolean; niveau?: "h1" | "h2"; id?: string }> = ({
   titre,
   texte,
   centre = true,
   niveau = "h2",
+  id,
 }) => {
   const Balise = niveau;
   return (
     <div className={centre ? "mx-auto max-w-3xl text-center" : "max-w-2xl"} data-apparition>
-      <Balise className={`font-bold tracking-tight ${niveau === "h1" ? "text-4xl leading-[1.08] sm:text-5xl lg:text-6xl" : "text-3xl leading-tight sm:text-[2.6rem]"}`}>
+      <Balise id={id} className={`font-bold tracking-tight ${niveau === "h1" ? "text-4xl leading-[1.08] sm:text-5xl lg:text-6xl" : "text-3xl leading-tight sm:text-[2.6rem]"}`}>
         <TexteSurligne texte={titre} />
       </Balise>
       {texte && <p className="mt-5 text-lg leading-relaxed text-texte sm:text-xl">{texte}</p>}

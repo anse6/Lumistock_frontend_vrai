@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { Alert, AutoComplete, Button, Checkbox, ConfigProvider, Form, Input, Select, Upload } from "antd";
 import type { UploadFile } from "antd";
-import { ArrowLeft, ArrowRight, Building2, Check, CheckCircle2, ImagePlus, Mail, Pencil, Store, UserRound } from "lucide-react";
+import { CloudUploadOutlined, DeleteOutlined, ExclamationCircleOutlined, SwapOutlined } from "@ant-design/icons";
+import { ArrowLeft, ArrowRight, Building2, Check, CheckCircle2, Mail, Pencil, Store, UserRound } from "lucide-react";
 import { getUrlServer } from "../../configServer";
 import {
   countryOptions,
@@ -31,7 +32,7 @@ type Valeurs = Record<string, string | boolean | undefined>;
 // Champs de chaque étape, pour valider étape par étape et revenir à la bonne
 // étape quand le serveur signale une erreur.
 const CHAMPS_ETAPES = [
-  ["denomination", "activité", "email", "telephone", "country_code", "ville", "quartier"],
+  ["denomination", "activite_choix", "activité", "email", "telephone", "country_code", "ville", "quartier"],
   ["admin_first_name", "admin_name", "admin_email", "admin_telephone", "admin_fonction", "admin_sexe"],
   ["raison_sociale", "forme_juridique", "numero_immatriculation", "numero_fiscal", "adresse_ligne_1", "code_postal", "devise", "site_web"],
   ["accepte_conditions"],
@@ -42,6 +43,8 @@ const ACTIVITES = [
   "Boutique de vêtements", "Cosmétiques", "Pharmacie", "Librairie - papeterie", "Électronique", "Pièces détachées",
   "Grossiste",
 ];
+/** Valeur de l'option « Autres » : l'activité est alors saisie à la main. */
+const AUTRE = "__autre__";
 
 
 const RegisterStore: React.FC = () => {
@@ -54,6 +57,7 @@ const RegisterStore: React.FC = () => {
   const [termine, setTermine] = useState(false);
   const [logo, setLogo] = useState<UploadFile[]>([]);
   const [apercuLogo, setApercuLogo] = useState<string | null>(null);
+  const [erreurLogo, setErreurLogo] = useState<string | null>(null);
   const [recap, setRecap] = useState<Valeurs>({});
 
   const codePays = Form.useWatch("country_code", form) as string | undefined;
@@ -62,7 +66,11 @@ const RegisterStore: React.FC = () => {
   const { cities, isLoading: chargementVilles } = useCitiesForCountry(codePays);
   const { neighborhoods } = useNeighborhoodsForCity(codePays, ville);
   const quartiers = useMemo(() => neighborhoods.map((n) => ({ value: n })), [neighborhoods]);
-  const activites = useMemo(() => ACTIVITES.map((a) => ({ value: a })), []);
+  const activites = useMemo(
+    () => [...ACTIVITES.map((a) => ({ value: a, label: a })), { value: AUTRE, label: t.magasin.activiteAutre }],
+    [t.magasin.activiteAutre],
+  );
+  const choixActivite = Form.useWatch("activite_choix", form) as string | undefined;
   const prefixe = pays ? `${pays.flag} ${pays.callingCode}` : "+";
 
   useEffect(() => {
@@ -129,7 +137,9 @@ const RegisterStore: React.FC = () => {
       const erreurs = (data?.errors || {}) as Record<string, string[] | string>;
       const champs = Object.keys(erreurs).filter((k) => CHAMPS_ETAPES.flat().includes(k));
       if (champs.length) {
-        form.setFields(champs.map((k) => ({ name: k, errors: ([] as string[]).concat(erreurs[k]) })));
+        // « activité » n'est visible que pour « Autres » ; sinon l'erreur va sur la liste.
+        const champVisible = (k: string) => (k === "activité" && form.getFieldValue("activite_choix") !== AUTRE ? "activite_choix" : k);
+        form.setFields(champs.map((k) => ({ name: champVisible(k), errors: ([] as string[]).concat(erreurs[k]) })));
         setEtape(CHAMPS_ETAPES.findIndex((liste) => liste.includes(champs[0])));
       }
       setErreur(getApiErrorMessage(data, t.erreur));
@@ -139,6 +149,13 @@ const RegisterStore: React.FC = () => {
   };
 
   const requis = { required: true, whitespace: true, message: t.requis };
+  // Champ obligatoire : astérisque rouge après le libellé, comme côté staff
+  // (addmagasin.tsx, EditMagasin.tsx).
+  const obl = (libelle: React.ReactNode) => (
+    <span>
+      {libelle} <span className="text-red-500" aria-hidden="true">*</span>
+    </span>
+  );
   const regleTel = (obligatoire: boolean) => [
     ...(obligatoire ? [{ required: true, message: t.requis }] : []),
     { pattern: /^[\d\s]{6,16}$/, message: t.telInvalide },
@@ -242,38 +259,53 @@ const RegisterStore: React.FC = () => {
           }
         }}
       >
-        {/* Champ invisible : un humain ne le remplit jamais (anti-robots). */}
+        {/* Champ invisible : un humain ne le remplit jamais (anti-robots). De type
+            « url », comme sur la page Contact, pour que le remplissage automatique
+            du navigateur ne le prenne pas pour un champ email. */}
         <div aria-hidden="true" className="absolute left-[-10000px] h-px w-px overflow-hidden">
           <Form.Item name="site_internet_societe" noStyle>
-            <Input tabIndex={-1} autoComplete="off" />
+            <Input type="url" placeholder="https://" tabIndex={-1} autoComplete="off" />
           </Form.Item>
         </div>
 
         {/* ------------------------------------------------ étape 1 : magasin */}
         <fieldset hidden={etape !== 0} aria-label={t.magasin.titre} className="min-w-0">
           <div className="grid gap-x-4 sm:grid-cols-2">
-            <Form.Item name="denomination" label={t.magasin.denomination} rules={[requis, { min: 3, message: t.requis }]}>
+            <Form.Item name="denomination" label={obl(t.magasin.denomination)} rules={[requis, { min: 3, message: t.requis }]}>
               <Input placeholder={t.magasin.denominationPh} maxLength={120} autoComplete="organization" />
             </Form.Item>
-            <Form.Item name="activité" label={t.magasin.activite} rules={[requis, { max: 120, message: t.requis }]}>
-              <AutoComplete options={activites} filterOption={(s, o) => String(o?.value).toLowerCase().includes(s.toLowerCase())}>
-                <Input placeholder={t.magasin.activitePh} />
-              </AutoComplete>
-            </Form.Item>
-            <Form.Item name="email" label={t.magasin.email} rules={[requis, { type: "email", message: t.emailInvalide }]}>
+            {/* Liste d'activités + « Autres » : dans ce cas, un champ libre
+                apparaît dessous. Le serveur reçoit toujours « activité ». */}
+            <div>
+              <Form.Item name="activite_choix" label={obl(t.magasin.activite)} rules={[{ required: true, message: t.requis }]}>
+                <Select
+                  showSearch
+                  optionFilterProp="label"
+                  placeholder={t.magasin.activiteChoixPh}
+                  options={activites}
+                  onChange={(v: string) => form.setFieldValue("activité", v === AUTRE ? undefined : v)}
+                />
+              </Form.Item>
+              {choixActivite === AUTRE && (
+                <Form.Item name="activité" className="!-mt-3" rules={[requis, { max: 120, message: t.requis }]}>
+                  <Input placeholder={t.magasin.activiteAutrePh} maxLength={120} autoFocus />
+                </Form.Item>
+              )}
+            </div>
+            <Form.Item name="email" label={obl(t.magasin.email)} rules={[requis, { type: "email", message: t.emailInvalide }]}>
               <Input prefix={<Mail size={16} className="text-slate-400" />} placeholder="contact@monmagasin.com" maxLength={150} autoComplete="email" inputMode="email" />
             </Form.Item>
-            <Form.Item name="telephone" label={t.magasin.telephone} rules={regleTel(true)}>
+            <Form.Item name="telephone" label={obl(t.magasin.telephone)} rules={regleTel(true)}>
               <Input addonBefore={prefixe} placeholder="6 90 12 34 56" maxLength={16} autoComplete="tel-national" inputMode="tel" />
             </Form.Item>
-            <Form.Item name="country_code" label={t.magasin.pays} rules={[{ required: true, message: t.requis }]}>
+            <Form.Item name="country_code" label={obl(t.magasin.pays)} rules={[{ required: true, message: t.requis }]}>
               <Select showSearch optionFilterProp="label" options={countryOptions.map((p) => ({ value: p.code, label: `${p.flag} ${p.name}` }))} />
             </Form.Item>
-            <Form.Item name="ville" label={t.magasin.ville} rules={[requis]}>
+            <Form.Item name="ville" label={obl(t.magasin.ville)} rules={[requis]}>
               <CitySelect cities={cities} loading={chargementVilles} disabled={!codePays} placeholder={t.magasin.villePh}
                           onCityChange={() => form.setFieldValue("quartier", undefined)} />
             </Form.Item>
-            <Form.Item name="quartier" label={t.magasin.quartier} rules={[requis, { max: 120, message: t.requis }]} className="sm:col-span-2">
+            <Form.Item name="quartier" label={obl(t.magasin.quartier)} rules={[requis, { max: 120, message: t.requis }]} className="sm:col-span-2">
               <AutoComplete options={quartiers} filterOption placeholder={t.magasin.quartierPh}>
                 <Input />
               </AutoComplete>
@@ -285,13 +317,13 @@ const RegisterStore: React.FC = () => {
         <fieldset hidden={etape !== 1} aria-label={t.admin.titre} className="min-w-0">
           <p className="mb-5 rounded-xl bg-marque-50 px-4 py-3 text-[15px] text-encre">{t.admin.aide}</p>
           <div className="grid gap-x-4 sm:grid-cols-2">
-            <Form.Item name="admin_first_name" label={t.admin.prenom} rules={[requis, { min: 2, message: t.requis }]}>
+            <Form.Item name="admin_first_name" label={obl(t.admin.prenom)} rules={[requis, { min: 2, message: t.requis }]}>
               <Input maxLength={80} autoComplete="given-name" />
             </Form.Item>
-            <Form.Item name="admin_name" label={t.admin.nom} rules={[requis, { min: 2, message: t.requis }]}>
+            <Form.Item name="admin_name" label={obl(t.admin.nom)} rules={[requis, { min: 2, message: t.requis }]}>
               <Input maxLength={80} autoComplete="family-name" />
             </Form.Item>
-            <Form.Item name="admin_email" label={t.admin.email} extra={t.admin.emailAide} rules={[requis, { type: "email", message: t.emailInvalide }]} className="sm:col-span-2">
+            <Form.Item name="admin_email" label={obl(t.admin.email)} extra={t.admin.emailAide} rules={[requis, { type: "email", message: t.emailInvalide }]} className="sm:col-span-2">
               <Input prefix={<Mail size={16} className="text-slate-400" />} maxLength={150} autoComplete="email" inputMode="email" />
             </Form.Item>
             <Form.Item name="admin_telephone" label={<span>{t.admin.telephone} <span className="font-normal text-slate-400">({t.facultatif})</span></span>} rules={regleTel(false)}>
@@ -309,41 +341,85 @@ const RegisterStore: React.FC = () => {
         {/* ------------------------------------------------ étape 3 : entreprise */}
         <fieldset hidden={etape !== 2} aria-label={t.entreprise.titre} className="min-w-0">
           <p className="mb-5 rounded-xl bg-fond px-4 py-3 text-sm text-texte ring-1 ring-trait">{t.entreprise.aide}</p>
-          <div className="mb-6 flex items-center gap-4">
-            <span className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-trait bg-fond">
-              {apercuLogo ? <img src={apercuLogo} alt="" className="h-full w-full object-contain p-1" /> : <ImagePlus className="text-slate-300" size={26} />}
-            </span>
-            <div>
-              <p className="text-sm font-semibold text-encre">{t.entreprise.logo}</p>
-              <p className="text-xs text-attenue">{t.entreprise.logoAide}</p>
-              <div className="mt-2 flex gap-2">
-                <Upload
-                  accept="image/png,image/jpeg"
-                  maxCount={1}
-                  showUploadList={false}
-                  fileList={logo}
-                  beforeUpload={(f) => f.size <= 2 * 1024 * 1024 || Upload.LIST_IGNORE}
-                  customRequest={() => undefined}
-                  onChange={({ fileList }) => {
-                    const dernier = fileList.slice(-1);
-                    setLogo(dernier);
-                    const f = dernier[0]?.originFileObj;
-                    if (f) {
-                      const lecteur = new FileReader();
-                      lecteur.onload = () => setApercuLogo(lecteur.result as string);
-                      lecteur.readAsDataURL(f);
-                    }
-                  }}
-                >
-                  <Button size="small">{t.entreprise.logoChoisir}</Button>
-                </Upload>
-                {apercuLogo && (
-                  <Button size="small" type="text" onClick={() => { setLogo([]); setApercuLogo(null); }}>
-                    {t.entreprise.logoRetirer}
-                  </Button>
-                )}
-              </div>
-            </div>
+          {/* Logo : zone de dépôt sur toute la largeur (clic ou glisser-déposer),
+              puis aperçu avec « Changer » et « Retirer ». */}
+          <div className="mb-6">
+            <p className="mb-2 text-sm text-encre">{t.entreprise.logo}</p>
+            <Upload.Dragger
+              accept="image/png,image/jpeg"
+              maxCount={1}
+              showUploadList={false}
+              fileList={logo}
+              beforeUpload={(f) => {
+                // le glisser-déposer ignore `accept` : on vérifie le type ici aussi
+                if (!["image/png", "image/jpeg"].includes(f.type)) {
+                  setErreurLogo(t.entreprise.logoFormat);
+                  return Upload.LIST_IGNORE;
+                }
+                if (f.size > 2 * 1024 * 1024) {
+                  setErreurLogo(t.entreprise.logoTropLourd);
+                  return Upload.LIST_IGNORE;
+                }
+                setErreurLogo(null);
+                return true;
+              }}
+              customRequest={() => undefined}
+              onChange={({ fileList }) => {
+                const dernier = fileList.slice(-1);
+                setLogo(dernier);
+                const f = dernier[0]?.originFileObj;
+                if (f) {
+                  const lecteur = new FileReader();
+                  lecteur.onload = () => setApercuLogo(lecteur.result as string);
+                  lecteur.readAsDataURL(f);
+                }
+              }}
+              className={`block w-full [&_.ant-upload-drag]:!rounded-xl [&_.ant-upload-drag]:!border-2 [&_.ant-upload-drag]:!border-dashed [&_.ant-upload-drag]:!bg-fond [&_.ant-upload-drag:hover]:!border-marque ${
+                erreurLogo ? "[&_.ant-upload-drag]:!border-red-400" : "[&_.ant-upload-drag]:!border-slate-300"
+              }`}
+            >
+              {apercuLogo ? (
+                <div className="flex flex-col items-center gap-4 px-4 py-2 sm:flex-row sm:text-start">
+                  <span className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-trait bg-white">
+                    <img src={apercuLogo} alt="" className="h-full w-full object-contain p-1.5" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-sm font-semibold text-encre">{logo[0]?.name}</span>
+                    <span className="block text-xs text-attenue">
+                      {logo[0]?.size ? `${Math.max(1, Math.round(logo[0].size / 1024))} Ko` : ""}
+                    </span>
+                  </span>
+                  <span className="flex gap-2">
+                    <Button icon={<SwapOutlined />}>{t.entreprise.logoChanger}</Button>
+                    <Button
+                      danger
+                      icon={<DeleteOutlined />}
+                      onClick={(e) => {
+                        e.stopPropagation(); // sinon le clic ouvre aussi le choix de fichier
+                        setLogo([]);
+                        setApercuLogo(null);
+                        setErreurLogo(null);
+                      }}
+                    >
+                      {t.entreprise.logoRetirer}
+                    </Button>
+                  </span>
+                </div>
+              ) : (
+                <div className="px-4 py-4">
+                  <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-marque-50 text-[26px] text-marque">
+                    <CloudUploadOutlined />
+                  </span>
+                  <p className="mt-3 text-[15px] font-semibold text-encre">{t.entreprise.logoGlisser}</p>
+                  <p className="mt-1 text-sm text-attenue">{t.entreprise.logoAide}</p>
+                </div>
+              )}
+            </Upload.Dragger>
+            {erreurLogo && (
+              <p role="alert" className="mt-2 flex items-center gap-1.5 text-sm text-red-500">
+                <ExclamationCircleOutlined /> {erreurLogo}
+              </p>
+            )}
           </div>
           <div className="grid gap-x-4 sm:grid-cols-2">
             <Form.Item name="raison_sociale" label={t.entreprise.raisonSociale}>
@@ -407,7 +483,7 @@ const RegisterStore: React.FC = () => {
             className="!mt-6"
             rules={[{ validator: (_, v) => (v ? Promise.resolve() : Promise.reject(new Error(t.verification.conditionsRequises))) }]}
           >
-            <Checkbox>{t.verification.conditions}</Checkbox>
+            <Checkbox>{obl(t.verification.conditions)}</Checkbox>
           </Form.Item>
         </fieldset>
 
@@ -507,7 +583,7 @@ const Cadre: React.FC<{
             <LangueSwitch />
           </header>
           <main id="contenu" className="flex flex-1 justify-center px-4 py-6 sm:px-8 sm:py-8">
-            <div className="w-full max-w-2xl rounded-xl border border-trait bg-white p-6 sm:p-10">{children}</div>
+            <div className="w-full max-w-3xl rounded-xl border border-trait bg-white p-6 sm:p-10">{children}</div>
           </main>
           <p className="pb-8 text-center text-[15px] text-attenue lg:hidden">
             {t.panneau.deja}{" "}
