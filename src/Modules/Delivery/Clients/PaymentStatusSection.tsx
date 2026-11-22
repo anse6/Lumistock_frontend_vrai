@@ -4,6 +4,7 @@ import { useDeliveryStore } from './composantclient/deliveryStore';
 import { useProductStore } from '../../../Components/componentproduitselection/stores/useProductStore';
 import { useTranslation } from 'react-i18next';
 import SituationClient from '../../../Components/Client/SituationClient';
+import { useGetClients, estClientDePassage, type Client } from '../../../Components/admin/livaision/selectionproduct/Clients/api/clientApi';
 
 export const PaymentStatusSection: React.FC = () => {
   const { t } = useTranslation();
@@ -14,6 +15,13 @@ export const PaymentStatusSection: React.FC = () => {
   const defaultIsDetteAncienneActive = useDeliveryStore((state) => state.is_dette_ancienne_active);
   const clientId = useDeliveryStore((state) => state.clientId);
   const { totalAmount } = useProductStore();
+  const enModification = !!useDeliveryStore((state) => state.editDeliveryId);
+  const { data: clients } = useGetClients();
+  // Client de passage (aucun client choisi, ou « Autres ») : on ne le connaît
+  // pas, la vente doit donc être payée en totalité (le serveur le vérifie aussi).
+  const passage =
+    !clientId || estClientDePassage((clients as Client[] | undefined)?.find((c) => String(c._id) === String(clientId)));
+  const totalDu = totalAmount + (defaultIsDetteAncienneActive ? defaultDetteAncienne : 0);
 
   const determineLocalStatus = (statut: string) => {
     if (statut === 'payé' || statut === 'paye') return 'total';
@@ -68,7 +76,7 @@ export const PaymentStatusSection: React.FC = () => {
 
     const totalPaid = newPaiements.reduce((sum: number, p: { montant: number }) => sum + p.montant, 0);
     // Only update advance if it changed
-    useDeliveryStore.getState().montant_paye !== totalPaid && setAdvance(totalPaid);
+    if (useDeliveryStore.getState().montant_paye !== totalPaid) setAdvance(totalPaid);
   }, [selectedMethods, paymentAmounts, setPaiementsStore, setAdvance, defaultPaiements]);
 
   useEffect(() => {
@@ -114,6 +122,26 @@ export const PaymentStatusSection: React.FC = () => {
     }
   }, [setPaymentStatus, setACouche, status]);
 
+  // Nouvelle vente (pas une modification) :
+  // - client de passage → « Payé » obligatoire ;
+  // - « Payé » (le statut par défaut) → espèces par défaut, et avec un seul
+  //   mode le montant suit le total à payer : une vente payée a toujours son
+  //   encaissement.
+  useEffect(() => {
+    if (enModification) return;
+    if (passage && status !== 'total') setStatus('total');
+  }, [passage, status, enModification]);
+
+  useEffect(() => {
+    if (enModification || status !== 'total') return;
+    if (selectedMethods.length === 0) {
+      setSelectedMethods(['cash']);
+      setPaymentAmounts({ cash: totalDu });
+    } else if (selectedMethods.length === 1 && paymentAmounts[selectedMethods[0]] !== totalDu) {
+      setPaymentAmounts({ [selectedMethods[0]]: totalDu });
+    }
+  }, [status, totalDu, selectedMethods, paymentAmounts, enModification]);
+
   const handleMethodChange = (methods: string[]) => {
     setSelectedMethods(methods);
     const newAmounts = { ...paymentAmounts };
@@ -154,9 +182,9 @@ export const PaymentStatusSection: React.FC = () => {
                 onChange={(e) => setStatus(e.target.value as 'none' | 'total' | 'partiellement payé')}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700 text-sm sm:text-base appearance-none focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20"
               >
-                <option value="none">{t('delivery.deliveryConfig.paymentUnpaid')}</option>
                 <option value="total">{t('delivery.deliveryConfig.paymentPaid')}</option>
-                <option value="partiellement payé">{t('delivery.deliveryConfig.paymentAdvanced')}</option>
+                <option value="partiellement payé" disabled={passage}>{t('delivery.deliveryConfig.paymentAdvanced')}</option>
+                <option value="none" disabled={passage}>{t('delivery.deliveryConfig.paymentUnpaid')}</option>
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                 <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -164,6 +192,12 @@ export const PaymentStatusSection: React.FC = () => {
                 </svg>
               </div>
             </div>
+            {passage && (
+              <p className={`mt-2 text-xs ${status === 'total' ? 'text-slate-500' : 'font-semibold text-red-600'}`}>
+                Client de passage : la vente doit être payée en totalité. Pour un paiement partiel ou à crédit,
+                choisissez un client enregistré.
+              </p>
+            )}
           </div>
 
           {(status === 'total' || status === 'partiellement payé') && (

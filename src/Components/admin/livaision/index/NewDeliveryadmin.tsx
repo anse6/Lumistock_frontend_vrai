@@ -51,13 +51,20 @@ interface Category {
   produits: Product[];
 }
 
-const fetchCategories = async (sessionExpired: string, fetchError: string): Promise<Category[]> => {
+const fetchCategories = async (
+  sessionExpired: string,
+  fetchError: string,
+): Promise<Category[]> => {
   const token = localStorage.getItem("access_token");
   if (!token) throw new Error("No authentication token found");
   const response = await fetch(apiVente().stock, {
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
   });
-  if (!response.ok) throw new Error(response.status === 401 ? sessionExpired : fetchError);
+  if (!response.ok)
+    throw new Error(response.status === 401 ? sessionExpired : fetchError);
   return response.json();
 };
 
@@ -85,11 +92,16 @@ const ProductSelectionInner: React.FC = () => {
   }, []);
   const itemsPerPage = colonnes * 5;
 
-  const { syncSelectedProductsWithIds, selectedProducts: panier, _hasHydrated } = useProductSelection();
+  const {
+    syncSelectedProductsWithIds,
+    selectedProducts: panier,
+    _hasHydrated,
+  } = useProductSelection();
   // Caissier : on ne vend que caisse ouverte.
   const caissier = estCaissier();
   const chemins = cheminsVente();
-  const { data: ctxCaisse, isLoading: chargementCaisse } = useContexteCaisse(caissier);
+  const { data: ctxCaisse, isLoading: chargementCaisse } =
+    useContexteCaisse(caissier);
   // Sélection locale, initialisée avec le panier en cours (retour depuis l'étape 2).
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [initialise, setInitialise] = useState(false);
@@ -101,14 +113,25 @@ const ProductSelectionInner: React.FC = () => {
   }, [_hasHydrated, initialise, panier]);
 
   const sessionExpired = t("admin.deliveries.new.sessionExpired");
-  const { data: categoriesData, isLoading, error } = useQuery<Category[], Error>({
+  const {
+    data: categoriesData,
+    isLoading,
+    error,
+  } = useQuery<Category[], Error>({
     queryKey: ["categories"],
-    queryFn: () => fetchCategories(sessionExpired, t("admin.deliveries.new.fetchingCategoriesError")),
+    queryFn: () =>
+      fetchCategories(
+        sessionExpired,
+        t("admin.deliveries.new.fetchingCategoriesError"),
+      ),
     staleTime: 5 * 60 * 1000,
   });
 
   useEffect(() => {
-    if (error?.message === "No authentication token found" || error?.message === sessionExpired) {
+    if (
+      error?.message === "No authentication token found" ||
+      error?.message === sessionExpired
+    ) {
       localStorage.removeItem("access_token");
       navigate("/login");
     }
@@ -121,8 +144,16 @@ const ProductSelectionInner: React.FC = () => {
     () =>
       categoriesData
         ? [
-            { id: "all", name: t("admin.deliveries.new.allProducts"), count: categoriesData.reduce((s, c) => s + c.produits.length, 0) },
-            ...categoriesData.map((c) => ({ id: c._id, name: c.nom, count: c.produits.length })),
+            {
+              id: "all",
+              name: t("admin.deliveries.new.allProducts"),
+              count: categoriesData.reduce((s, c) => s + c.produits.length, 0),
+            },
+            ...categoriesData.map((c) => ({
+              id: c._id,
+              name: c.nom,
+              count: c.produits.length,
+            })),
           ]
         : [],
     [categoriesData, t],
@@ -152,7 +183,9 @@ const ProductSelectionInner: React.FC = () => {
 
   const toggleProductSelection = (productId: string) =>
     setSelectedProducts((prev) =>
-      prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId],
+      prev.includes(productId)
+        ? prev.filter((id) => id !== productId)
+        : [...prev, productId],
     );
 
   const handleContinue = () => {
@@ -172,7 +205,10 @@ const ProductSelectionInner: React.FC = () => {
   // si un deuxième scan arrive avant le changement de page.
   const ajoutesParScan = useRef(new Set<string>());
   const scan = useScanVente({
-    avantAjout: () => syncSelectedProductsWithIds([...new Set([...selectedProducts, ...ajoutesParScan.current])]),
+    avantAjout: () =>
+      syncSelectedProductsWithIds([
+        ...new Set([...selectedProducts, ...ajoutesParScan.current]),
+      ]),
     apresAjout: (id) => {
       ajoutesParScan.current.add(id);
       navigate(chemins.finale);
@@ -203,8 +239,16 @@ const ProductSelectionInner: React.FC = () => {
     );
   }
 
-  if (error && error.message !== "No authentication token found" && error.message !== sessionExpired) {
-    return <div className="py-8 text-center text-red-500">Erreur : {error.message}</div>;
+  if (
+    error &&
+    error.message !== "No authentication token found" &&
+    error.message !== sessionExpired
+  ) {
+    return (
+      <div className="py-8 text-center text-red-500">
+        Erreur : {error.message}
+      </div>
+    );
   }
 
   return (
@@ -222,22 +266,35 @@ const ProductSelectionInner: React.FC = () => {
             {chemins.libelleListe ?? t("sidebar.delivery")}
           </Link>
           <span className="font-bold text-gray-300">›</span>
-          <span className="rounded-xl bg-gray-100 px-3 py-1.5 text-xs text-gray-500">Nouvelle vente</span>
+          <span className="rounded-xl bg-gray-100 px-3 py-1.5 text-xs text-gray-500">
+            Nouvelle vente
+          </span>
         </div>
 
         {/* En-tête */}
-        <div className="mx-4 mb-4 rounded-2xl border border-purple-100 bg-gradient-to-br from-purple-50 to-white p-4 shadow-sm sm:mx-6">
+        <div className="mx-4 mb-4 rounded-2xl border border-purple-100 bg-white p-4 shadow-sm sm:mx-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="min-w-0">
-              <div className="text-[11px] font-bold uppercase tracking-wider text-purple-900/70">Étape 1 sur 2</div>
-              <h1 className="text-lg font-bold text-purple-950">Choisissez les articles à vendre</h1>
-              <p className="text-xs text-slate-500">Les quantités, le client et le paiement se règlent à l'étape suivante.</p>
+              <div className="text-[11px] font-bold uppercase tracking-wider text-purple-900/70">
+                Étape 1 sur 2
+              </div>
+              <h1 className="text-lg font-bold text-purple-950">
+                Choisissez les articles à vendre
+              </h1>
+              <p className="text-xs text-slate-500">
+                Les quantités, le client et le paiement se règlent à l'étape
+                suivante.
+              </p>
             </div>
             <div className="flex w-full items-center gap-2 sm:w-auto">
               <div className="flex shrink-0 items-center gap-2 rounded-xl border border-purple-100 bg-white px-3 py-2">
                 <ShoppingCart size={16} className="text-purple-950" />
-                <span className="rounded-full bg-purple-950 px-2 py-px text-xs font-bold text-white">{selectedProducts.length}</span>
-                <span className="text-xs text-slate-500">produit{selectedProducts.length > 1 ? "s" : ""}</span>
+                <span className="rounded-full bg-purple-950 px-2 py-px text-xs font-bold text-white">
+                  {selectedProducts.length}
+                </span>
+                <span className="text-xs text-slate-500">
+                  produit{selectedProducts.length > 1 ? "s" : ""}
+                </span>
               </div>
               <button
                 type="button"
@@ -277,9 +334,13 @@ const ProductSelectionInner: React.FC = () => {
             onSelectCategory={setSelectedCategory}
           />
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+            <SearchBar
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+            />
             <span className="text-xs text-gray-500">
-              {filteredProducts.length} produit{filteredProducts.length > 1 ? "s" : ""}
+              {filteredProducts.length} produit
+              {filteredProducts.length > 1 ? "s" : ""}
             </span>
           </div>
 
@@ -294,19 +355,31 @@ const ProductSelectionInner: React.FC = () => {
             />
           ) : (
             <div className="flex flex-col items-center justify-center py-16">
-              <img src={images} alt="" className="mb-3 h-32 w-32 object-contain opacity-80" />
-              <span className="text-sm text-gray-400">Aucun article ne correspond à votre recherche.</span>
+              <img
+                src={images}
+                alt=""
+                className="mb-3 h-32 w-32 object-contain opacity-80"
+              />
+              <span className="text-sm text-gray-400">
+                Aucun article ne correspond à votre recherche.
+              </span>
             </div>
           )}
         </div>
       </div>
-      <AssocierCodeModal code={scan.codeInconnu} onFermer={scan.fermerCodeInconnu} onAssocie={scan.ajouterProduit} />
+      <AssocierCodeModal
+        code={scan.codeInconnu}
+        onFermer={scan.fermerCodeInconnu}
+        onAssocie={scan.ajouterProduit}
+      />
     </>
   );
 };
 
 const ProductSelection: React.FC = () => (
-  <ConfigProvider theme={{ token: { colorPrimary: PURPLE_950, borderRadius: 10 } }}>
+  <ConfigProvider
+    theme={{ token: { colorPrimary: PURPLE_950, borderRadius: 10 } }}
+  >
     <App>
       <ProductSelectionInner />
     </App>

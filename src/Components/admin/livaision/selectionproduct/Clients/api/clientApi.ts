@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { getUrlServer } from '../../../../../../configServer';
 
@@ -12,28 +12,12 @@ export interface Client {
   ville: string;
   quartier: string;
   photo_profil?: string | null;
+  montant_en_caisse?: number;
 }
 
-export const useCreateClient = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (formData: FormData) => {
-      const token = localStorage.getItem('access_token');
-      return axios.post(`${API_URL}/clients/create`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`
-        }
-      }).then(res => res.data);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['clients'] });
-    }
-  });
-};
-
-
+/** Client par défaut « Autres » du magasin : le client de passage, inconnu. */
+export const estClientDePassage = (client?: Pick<Client, "nom" | "telephone" | "email"> | null) =>
+  !!client && client.nom === "Autres" && (client.telephone === "00000000" || client.email === "autres@lumistock.com");
 
 export const useGetClients = () => {
   return useQuery({

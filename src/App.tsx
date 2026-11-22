@@ -5,13 +5,6 @@ import {
   Navigate,
 } from "react-router-dom";
 import AuthentificationPage from "./Modules/Authentification";
-import LandingPage from "./Modules/Public/LandingPage";
-import RegisterStore from "./Modules/Public/RegisterStore";
-import ContactPage from "./Modules/Public/ContactPage";
-import ModulePage from "./Modules/Public/ModulePage";
-import FonctionnalitesPage from "./Modules/Public/FonctionnalitesPage";
-import TarifsPage from "./Modules/Public/TarifsPage";
-import SecuritePage from "./Modules/Public/SecuritePage";
 import DashboardLayout from "./layouts/DashboardLayout";
 import DashboardLayouts from "./layouts/DashboardLayouts";
 import Dashboard from "./Modules/Dashboard";
@@ -83,11 +76,23 @@ import deDE from "antd/locale/de_DE";
 import zhCN from "antd/locale/zh_CN";
 import arEG from "antd/locale/ar_EG";
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { CHEMINS_SITE, URL_SITE } from "./configServer";
 import { useTranslation } from "react-i18next";
 import { langueDe, type CodeLangue } from "./langues";
 
 // Textes des composants antd (calendriers, pagination, fenêtres…) dans la langue choisie.
 const LOCALES_ANTD: Record<CodeLangue, Locale> = { fr: frFR, en: enUS, es: esES, de: deDE, zh: zhCN, ar: arEG };
+
+/** Ancienne adresse d'une page du site public (favori, lien d'email) : on
+ * renvoie vers la même page du site, devenu un projet séparé. */
+const VersSite = () => {
+  const { pathname, search, hash } = useLocation();
+  useEffect(() => {
+    window.location.replace(URL_SITE + pathname + search + hash);
+  }, [pathname, search, hash]);
+  return null;
+};
 
 const App = () => {
   const { i18n } = useTranslation();
@@ -148,14 +153,13 @@ const App = () => {
         <Router>
           <Routes>
             {/* ---------- Routes publiques ---------- */}
-            <Route path="/" element={<LandingPage />} />
+            {/* L'application commence à la connexion ; le site grand public
+                (accueil, tarifs, inscription…) est un projet séparé : ../site. */}
+            <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<AuthentificationPage />} />
-            <Route path="/register-store" element={<RegisterStore />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/modules/:slug" element={<ModulePage />} />
-            <Route path="/fonctionnalites" element={<FonctionnalitesPage />} />
-            <Route path="/tarifs" element={<TarifsPage />} />
-            <Route path="/securite" element={<SecuritePage />} />
+            {CHEMINS_SITE.map((chemin) => (
+              <Route key={chemin} path={`${chemin}/*`} element={<VersSite />} />
+            ))}
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route
               path="/resetpassword/:token"
@@ -354,7 +358,7 @@ const App = () => {
             </Route>
 
             {/* Catch-all */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </Router>
       </AntdApp>

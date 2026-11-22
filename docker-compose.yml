@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   frontend:
@@ -9,5 +9,4 @@ services:
       - "5173:5173"
     volumes:
       - .:/app
-    container_name: tkretail_frontend
-
+    container_name: lumistok_frontend

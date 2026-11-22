@@ -1,4 +1,4 @@
-// Thème Ant Design des pages publiques (accueil, inscription, connexion) :
+// Thème Ant Design des pages de connexion et de mot de passe (mêmes couleurs que le site public) :
 // remplace celui de l'application (boutons bleu nuit, champs de 40 px) par les
 // jetons du système de design public (voir @theme dans src/index.css).
 export const THEME_PUBLIC = {

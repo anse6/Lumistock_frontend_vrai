@@ -67,7 +67,8 @@ interface DeliveryState {
 export const useDeliveryStore = create<DeliveryState>((set, get) => ({
   clientId: '',
   products: [],
-  statut_paiement: 'non payé',
+  // Une vente est le plus souvent payée sur-le-champ : « payé » par défaut.
+  statut_paiement: 'payé',
   methode_paiement: 'cash',
   montant_paye: 0,
   paiements: [], // Initialisation
@@ -260,7 +261,7 @@ export const useDeliveryStore = create<DeliveryState>((set, get) => ({
     set({
       clientId: '',
       products: [],
-      statut_paiement: 'non payé',
+      statut_paiement: 'payé',
       methode_paiement: 'cash',
       montant_paye: 0,
       paiements: [],

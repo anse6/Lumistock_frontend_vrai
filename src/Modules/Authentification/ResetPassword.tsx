@@ -1,6 +1,6 @@
 import AuthLayout from "./AuthLayout";
 import ResetPasswordForm from "./ResetPasswordForm";
-import { useContenu } from "../Public/contenu";
+import { useContenu } from "./textes";
 
 const ResetPassword = () => {
   const c = useContenu();

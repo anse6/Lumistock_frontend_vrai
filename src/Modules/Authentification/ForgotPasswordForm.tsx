@@ -6,7 +6,7 @@ import { Alert, Button, Form, Input } from "antd";
 import { ArrowLeft, Mail, MailCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useForgotPassword } from "./services/authService";
-import { useContenu } from "../Public/contenu";
+import { useContenu } from "./textes";
 
 const ForgotPasswordForm = () => {
   const { t } = useTranslation();

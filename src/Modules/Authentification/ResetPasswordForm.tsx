@@ -7,7 +7,7 @@ import { CheckCircle2, LinkIcon, LockKeyhole } from "lucide-react";
 import axios from "axios";
 import { useResetPassword } from "./services/authService";
 import { getUrlServer } from "../../configServer";
-import { useContenu } from "../Public/contenu";
+import { useContenu } from "./textes";
 
 // Même règle que le serveur : 8 caractères minimum, au moins une lettre et un chiffre.
 const MOT_DE_PASSE_ROBUSTE = /^(?=.*[A-Za-zÀ-ÿ])(?=.*\d).{8,128}$/;

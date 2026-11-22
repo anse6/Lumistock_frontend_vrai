@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import defaultImage from './riz.png';
 import { useDeliveryStore } from './composantclient/deliveryStore';
 import { useProductStore } from '../../../Components/componentproduitselection/stores/useProductStore';
 import { Button, Select, Tooltip } from 'antd';
@@ -7,6 +6,7 @@ import { DeleteOutlined, PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { Conditioning } from './../NewDelivery';
 import { useTranslation } from 'react-i18next';
 import { contenuConditionnement, getConditioningId } from '../../../Components/admin/approvisonnement/conditioning';
+import ImageArticle from "../../../Components/ImageArticle";
 
 interface ProductItemProps {
   id: string;
@@ -168,10 +168,12 @@ export const ProductItem: React.FC<ProductItemProps> = ({
         {/* 1. Image & Basic Info */}
         <div className="flex items-center gap-4 flex-1">
           <div className="relative">
-             <img
-              src={image || defaultImage}
+             <ImageArticle
+              src={image}
               alt={title}
               className="w-16 h-16 rounded-md object-cover border border-gray-200"
+              classeVide="w-16 h-16 rounded-md bg-purple-50 border border-gray-200"
+              tailleIcone={26}
             />
              {maxIndividualStock < 10 && (
                 <div className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 ring-2 ring-white">

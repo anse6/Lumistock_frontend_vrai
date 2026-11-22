@@ -12,10 +12,12 @@ import {
   Typography,
   Drawer,
   Divider,
+  Tooltip,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useTranslation } from "react-i18next";
 import images from "@/assets/no_data.png";
+import AvatarWithPopover from "../../super-admin/users.tsx/components/AvatarWithPopover";
 import { MoreVertical, Eye, Trash2, X, Edit, Download, UserCheck, Truck } from "lucide-react";
 import { ConfigProvider } from "antd";
 import {
@@ -29,17 +31,37 @@ const APP_COLOR = "#3b1558";
 
 const { Text, Title } = Typography;
 
-interface Supply {
+/** Un approvisionnement tel qu'affiché dans la liste. */
+export interface Supply {
   id: string;
+  /** Référence lisible (APP-XXXXXXXX), la même que sur le bon PDF. */
+  reference: string;
   deliverer: string;
+  delivererEmail: string;
+  delivererPhone: string;
   quantity: number;
   amount: string;
+  amountValue: number;
+  /** Valeur au coût d'achat. */
+  coutAchat: number;
   date: string;
+  /** Date ISO d'origine (tri, filtres, heure). */
+  createdAt: string;
+  /** Stock actuel du magasinier, tous articles confondus. */
   stockTotal: number;
+  auteur: string;
+  auteurRole: string;
+  modifiePar: string;
+  articles: { nom: string; quantite: number; unite: string }[];
+  fournisseur_id?: string;
 }
+
+const cfa = (n: number) => `${Math.round(n).toLocaleString("fr-FR")} CFA`;
 
 interface SupplyTableProps {
   supplies: Supply[];
+  /** Rechargement en cours : le tableau reste affiché, avec un indicateur. */
+  loading?: boolean;
   onActionClick?: (action: string, itemId: string) => void;
   onSupplyDeleted?: (itemId: string) => void;
 }
@@ -61,6 +83,7 @@ interface SupplyDetails extends SupplyPdfData {
 
 const SupplyTable: React.FC<SupplyTableProps> = ({
   supplies,
+  loading = false,
   onSupplyDeleted,
 }) => {
   const { t, i18n } = useTranslation();
@@ -203,43 +226,114 @@ const SupplyTable: React.FC<SupplyTableProps> = ({
 
   const columns: ColumnsType<Supply> = [
     {
-      title: t("admin.supplies.table.columns.id"),
-      dataIndex: "id",
-      key: "id",
-      width: 120,
-      ellipsis: true,
+      title: "Référence et date",
+      dataIndex: "createdAt",
+      key: "reference",
+      width: 140,
+      defaultSortOrder: "descend",
+      sorter: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+      render: (_, record) => {
+        const d = new Date(record.createdAt);
+        const heure = isNaN(d.getTime())
+          ? ""
+          : d.toLocaleTimeString(i18n.language === "fr" ? "fr-FR" : "en-GB", { hour: "2-digit", minute: "2-digit" });
+        return (
+          <div>
+            <span className="whitespace-nowrap rounded-md bg-purple-50 px-2 py-0.5 font-mono text-xs font-semibold text-purple-950">
+              {record.reference}
+            </span>
+            <div className="mt-1 whitespace-nowrap text-xs text-slate-500">
+              {record.date}
+              {heure && ` · ${heure}`}
+            </div>
+          </div>
+        );
+      },
     },
     {
       title: t("admin.supplies.table.columns.deliverer"),
       dataIndex: "deliverer",
       key: "deliverer",
-      width: 200,
+      width: 210,
+      sorter: (a, b) => a.deliverer.localeCompare(b.deliverer),
+      render: (_, record) => (
+        <div className="flex items-center gap-3">
+          {/* Mêmes initiales colorées que la liste des clients et des utilisateurs. */}
+          <AvatarWithPopover name={record.deliverer} email={record.delivererEmail} size={36} />
+          <div className="min-w-0">
+            <div className="truncate text-sm font-semibold text-slate-800">{record.deliverer}</div>
+            <div className="truncate text-xs text-slate-500">
+              {record.delivererPhone || `Stock actuel : ${record.stockTotal.toLocaleString("fr-FR")} unités`}
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "Articles",
+      key: "articles",
+      width: 180,
+      render: (_, record) => {
+        const n = record.articles.length;
+        const apercu = record.articles.slice(0, 2).map((a) => a.nom).join(", ");
+        return (
+          <Tooltip
+            title={
+              <ul className="m-0 list-none p-0 text-xs">
+                {record.articles.map((a, i) => (
+                  <li key={i}>
+                    {a.quantite.toLocaleString("fr-FR")} {a.unite} · {a.nom}
+                  </li>
+                ))}
+              </ul>
+            }
+          >
+            <div className="min-w-0 cursor-default">
+              <div className="text-sm font-semibold text-slate-800">
+                {n} article{n > 1 ? "s" : ""}
+              </div>
+              <div className="max-w-[170px] truncate text-xs text-slate-500">
+                {apercu}
+                {n > 2 ? ` +${n - 2}` : ""}
+              </div>
+            </div>
+          </Tooltip>
+        );
+      },
     },
     {
       title: t("admin.supplies.table.columns.quantity"),
       dataIndex: "quantity",
       key: "quantity",
-      width: 100,
+      width: 105,
       sorter: (a, b) => a.quantity - b.quantity,
-    },
-    // {
-    //   title: t('admin.supplies.table.columns.stock_total'),
-    //   dataIndex: 'stockTotal',
-    //   key: 'stockTotal',
-    //   width: 120,
-    //   sorter: (a, b) => a.stockTotal - b.stockTotal,
-    // },
-    {
-      title: t("admin.supplies.table.columns.amount"),
-      dataIndex: "amount",
-      key: "amount",
-      width: 120,
+      render: (q: number) => <span className="whitespace-nowrap font-semibold text-slate-800">{q.toLocaleString("fr-FR")} unités</span>,
     },
     {
-      title: t("admin.supplies.table.columns.date"),
-      dataIndex: "date",
-      key: "date",
-      width: 120,
+      title: "Valeur",
+      key: "valeur",
+      width: 165,
+      sorter: (a, b) => a.amountValue - b.amountValue,
+      render: (_, record) => (
+        <div>
+          <div className="whitespace-nowrap text-sm font-bold text-purple-950">{cfa(record.amountValue)}</div>
+          <div className="whitespace-nowrap text-xs text-slate-500">Coût : {cfa(record.coutAchat)}</div>
+        </div>
+      ),
+    },
+    {
+      title: "Fait par",
+      key: "auteur",
+      width: 150,
+      ellipsis: true,
+      render: (_, record) => (
+        <div className="min-w-0 max-w-[140px]">
+          <div className="truncate text-sm text-slate-800">{record.auteur || "—"}</div>
+          <div className="truncate text-xs text-slate-500">
+            {record.modifiePar ? `Modifié par ${record.modifiePar}` : record.auteurRole}
+          </div>
+        </div>
+      ),
     },
     {
       title: t("admin.supplies.table.columns.action"),
@@ -380,7 +474,7 @@ const SupplyTable: React.FC<SupplyTableProps> = ({
         scroll={{ x: "max-content" }}
         pagination={{ pageSize: 10 }}
         className="custom-antd-table border border-gray-100 rounded-lg overflow-hidden"
-        loading={isLoading}
+        loading={isLoading || loading}
         locale={{
           emptyText: (
             <div className="flex flex-col justify-center items-center py-16">

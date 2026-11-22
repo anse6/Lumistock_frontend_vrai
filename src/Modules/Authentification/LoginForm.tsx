@@ -2,12 +2,13 @@
 // authentification, le code de son application (ou un code de secours).
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { versSite } from "../../configServer";
 import { Alert, Button, Form, Input } from "antd";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { KeyRound, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
 import { loginDeuxFacteurs, useLogin } from "./services/authService";
-import { useContenu } from "../Public/contenu";
+import { useContenu } from "./textes";
 
 const ACCUEIL_PAR_ROLE: Record<string, string> = {
   admin: "/admin/dashboard",
@@ -210,9 +211,9 @@ const LoginForm = () => {
 
       <p className="mt-10 border-t border-trait pt-6 text-center text-sm text-texte">
         {c.pasDeCompte}{" "}
-        <Link to="/register-store" className="font-semibold !text-marque hover:underline">
+        <a href={versSite("/register-store")} className="font-semibold !text-marque hover:underline">
           {c.creer}
-        </Link>
+        </a>
       </p>
     </div>
   );

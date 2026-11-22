@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Select, Tooltip } from "antd";
 import { Minus, Plus, Trash2, Pencil, Package } from "lucide-react";
-import defaultImage from "./riz.png";
 import { useProductStore, Conditioning } from "./api/useProductStore";
 import { contenuConditionnement, decomposerStock, getConditioningId } from "../../../approvisonnement/conditioning";
 import { estCaissier } from "../../venteRole";
 import ChoixNumeros from "../../../../../Modules/NumerosSerie/ChoixNumeros";
+import ImageArticle from "../../../../ImageArticle";
 
 interface ProductItemProps {
   id: string;
@@ -92,7 +92,6 @@ export const ProductItem: React.FC<ProductItemProps> = ({
     updateConditionedQuantity(id, condId, Math.max(0, config.conditionedQuantity + delta));
   };
 
-  const imageSrc = image ? (image.startsWith("http") ? image : defaultImage) : defaultImage;
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-3 transition-shadow hover:shadow-sm">
@@ -100,8 +99,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({
         {/* Produit (toute la largeur sur mobile ; quantité et total passent dessous) */}
         <div className="flex w-full min-w-0 items-center gap-3 sm:w-auto sm:flex-1">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-purple-50">
-            <img src={imageSrc} alt="" className="max-h-10 max-w-10 object-contain"
-              onError={(e) => { (e.currentTarget as HTMLImageElement).src = defaultImage; }} />
+            <ImageArticle src={image?.startsWith("http") ? image : null} className="max-h-10 max-w-10 object-contain" />
           </div>
           <div className="min-w-0">
             <div className="truncate text-sm font-semibold text-slate-800" title={title}>

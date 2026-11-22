@@ -1,4 +1,4 @@
-// Choix de la langue du site public, mémorisé comme dans le reste de l'application.
+// Choix de la langue des pages de connexion, mémorisé comme dans le reste de l'application.
 import React from "react";
 import { Dropdown } from "antd";
 import { Globe, Check } from "lucide-react";

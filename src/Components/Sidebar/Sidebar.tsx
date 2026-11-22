@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { Popover } from 'antd';
 import { LayoutGrid, PackageCheck, Boxes, Users, Sliders, BarChart3, Sparkles, LogOut } from 'lucide-react';
-import logo1 from "@/assets/logo1.svg";
+import logoLumistock from "@/assets/logo-lumistock.png";
 import { NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { demanderDeconnexion } from '../../Modules/Authentification/ConfirmationDeconnexion';
@@ -90,10 +90,12 @@ const Sidebar: React.FC<{ isOpen: boolean; setIsOpen: (isOpen: boolean) => void 
       >
         {/* Logo et titre */}
         <div className="flex flex-col gap-1 p-4 border-b border-[#2d1045]">
-          <div className="flex items-center gap-3">
-            <img src={logo1} alt="Logo" className="w-10 h-10" />
-            <div>
-              <h1 className="text-xl font-bold text-white tracking-tight">LUMISTOCK</h1>
+          {/* Logo officiel sur fond blanc (logo bleu, illisible sur le violet) */}
+          <div className="rounded-xl bg-white px-3 py-2.5 shadow-sm">
+            <img src={logoLumistock} alt="Lumistock" className="mx-auto h-8 w-auto object-contain" />
+          </div>
+          <div className="mt-2 flex items-center gap-3">
+            <div className="min-w-0">
               {companyName && (
                 <Popover
                   content={

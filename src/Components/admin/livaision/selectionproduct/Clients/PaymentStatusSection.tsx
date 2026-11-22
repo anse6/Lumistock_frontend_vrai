@@ -6,6 +6,7 @@ import { useDeliveryStore } from "../../newdelivery/deliveryStore";
 import { useMontantsVente } from "./reductions";
 import { arrondirMontant } from "./tva";
 import { estCaissier } from "../../venteRole";
+import { useGetClients, estClientDePassage, type Client } from "./api/clientApi";
 import SituationClient from "../../../../Client/SituationClient";
 
 type StatutLocal = "total" | "none" | "partiellement payé";
@@ -34,6 +35,12 @@ export const PaymentStatusSection: React.FC = () => {
   const setAdvance = useDeliveryStore((state) => state.setAdvanceAmount);
   const setACouche = useDeliveryStore((state) => state.setACouche);
   const clientId = useDeliveryStore((state) => state.clientId);
+  const enModification = !!useDeliveryStore((state) => state.editDeliveryId);
+  const { data: clients } = useGetClients();
+  // Client de passage (aucun client choisi, ou « Autres ») : on ne le connaît
+  // pas, la vente doit donc être payée en totalité (le serveur le vérifie aussi).
+  const passage =
+    !clientId || estClientDePassage((clients as Client[] | undefined)?.find((c) => String(c._id) === String(clientId)));
   const { totalAPayer, decimales } = useMontantsVente();
 
   const status = determineLocalStatus(statutStore);
@@ -102,15 +109,27 @@ export const PaymentStatusSection: React.FC = () => {
   };
 
   // Vente « Payée » avec un seul mode : le montant encaissé suit le total
-  // (quantités, réductions, dette…). Converge en un passage : après l'écriture,
-  // le montant est égal au total et l'effet ne réécrit plus rien.
+  // (quantités, réductions, dette…). Sans mode choisi (« Payé » est le statut
+  // par défaut d'une nouvelle vente), on encaisse en espèces : une vente payée
+  // a toujours un encaissement. Converge en un passage : après l'écriture, le
+  // montant est égal au total et l'effet ne réécrit plus rien.
+  // (En modification, une vente sans mode de paiement n'est pas complétée d'office.)
+  const modeUnique =
+    selectedMethods.length === 1 ? selectedMethods[0] : selectedMethods.length === 0 && !enModification ? "cash" : null;
   const montantUnique = selectedMethods.length === 1 ? paymentAmounts[selectedMethods[0]] : undefined;
   useEffect(() => {
-    if (status === "total" && selectedMethods.length === 1 && montantUnique !== totalAPayer) {
-      ecrirePaiements([{ methode: selectedMethods[0], montant: totalAPayer }]);
+    if (status === "total" && modeUnique && montantUnique !== totalAPayer) {
+      ecrirePaiements([{ methode: modeUnique, montant: totalAPayer }]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status, totalAPayer, montantUnique, selectedMethods.length]);
+  }, [status, totalAPayer, montantUnique, modeUnique]);
+
+  // Nouvelle vente : choisir le client de passage (ou retirer le client)
+  // ramène sur « Payé ». Une vente que l'on modifie garde son statut.
+  useEffect(() => {
+    if (passage && status !== "total" && !enModification) choisirStatut("total");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [passage, status, enModification]);
 
   const totalPaye = Object.values(paymentAmounts).reduce((a, b) => a + (Number(b) || 0), 0);
   const depassement = status !== "none" && totalPaye > totalAPayer;
@@ -121,9 +140,9 @@ export const PaymentStatusSection: React.FC = () => {
     bancaire: <Landmark size={16} />,
   };
   const statuts: { value: "none" | "partiellement payé" | "total"; label: string; actif: string }[] = [
-    { value: "none", label: t("admin.deliveries.payment.status.none"), actif: "bg-slate-700 text-white border-slate-700" },
-    { value: "partiellement payé", label: t("admin.deliveries.payment.status.partial"), actif: "bg-amber-500 text-white border-amber-500" },
     { value: "total", label: t("admin.deliveries.payment.status.total"), actif: "bg-emerald-600 text-white border-emerald-600" },
+    { value: "partiellement payé", label: t("admin.deliveries.payment.status.partial"), actif: "bg-amber-500 text-white border-amber-500" },
+    { value: "none", label: t("admin.deliveries.payment.status.none"), actif: "bg-slate-700 text-white border-slate-700" },
   ];
 
   return (
@@ -134,21 +153,36 @@ export const PaymentStatusSection: React.FC = () => {
           {t("admin.deliveries.payment.status.label")}
         </div>
         <div className="grid grid-cols-3 gap-2" role="radiogroup">
-          {statuts.map((s) => (
-            <button
-              key={s.value}
-              type="button"
-              role="radio"
-              aria-checked={status === s.value}
-              onClick={() => choisirStatut(s.value)}
-              className={`rounded-lg border px-2 py-2.5 text-xs font-semibold transition sm:text-sm ${
-                status === s.value ? s.actif : "border-slate-200 bg-white text-slate-600 hover:border-purple-300 hover:bg-purple-50"
-              }`}
-            >
-              {s.label}
-            </button>
-          ))}
+          {statuts.map((s) => {
+            const interdit = passage && s.value !== "total";
+            return (
+              <button
+                key={s.value}
+                type="button"
+                role="radio"
+                aria-checked={status === s.value}
+                disabled={interdit}
+                title={interdit ? "Choisissez un client enregistré pour vendre à crédit" : undefined}
+                onClick={() => choisirStatut(s.value)}
+                className={`rounded-lg border px-2 py-2.5 text-xs font-semibold transition sm:text-sm ${
+                  status === s.value
+                    ? s.actif
+                    : interdit
+                      ? "cursor-not-allowed border-slate-100 bg-slate-50 text-slate-300"
+                      : "border-slate-200 bg-white text-slate-600 hover:border-purple-300 hover:bg-purple-50"
+                }`}
+              >
+                {s.label}
+              </button>
+            );
+          })}
         </div>
+        {passage && (
+          <p className={`mt-2 text-xs ${status === "total" ? "text-slate-500" : "font-semibold text-red-600"}`}>
+            Client de passage : la vente doit être payée en totalité. Pour un paiement partiel ou à crédit, choisissez
+            un client enregistré.
+          </p>
+        )}
       </div>
 
       {status !== "none" && (

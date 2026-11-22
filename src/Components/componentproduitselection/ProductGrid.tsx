@@ -1,9 +1,9 @@
 import React, { useState } from 'react'; // Importe React et useState.
 import { Check } from 'lucide-react'; // Importe une icône de coche.
-import defaultImage from './images/riz.png'; // Image par défaut pour les produits.
 import { useDeliveryStore } from '../../Modules/Delivery/Clients/composantclient/deliveryStore';// Store Zustand pour la gestion des livraisons.
 import  { Conditioning } from  './../../Modules/Delivery/NewDelivery';
 import { useTranslation } from 'react-i18next';
+import ImageArticle from "../ImageArticle";
 
 // Interfaces pour la structure des données Product et les props du ProductGrid.
 interface Product {
@@ -110,10 +110,11 @@ const ProductGrid: React.FC<ProductGridProps> = ({
               </div>
               <div className="mr-3 sm:mr-4 flex-shrink-0">
                 <div className="bg-pink-200 p-1 sm:p-2 rounded-lg w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center">
-                  <img
-                    src={product.image || defaultImage} // Affiche l'image du produit ou une image par défaut.
+                  <ImageArticle
+                    src={product.image}
                     alt={product.name}
                     className="max-w-full max-h-full object-contain"
+                    tailleIcone={28}
                   />
                 </div>
               </div>

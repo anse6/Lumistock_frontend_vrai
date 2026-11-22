@@ -13,7 +13,7 @@ import remarkGfm from "remark-gfm";
 import dayjs from "dayjs";
 import "dayjs/locale/fr";
 import relativeTime from "dayjs/plugin/relativeTime";
-import AvatarNanse from "../../../Modules/Public/components/AvatarNanse";
+import AvatarNanse from "./AvatarNanse";
 import {
   NOM_ASSISTANT,
   EVENEMENT_ASSISTANT,

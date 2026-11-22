@@ -1,7 +1,7 @@
 import React from "react";
 import { Check } from "lucide-react";
-import defaultImage from "./../../../../Modules/Delivery/images/riz.png";
 import type { Conditioning } from "../index/NewDeliveryadmin";
+import ImageArticle from "../../../ImageArticle";
 
 interface Product {
   id: string;
@@ -64,11 +64,10 @@ const ProductGrid: React.FC<ProductGridProps> = ({
                 <Check size={10} className="text-white" />
               </span>
               <span className={`flex h-[60px] w-full items-center justify-center ${isSelected ? "bg-purple-50" : "bg-slate-50"}`}>
-                <img
-                  src={product.image && product.image.startsWith("http") ? product.image : defaultImage}
-                  alt=""
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = defaultImage; }}
+                <ImageArticle
+                  src={product.image && product.image.startsWith("http") ? product.image : null}
                   className="max-h-[46px] max-w-[70%] object-contain"
+                  tailleIcone={26}
                 />
               </span>
               <span className="flex flex-1 flex-col gap-1 p-2 min-w-0">

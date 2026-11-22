@@ -4065,5 +4065,6 @@
   "Dont abîmé(s) :": "其中损坏：",
   "{0} {1}(s) en avarie, {2} remise(s) en vente": "{0} {1} 计入损耗，{2} 重新上架",
   "Toutes les unités sont remises en vente": "所有商品重新上架",
-  "{0} unité(s) abîmée(s) iront en avarie (perte comptée au coût d'achat), pas dans le stock vendable.": "{0} 件损坏商品将计入损耗（按采购成本计损失），不进入可售库存。"
+  "{0} unité(s) abîmée(s) iront en avarie (perte comptée au coût d'achat), pas dans le stock vendable.": "{0} 件损坏商品将计入损耗（按采购成本计损失），不进入可售库存。",
+  "Tout": "全部"
 }

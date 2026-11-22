@@ -17,14 +17,14 @@ import {
 import { Spin, Popover, Tooltip, App } from "antd";
 import { useTranslation } from "react-i18next";
 import ProductTable, { type AvarieResume } from "./Produits/ProductTable";
-import SupplyTable from "./Produits/SupplyTable";
+import SupplyTable, { type Supply } from "./Produits/SupplyTable";
 import DeleteModal from "./Produits/DeleteModal";
 import SupplyModal from "./Produits/SupplyModal";
 import CorbeilleProductDrawer from "./Produits/CorbeilleProductDrawer";
 import useCompteConnecte from "../../hooks/useCompteConnecte";
 import CorbeilleSupplyDrawer from "./Produits/CorbeilleSupplyDrawer";
 import { generateSuppliesReportPdf } from "./Produits/suppliesReportPdf";
-import type { SupplyPdfData, SupplyPdfStore } from "./Produits/supplyPdf";
+import { supplyReference, type SupplyPdfData, type SupplyPdfStore } from "./Produits/supplyPdf";
 import { Link } from "react-router-dom";
 import { useOngletUrl } from "../../hooks/useOngletUrl";
 import PageTitle from "../PageTitle";
@@ -52,18 +52,30 @@ interface Product {
   estSolde: boolean;
 }
 
-interface Supply {
-  id: string;
-  deliverer: string;
-  quantity: number;
-  amount: string;
-  amountValue: number;
-  date: string;
-  /** Date ISO d'origine : sert aux filtres (la date affichée est déjà formatée). */
-  createdAt: string;
-  stockTotal: number;
-  fournisseur_id?: string;
-}
+
+type Periode = "all" | "today" | "week" | "month" | "year";
+
+const PERIODES: { valeur: Periode; libelle: string }[] = [
+  { valeur: "all", libelle: "Tout" },
+  { valeur: "today", libelle: "Aujourd'hui" },
+  { valeur: "week", libelle: "Cette semaine" },
+  { valeur: "month", libelle: "Ce mois" },
+  { valeur: "year", libelle: "Cette année" },
+];
+
+/** Début de la période (heure locale), ou null pour « Tout ». La semaine
+ * commence le lundi, comme dans les rapports. */
+const debutPeriode = (periode: string, maintenant: Date): Date | null => {
+  const d = new Date(maintenant.getFullYear(), maintenant.getMonth(), maintenant.getDate());
+  if (periode === "today") return d;
+  if (periode === "week") {
+    d.setDate(d.getDate() - ((d.getDay() + 6) % 7));
+    return d;
+  }
+  if (periode === "month") return new Date(maintenant.getFullYear(), maintenant.getMonth(), 1);
+  if (periode === "year") return new Date(maintenant.getFullYear(), 0, 1);
+  return null;
+};
 
 interface Fournisseur {
   _id: string;
@@ -149,14 +161,20 @@ const Produiapprivisionnements: React.FC = () => {
 
       const data = await response.json();
 
+      interface Personne { nom_complet?: string; role?: string; email?: string; telephone?: string }
       interface ApiSupply {
         id: string;
         first_name?: string;
         last_name?: string;
         quantite: number;
         montant?: number;
+        montant_achat?: number;
         created_at: string;
         quantite_stock_total: number;
+        livreur?: Personne | null;
+        approvisionne_par?: Personne | null;
+        modifie_par?: Personne | null;
+        produits?: { nom?: string; quantite?: number; unite?: string }[];
       }
 
       const formattedSupplies: Supply[] = data.map((item: ApiSupply) => ({
@@ -172,7 +190,18 @@ const Produiapprivisionnements: React.FC = () => {
         ),
         createdAt: item.created_at,
         stockTotal: item.quantite_stock_total || 0,
-        fournisseur_id: (item as any).fournisseur_id,
+        reference: supplyReference(item.id),
+        delivererEmail: item.livreur?.email || "",
+        delivererPhone: item.livreur?.telephone || "",
+        auteur: item.approvisionne_par?.nom_complet || "",
+        auteurRole: item.approvisionne_par?.role || "",
+        modifiePar: item.modifie_par?.nom_complet || "",
+        coutAchat: item.montant_achat || 0,
+        articles: (item.produits || []).map((p) => ({
+          nom: p.nom || "—",
+          quantite: Number(p.quantite) || 0,
+          unite: p.unite || "",
+        })),
       }));
 
       setSupplies(formattedSupplies);
@@ -318,26 +347,13 @@ const Produiapprivisionnements: React.FC = () => {
     [products],
   );
 
-  const getWeekNumber = useCallback((d: Date) => {
-    const date = new Date(d);
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 3 - ((date.getDay() + 6) % 7));
-    const week1 = new Date(date.getFullYear(), 0, 4);
-    return (
-      1 +
-      Math.round(
-        ((date.getTime() - week1.getTime()) / 86400000 -
-          3 +
-          ((week1.getDay() + 6) % 7)) /
-          7,
-      )
-    );
-  }, []);
 
   const filteredSupplies = React.useMemo(() => {
     return supplies.filter((supply) => {
       const matchesSearch =
         supply.deliverer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        supply.reference.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        supply.articles.some((a) => a.nom.toLowerCase().includes(searchTerm.toLowerCase())) ||
         supply.amount.toLowerCase().includes(searchTerm.toLowerCase()) ||
         supply.date.toLowerCase().includes(searchTerm.toLowerCase());
 
@@ -345,21 +361,8 @@ const Produiapprivisionnements: React.FC = () => {
       // Date ISO d'origine : « 14/10/2026 » (date affichée) n'est pas lisible par Date.
       const supplyDate = new Date(supply.createdAt);
 
-      let matchesDate = true;
-      if (supplyDateFilter === "today") {
-        matchesDate =
-          supplyDate.getDate() === now.getDate() &&
-          supplyDate.getMonth() === now.getMonth() &&
-          supplyDate.getFullYear() === now.getFullYear();
-      } else if (supplyDateFilter === "week") {
-        matchesDate =
-          getWeekNumber(supplyDate) === getWeekNumber(now) &&
-          supplyDate.getFullYear() === now.getFullYear();
-      } else if (supplyDateFilter === "month") {
-        matchesDate =
-          supplyDate.getMonth() === now.getMonth() &&
-          supplyDate.getFullYear() === now.getFullYear();
-      }
+      const debut = debutPeriode(supplyDateFilter, now);
+      const matchesDate = !debut || supplyDate >= debut;
 
       const amountValue = parseFloat(supply.amount.replace(/[^0-9.]/g, ""));
       let matchesAmount = true;
@@ -394,7 +397,6 @@ const Produiapprivisionnements: React.FC = () => {
     minAmount,
     maxAmount,
     supplySupplierFilter,
-    getWeekNumber,
   ]);
 
   const productCategories = React.useMemo(
@@ -422,13 +424,14 @@ const Produiapprivisionnements: React.FC = () => {
     );
   }, [products]);
 
+  // Les cartes du haut suivent la période et les filtres choisis.
   const totalSuppliedQuantity = React.useMemo(() => {
-    return supplies.reduce((acc, supply) => acc + supply.quantity, 0);
-  }, [supplies]);
+    return filteredSupplies.reduce((acc, supply) => acc + supply.quantity, 0);
+  }, [filteredSupplies]);
 
   const totalSuppliedAmount = React.useMemo(() => {
-    return supplies.reduce((acc, supply) => acc + (supply.amountValue || 0), 0);
-  }, [supplies]);
+    return filteredSupplies.reduce((acc, supply) => acc + (supply.amountValue || 0), 0);
+  }, [filteredSupplies]);
 
   const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -464,7 +467,7 @@ const Produiapprivisionnements: React.FC = () => {
 
     const filtres = [
       searchTerm ? `recherche « ${searchTerm} »` : "",
-      { today: "aujourd'hui", week: "cette semaine", month: "ce mois-ci" }[supplyDateFilter] ?? "",
+      { today: "aujourd'hui", week: "cette semaine", month: "ce mois-ci", year: "cette année" }[supplyDateFilter] ?? "",
       { low: "montant < 100 000", medium: "montant entre 100 000 et 500 000", high: "montant > 500 000" }[supplyAmountFilter] ?? "",
       minAmount !== "" && maxAmount !== "" ? `montant de ${minAmount} à ${maxAmount}` : "",
       supplySupplierFilter !== "all"
@@ -752,7 +755,9 @@ const Produiapprivisionnements: React.FC = () => {
     [resetFilters, setActiveTab],
   );
 
-  if (loading && activeTab === "products") {
+  // Rond de chargement plein écran au premier chargement seulement : ensuite,
+  // les données restent affichées pendant qu'elles se rechargent.
+  if (loading && activeTab === "products" && products.length === 0) {
     return (
       <div className="flex justify-center items-center ">
         <Spin />
@@ -760,7 +765,7 @@ const Produiapprivisionnements: React.FC = () => {
     );
   }
 
-  if (supplyLoading && activeTab === "supply") {
+  if (supplyLoading && activeTab === "supply" && supplies.length === 0) {
     return (
       <div className="flex justify-center items-center ">
         <Spin />
@@ -1259,6 +1264,7 @@ const Produiapprivisionnements: React.FC = () => {
                     <option value="today">{t("delivery.periods.day")}</option>
                     <option value="week">{t("delivery.periods.week")}</option>
                     <option value="month">{t("delivery.periods.month")}</option>
+                    <option value="year">Cette année</option>
                   </select>
                 </div>
 
@@ -1366,11 +1372,35 @@ const Produiapprivisionnements: React.FC = () => {
               }}
             />
           ) : (
+            <>
+            <div className="mb-4 flex flex-wrap items-center gap-2">
+              <span className="mr-1 text-xs font-bold uppercase tracking-wider text-slate-500">Période</span>
+              {PERIODES.map((p) => (
+                <button
+                  key={p.valeur}
+                  type="button"
+                  aria-pressed={supplyDateFilter === p.valeur}
+                  onClick={() => setSupplyDateFilter(p.valeur)}
+                  className={`rounded-full border px-3.5 py-1.5 text-sm font-semibold transition-colors ${
+                    supplyDateFilter === p.valeur
+                      ? "border-[#3b1558] bg-[#3b1558] text-white"
+                      : "border-purple-200 bg-white text-[#3b1558] hover:bg-purple-50"
+                  }`}
+                >
+                  {p.libelle}
+                </button>
+              ))}
+              <span className="ml-auto text-sm text-slate-500">
+                {filteredSupplies.length} approvisionnement{filteredSupplies.length > 1 ? "s" : ""}
+              </span>
+            </div>
             <SupplyTable
               supplies={filteredSupplies}
+              loading={supplyLoading}
               onActionClick={handleActionClick}
               onSupplyDeleted={handleSupplyDeleted}
             />
+            </>
           )}
         </div>
         <DeleteModal

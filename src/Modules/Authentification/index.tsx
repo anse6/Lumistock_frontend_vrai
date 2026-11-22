@@ -1,6 +1,6 @@
 import AuthLayout from "./AuthLayout";
 import LoginForm from "./LoginForm";
-import { useContenu } from "../Public/contenu";
+import { useContenu } from "./textes";
 
 const AuthentificationPage = () => {
   const c = useContenu();

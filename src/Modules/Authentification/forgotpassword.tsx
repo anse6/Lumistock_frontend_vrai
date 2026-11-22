@@ -1,6 +1,6 @@
 import AuthLayout from "./AuthLayout";
 import ForgotPasswordForm from "./ForgotPasswordForm";
-import { useContenu } from "../Public/contenu";
+import { useContenu } from "./textes";
 
 const ForgotPassword = () => {
   const c = useContenu();

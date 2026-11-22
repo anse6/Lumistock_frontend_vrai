@@ -4065,5 +4065,6 @@
   "Dont abîmé(s) :": "De ellos dañados:",
   "{0} {1}(s) en avarie, {2} remise(s) en vente": "{0} {1}(s) como avería, {2} de nuevo a la venta",
   "Toutes les unités sont remises en vente": "Todas las unidades vuelven a la venta",
-  "{0} unité(s) abîmée(s) iront en avarie (perte comptée au coût d'achat), pas dans le stock vendable.": "{0} unidad(es) dañada(s) irán a avería (pérdida al coste de compra), no al stock vendible."
+  "{0} unité(s) abîmée(s) iront en avarie (perte comptée au coût d'achat), pas dans le stock vendable.": "{0} unidad(es) dañada(s) irán a avería (pérdida al coste de compra), no al stock vendible.",
+  "Tout": "Todo"
 }

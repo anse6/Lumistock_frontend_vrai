@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Images, Inbox, LayoutGrid, LifeBuoy, LogOut, MessagesSquare, Settings, Store, UsersRound } from 'lucide-react';
-import logo1 from '@/assets/logo1.svg';
+import logoLumistock from '@/assets/logo-lumistock.png';
 import { NavLink, useLocation } from 'react-router-dom';
 import { demanderDeconnexion } from '../../Modules/Authentification/ConfirmationDeconnexion';
 import { compterNonLus, EVENEMENT_CONTACT } from '../../services/contact';
@@ -117,16 +117,12 @@ const Sidesuperadmin: React.FC<{ isOpen: boolean; setIsOpen: (isOpen: boolean) =
       <aside
         className={`${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} fixed left-0 top-0 z-50 flex h-dvh w-[min(84vw,18rem)] flex-col border-r border-[#2d1045] bg-[#3b1558] text-white shadow-2xl transition-transform duration-300 ease-out md:w-72 lg:sticky lg:z-30 lg:h-screen lg:w-64 lg:shadow-none`}
       >
-        <div className="flex min-h-[76px] items-center border-b border-[#2d1045] px-4 py-4 md:px-5">
-          <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/15">
-              <img src={logo1} alt="Logo Lumistock" className="h-8 w-8" />
-            </div>
-            <div className="min-w-0">
-              <h1 className="truncate text-lg font-extrabold tracking-tight text-white">LUMISTOCK</h1>
-              <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-purple-200/80">Administration</p>
-            </div>
+        <div className="border-b border-[#2d1045] px-4 py-4 md:px-5">
+          {/* Logo officiel sur fond blanc (logo bleu, illisible sur le violet) */}
+          <div className="rounded-xl bg-white px-3 py-2.5 shadow-sm">
+            <img src={logoLumistock} alt="Lumistock" className="mx-auto h-8 w-auto object-contain" />
           </div>
+          <p className="mt-2.5 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-purple-200/80">Administration</p>
         </div>
 
         <nav aria-label="Navigation superadmin" className="flex flex-1 flex-col gap-1 overflow-y-auto px-3 py-5 md:px-4">

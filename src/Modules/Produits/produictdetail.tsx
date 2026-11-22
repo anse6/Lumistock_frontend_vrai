@@ -33,9 +33,9 @@ import {
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { getUrlServer } from './../../configServer';
 import PageTitle from '../../Components/PageTitle';
-import defaultimage from './../../Modules/Delivery/images/riz.png';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { IMAGE_ARTICLE_VIDE } from "../../Components/ImageArticle";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -108,7 +108,7 @@ const ProductDetailLivreur: React.FC = () => {
   };
 
   const getImageUrl = (imagePath: string): string => {
-    if (!imagePath) return defaultimage;
+    if (!imagePath) return IMAGE_ARTICLE_VIDE;
     if (imagePath.startsWith('http')) return imagePath;
     const cleanPath = imagePath.startsWith('uploads') ? imagePath : `uploads/images/${imagePath}`;
     return `${getUrlServer()}/${cleanPath}`;
@@ -285,9 +285,9 @@ const ProductDetailLivreur: React.FC = () => {
               <div className="p-2 bg-gray-50 rounded-xl mb-6">
                 <Image
                   src={getImageUrl(produit.image)}
-                  fallback={defaultimage}
+                  fallback={IMAGE_ARTICLE_VIDE}
                   className="w-full aspect-square object-contain rounded-lg"
-                  preview={{ mask: <div className="flex items-center gap-2"><InfoCircleOutlined /> {t('inventory.details.info.zoom')}</div> }}
+                  preview={!produit.image ? false : { mask: <div className="flex items-center gap-2"><InfoCircleOutlined /> {t('inventory.details.info.zoom')}</div> }}
                 />
               </div>
               

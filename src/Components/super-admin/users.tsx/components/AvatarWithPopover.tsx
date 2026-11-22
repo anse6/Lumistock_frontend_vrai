@@ -27,6 +27,28 @@ const getInitials = (name = "") => {
   return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
 };
 
+/** Rond coloré avec les initiales d'un nom : même couleur pour un même nom,
+ * partout (liste des clients, choix du client d'une vente, utilisateurs). */
+export const AvatarInitiales: React.FC<{ name: string; size?: number; className?: string }> = ({
+  name,
+  size = 36,
+  className,
+}) => (
+  <Avatar
+    size={size}
+    style={{
+      backgroundColor: getColor(name),
+      color: "#fff",
+      fontWeight: 700,
+      fontSize: size * 0.38,
+      flexShrink: 0,
+    }}
+    className={className}
+  >
+    {getInitials(name)}
+  </Avatar>
+);
+
 interface AvatarWithPopoverProps {
   name: string;
   /** Facultatif : sans adresse (ex. client sans e-mail), pas de bouton d'envoi. */
@@ -113,20 +135,9 @@ const AvatarWithPopover: React.FC<AvatarWithPopoverProps> = ({
       mouseEnterDelay={0.1}
       mouseLeaveDelay={0.15}
     >
-      <Avatar
-        size={size}
-        style={{
-          backgroundColor: color,
-          color: "#fff",
-          fontWeight: 700,
-          fontSize: size * 0.38,
-          cursor: "default",
-          flexShrink: 0,
-        }}
-        className="transition-transform hover:scale-110"
-      >
-        {initials}
-      </Avatar>
+      <span className="inline-flex cursor-default">
+        <AvatarInitiales name={name} size={size} className="transition-transform hover:scale-110" />
+      </span>
     </Popover>
   );
 };

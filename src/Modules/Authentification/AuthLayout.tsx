@@ -2,14 +2,14 @@
 // passe : formulaire à gauche ; à droite (grand écran), panneau violet
 // Lumistock sur la gestion de stock et la comptabilité SYSCOHADA (OHADA).
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { versSite } from "../../configServer";
 import { ConfigProvider } from "antd";
 import { ArrowLeft, Boxes, Check, Globe2, Landmark, PackageMinus, Scale } from "lucide-react";
-import Logo from "../Public/components/Logo";
-import LangueSwitch from "../Public/components/LangueSwitch";
-import { useContenu } from "../Public/contenu";
-import { THEME_PUBLIC } from "../Public/theme";
-import "../Public/public.css";
+import Logo from "./habillage/Logo";
+import LangueSwitch from "./habillage/LangueSwitch";
+import { useContenu } from "./textes";
+import { THEME_PUBLIC } from "./habillage/theme";
+import "./habillage/public.css";
 
 const ICONES_PILIERS = [Boxes, Scale, Landmark];
 
@@ -49,9 +49,9 @@ const AuthLayout: React.FC<Props> = ({ titrePage, children }) => {
             <div className="w-full max-w-[400px]">{children}</div>
           </main>
           <footer className="px-5 py-6 sm:px-10">
-            <Link to="/" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold !text-attenue hover:!text-encre">
+            <a href={versSite("/")} className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold !text-attenue hover:!text-encre">
               <ArrowLeft size={16} aria-hidden="true" /> {c.auth.retourSite}
-            </Link>
+            </a>
           </footer>
         </div>
 

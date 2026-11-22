@@ -4065,5 +4065,6 @@
   "Dont abîmé(s) :": "منها تالفة:",
   "{0} {1}(s) en avarie, {2} remise(s) en vente": "{0} {1} تالفة، {2} أعيدت للبيع",
   "Toutes les unités sont remises en vente": "جميع الوحدات تعود للبيع",
-  "{0} unité(s) abîmée(s) iront en avarie (perte comptée au coût d'achat), pas dans le stock vendable.": "{0} وحدة تالفة ستُسجل كخسارة (بتكلفة الشراء)، لا في المخزون القابل للبيع."
+  "{0} unité(s) abîmée(s) iront en avarie (perte comptée au coût d'achat), pas dans le stock vendable.": "{0} وحدة تالفة ستُسجل كخسارة (بتكلفة الشراء)، لا في المخزون القابل للبيع.",
+  "Tout": "الكل"
 }

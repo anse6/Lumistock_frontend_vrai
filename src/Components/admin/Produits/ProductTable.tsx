@@ -5,7 +5,6 @@ import {
   Box,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import defaultImage from "./../../../Modules/Delivery/images/riz.png";
 import { getUrlServer } from "../../../configServer";
 import ExpiredProductModal from "./ExpiredProductModal";
 import SoldeAvarieModal from "./SoldeAvarieModal";
@@ -221,7 +220,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
       const cleanedPath = imageUrl.replace(/^\/?uploads/i, "uploads");
       return `${getUrlServer()}/${cleanedPath}`;
     }
-    return defaultImage;
+    return undefined; // sans image : l'icône de carton de l'avatar
   };
 
   const fetchFournisseurs = async () => {

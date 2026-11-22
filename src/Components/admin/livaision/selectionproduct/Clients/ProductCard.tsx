@@ -1,9 +1,9 @@
 import { getConditioningId } from "../../../approvisonnement/conditioning";
 import React, { useState } from "react";
-import defaultImage from "./riz.png";
 import { useProductStore, Conditioning } from "./api/useProductStore";
 import { useDeliveryStore } from "../../newdelivery/deliveryStore";
 import { Button, Select } from "antd";
+import ImageArticle from "../../../../ImageArticle";
 
 interface ProductCardProps {
   id: string;
@@ -196,10 +196,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div className="p-6 pb-4">
           <div className="flex items-start gap-4">
             <div className="relative flex-shrink-0">
-              <img
-                src={image || defaultImage}
+              <ImageArticle
+                src={image}
                 alt={title}
                 className="w-20 h-20 rounded-xl object-cover shadow-md ring-2 ring-gray-100"
+                classeVide="w-20 h-20 rounded-xl bg-purple-50 ring-2 ring-gray-100"
+                tailleIcone={30}
               />
               {maxIndividualStock < 10 && (
                 <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
@@ -279,10 +281,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
         <div className="flex justify-center px-4 pb-4">
           <div className="relative">
-            <img
-              src={image || defaultImage}
+            <ImageArticle
+              src={image}
               alt={title}
               className="w-24 h-24 rounded-xl object-cover shadow-md ring-2 ring-gray-100"
+              classeVide="w-24 h-24 rounded-xl bg-purple-50 ring-2 ring-gray-100"
+              tailleIcone={34}
             />
             {maxIndividualStock < 10 && (
               <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-semibold">

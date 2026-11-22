@@ -3,7 +3,6 @@ import { Table, Tag, Button, Dropdown, Modal, InputNumber, Avatar, message, Tool
 import type { ColumnsType } from 'antd/es/table';
 import { MoreVertical, AlertTriangle, CheckCircle, Eye, RotateCcw, Box } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import defaultImage from './../Delivery/images/riz.png';
 import { getUrlServer } from './../../configServer';
 import { Product } from './types';
 import { retourStockMagasin } from './productService';
@@ -32,7 +31,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ products, loading, onRefr
       const cleanedPath = imageUrl.replace(/^\/?uploads/i, 'uploads');
       return `${getUrlServer()}/${cleanedPath}`;
     }
-    return defaultImage;
+    return undefined; // sans image : l'icône de carton de l'avatar
   };
 
   const showReturnModal = (product: Product) => {
@@ -270,6 +269,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ products, loading, onRefr
                 src={getImageSrc(selectedProduct.image)}
                 shape="square"
                 size={54}
+                icon={<Box />}
                 className="flex-shrink-0 bg-white shadow-sm"
               />
               <div>

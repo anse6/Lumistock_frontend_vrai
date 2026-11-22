@@ -27,6 +27,12 @@ const resources = {
 // Langue mémorisée (ou français par défaut)
 const lireLangue = () => {
   try {
+    // Arrivée depuis le site public : sa langue est transmise dans l'adresse.
+    const transmise = new URLSearchParams(window.location.search).get('lang');
+    if (transmise) {
+      localStorage.setItem('app-language', langueDe(transmise).code);
+      return transmise;
+    }
     return localStorage.getItem('app-language') || 'fr';
   } catch {
     return 'fr';

@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { getUrlServer } from '../../../../configServer';
 
@@ -13,27 +13,6 @@ export interface Client {
   quartier: string;
   photo_profil?: string | null;
 }
-
-export const useCreateClient = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (formData: FormData) => {
-      const token = localStorage.getItem('access_token');
-      return axios.post(`${API_URL}/clients/create`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`
-        }
-      }).then(res => res.data);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['clients'] });
-    }
-  });
-};
-
-
 
 export const useGetClients = () => {
   return useQuery({

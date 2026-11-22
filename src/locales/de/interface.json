@@ -4065,5 +4065,6 @@
   "Dont abîmé(s) :": "Davon beschädigt:",
   "{0} {1}(s) en avarie, {2} remise(s) en vente": "{0} {1} als Schaden, {2} wieder im Verkauf",
   "Toutes les unités sont remises en vente": "Alle Einheiten gehen zurück in den Verkauf",
-  "{0} unité(s) abîmée(s) iront en avarie (perte comptée au coût d'achat), pas dans le stock vendable.": "{0} beschädigte Einheit(en) werden als Schaden gebucht (Verlust zum Einkaufspreis), nicht in den verkaufbaren Bestand."
+  "{0} unité(s) abîmée(s) iront en avarie (perte comptée au coût d'achat), pas dans le stock vendable.": "{0} beschädigte Einheit(en) werden als Schaden gebucht (Verlust zum Einkaufspreis), nicht in den verkaufbaren Bestand.",
+  "Tout": "Alle"
 }

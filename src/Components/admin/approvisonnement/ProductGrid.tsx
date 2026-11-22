@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Check, Trash2, Minus, Plus, Edit3, Package } from 'lucide-react';
 import { Tag, Tooltip, App } from 'antd';
-import defaultImage from '../../../Modules/Delivery/images/riz.png';
 import { getConditioningId, type ConditioningId } from './conditioning';
+import ImageArticle from "../../ImageArticle";
 
 const APP_COLOR = '#3b1558';
 const MIN_TOTAL_MESSAGE = 'La quantité totale doit être d\'au moins 1. Retirez l\'article pour l\'enlever de la sélection.';
@@ -55,7 +55,6 @@ const ProductGrid: React.FC<ProductGridProps> = ({
   const [tempQuantity, setTempQuantity] = useState<string>('');
   const [selectedConditioningId, setSelectedConditioningId] = useState<Record<string, string | null>>({});
   const [tempConditionedQuantity, setTempConditionedQuantity] = useState<Record<string, string>>({});
-  const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
 
   const totalPages = Math.ceil(products.length / itemsPerPage);
   // Garde-fou : si la liste filtrée rétrécit, ne jamais afficher une page vide.
@@ -139,8 +138,23 @@ const ProductGrid: React.FC<ProductGridProps> = ({
     const cond = product.conditionnements.find((c) => getConditioningId(c._id) === selectedConditioningId[productId]);
     if (!cond) return;
     const qty = parseInt(tempConditionedQuantity[productId] || '1') || 1;
-    if (getTotalUsedUnits(productId) + qty * cond.facteur > product.quantite_livreur) { msg.warning(`Max : ${product.quantite_livreur}`); return; }
-    setProductQuantities((prev) => ({ ...prev, [productId]: { ...prev[productId], conditionconfig: [...(prev[productId]?.conditionconfig || []), { conditioningId: selectedConditioningId[productId]!, conditionedQuantity: qty }] } }));
+    const config = productQuantities[productId] || { quantity: 0, conditionconfig: [] };
+    // Au clic sur l'article, 1 unité est ajoutée d'office : au premier
+    // conditionnement, on la retire (1 carton de 12 = 12 unités, pas 13).
+    let unites = config.conditionconfig.length === 0 && config.quantity === 1 ? 0 : config.quantity;
+    const autres = getTotalUsedUnits(productId) - config.quantity;
+    const ajout = qty * cond.facteur;
+    // Stock juste : les unités au détail laissent la place au conditionnement.
+    if (autres + unites + ajout > product.quantite_livreur) unites = Math.max(0, product.quantite_livreur - autres - ajout);
+    if (autres + unites + ajout > product.quantite_livreur) {
+      msg.warning(`Stock insuffisant : ${product.quantite_livreur} ${product.size || 'unités'} disponibles, ${qty} ${cond.nom} = ${ajout}.`);
+      return;
+    }
+    // Un même conditionnement ajouté deux fois se cumule sur une seule ligne.
+    const lignes = config.conditionconfig.some((c) => c.conditioningId === selectedConditioningId[productId])
+      ? config.conditionconfig.map((c) => c.conditioningId === selectedConditioningId[productId] ? { ...c, conditionedQuantity: c.conditionedQuantity + qty } : c)
+      : [...config.conditionconfig, { conditioningId: selectedConditioningId[productId]!, conditionedQuantity: qty }];
+    setProductQuantities((prev) => ({ ...prev, [productId]: { quantity: unites, conditionconfig: lignes } }));
     setSelectedConditioningId((prev) => ({ ...prev, [productId]: null }));
     setTempConditionedQuantity((prev) => ({ ...prev, [productId]: '1' }));
   };
@@ -181,14 +195,14 @@ const ProductGrid: React.FC<ProductGridProps> = ({
   return (
     <div className="w-full">
       {/* Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 items-start gap-2.5 px-4 sm:px-6 py-3">
+      {/* 4 articles par ligne dès 640 px (2 sur téléphone, où 4 cartes seraient illisibles). */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 items-start gap-3 px-4 sm:px-6 py-3">
         {paginatedProducts.map((product) => {
           const isSelected = selectedProducts.includes(product.id);
           const config = productQuantities[product.id] || { quantity: 0, conditionconfig: [] };
           const isEditing = editingProduct === product.id;
           const totalUsedUnits = getTotalUsedUnits(product.id);
           const isOutOfStock = product.quantite_livreur === 0;
-          const imgSrc = imgErrors[product.id] || !product.image ? defaultImage : product.image;
 
           return (
             <div
@@ -211,11 +225,11 @@ const ProductGrid: React.FC<ProductGridProps> = ({
               {/* Image */}
               <div className="w-full flex items-center justify-center"
                 style={{ height: 60, background: isSelected ? `${APP_COLOR}10` : '#f8f5ff' }}>
-                <img
-                  src={imgSrc}
+                <ImageArticle
+                  src={product.image}
                   alt={product.name}
-                  onError={() => setImgErrors((prev) => ({ ...prev, [product.id]: true }))}
-                  style={{ maxHeight: 46, maxWidth: '70%', objectFit: 'contain' }}
+                  className="max-h-[46px] max-w-[70%] object-contain"
+                  tailleIcone={26}
                 />
               </div>
 

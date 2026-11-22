@@ -36,7 +36,6 @@ import {
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { getUrlServer } from "../../../../configServer";
 import PageTitle from "../../../PageTitle";
-import defaultimage from "./../../../../Modules/Delivery/images/riz.png";
 import axios from "axios";
 import ProductStatusTag from "../../Produits/ProductStatusTag";
 import useCompteConnecte from "../../../../hooks/useCompteConnecte";
@@ -44,6 +43,7 @@ import ValorisationArticle from "../../../../Modules/Valorisation/ValorisationAr
 import ListeNumeros from "../../../../Modules/NumerosSerie/ListeNumeros";
 import { formatMontant, useValorisation } from "../../../../Modules/Valorisation/api";
 import AvatarWithPopover from "../../../super-admin/users.tsx/components/AvatarWithPopover";
+import { IMAGE_ARTICLE_VIDE } from "../../../ImageArticle";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -129,7 +129,7 @@ const ProductDetailAdmin: React.FC = () => {
   };
 
   const getImageUrl = (imagePath: string): string => {
-    if (!imagePath) return defaultimage;
+    if (!imagePath) return IMAGE_ARTICLE_VIDE;
     if (imagePath.startsWith("http")) return imagePath;
     const cleanPath = imagePath.startsWith("uploads")
       ? imagePath
@@ -387,9 +387,9 @@ const ProductDetailAdmin: React.FC = () => {
                 <div className="p-2 bg-purple-50 rounded-xl mb-6">
                   <Image
                     src={getImageUrl(produit.image)}
-                    fallback={defaultimage}
+                    fallback={IMAGE_ARTICLE_VIDE}
                     className="w-full aspect-square object-contain rounded-lg"
-                    preview={{
+                    preview={!produit.image ? false : {
                       mask: (
                         <div className="flex items-center gap-2">
                           <InfoCircleOutlined /> Aperçu

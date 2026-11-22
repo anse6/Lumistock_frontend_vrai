@@ -67,7 +67,9 @@ interface ProductSelectProps {
   approvisionnementId?: string;
 }
 
-const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId }) => {
+const ProductSelectInner: React.FC<ProductSelectProps> = ({
+  approvisionnementId,
+}) => {
   const isEdit = Boolean(approvisionnementId);
   const { t } = useTranslation();
   const { message: msg } = App.useApp();
@@ -77,7 +79,16 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
   const [productQuantities, setProductQuantities] = useState<
-    Record<string, { quantity: number; conditionconfig: { conditioningId: string; conditionedQuantity: number }[] }>
+    Record<
+      string,
+      {
+        quantity: number;
+        conditionconfig: {
+          conditioningId: string;
+          conditionedQuantity: number;
+        }[];
+      }
+    >
   >({});
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -104,15 +115,25 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
         if (!token) throw new Error(t("admin.dashboard.error"));
 
         const livreursRes = await fetch(`${getUrlServer()}/users/livreurs`, {
-          headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         });
-        if (!livreursRes.ok) throw new Error(`Erreur HTTP: ${livreursRes.status}`);
+        if (!livreursRes.ok)
+          throw new Error(`Erreur HTTP: ${livreursRes.status}`);
         const livreursData = await livreursRes.json();
         setLivreurs(livreursData.livreurs || []);
 
-        const stockRes = await fetch(`${getUrlServer()}/managers/stock_par_categorie`, {
-          headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-        });
+        const stockRes = await fetch(
+          `${getUrlServer()}/managers/stock_par_categorie`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          },
+        );
         if (!stockRes.ok) throw new Error(`Erreur HTTP: ${stockRes.status}`);
         const stockData = await stockRes.json();
 
@@ -122,41 +143,88 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
         // magasin ne pourrait plus être modifié ni réduit).
         const dejaRemis: Record<string, number> = {};
         if (approvisionnementId) {
-          const approRes = await fetch(`${getUrlServer()}/approvisionnements/${approvisionnementId}`, {
-            headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-          });
-          if (!approRes.ok) throw new Error(`Approvisionnement introuvable (HTTP ${approRes.status})`);
+          const approRes = await fetch(
+            `${getUrlServer()}/approvisionnements/${approvisionnementId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            },
+          );
+          if (!approRes.ok)
+            throw new Error(
+              `Approvisionnement introuvable (HTTP ${approRes.status})`,
+            );
           const appro = await approRes.json();
           setSelectedLivreur(appro.livreur_id || "");
-          const quantites: Record<string, { quantity: number; conditionconfig: { conditioningId: string; conditionedQuantity: number }[] }> = {};
-          (appro.produits || []).forEach((p: { produit_id: string | { $oid: string }; quantite: number }) => {
-            const pid = getConditioningId(p.produit_id);
-            dejaRemis[pid] = (dejaRemis[pid] || 0) + p.quantite;
-            quantites[pid] = { quantity: p.quantite, conditionconfig: [] };
-          });
+          const quantites: Record<
+            string,
+            {
+              quantity: number;
+              conditionconfig: {
+                conditioningId: string;
+                conditionedQuantity: number;
+              }[];
+            }
+          > = {};
+          (appro.produits || []).forEach(
+            (p: {
+              produit_id: string | { $oid: string };
+              quantite: number;
+            }) => {
+              const pid = getConditioningId(p.produit_id);
+              dejaRemis[pid] = (dejaRemis[pid] || 0) + p.quantite;
+              quantites[pid] = { quantity: p.quantite, conditionconfig: [] };
+            },
+          );
           setSelectedProducts(Object.keys(quantites));
           setProductQuantities(quantites);
         }
 
-        type RawProduct = { _id: string; nom: string; quantite: number; prix: number; unite: string; etat: string; image?: string; conditionnements: Conditioning[] };
-        type RawCategory = { _id: string; nom: string; description: string; produits: RawProduct[] };
+        type RawProduct = {
+          _id: string;
+          nom: string;
+          quantite: number;
+          prix: number;
+          unite: string;
+          etat: string;
+          image?: string;
+          conditionnements: Conditioning[];
+        };
+        type RawCategory = {
+          _id: string;
+          nom: string;
+          description: string;
+          produits: RawProduct[];
+        };
 
-        const formattedCategories: Category[] = (stockData as RawCategory[]).map((cat) => ({
+        const formattedCategories: Category[] = (
+          stockData as RawCategory[]
+        ).map((cat) => ({
           id: cat._id,
           name: cat.nom,
           description: cat.description,
           products: cat.produits.map((p) => ({
-            id: p._id, name: p.nom, price: p.prix, quantite_livreur: p.quantite + (dejaRemis[p._id] || 0),
-            unite: p.unite, quantity: 0, etat: p.etat,
+            id: p._id,
+            name: p.nom,
+            price: p.prix,
+            quantite_livreur: p.quantite + (dejaRemis[p._id] || 0),
+            unite: p.unite,
+            quantity: 0,
+            etat: p.etat,
             image: p.image || undefined,
             conditionnements: p.conditionnements || [],
-            conditionconfig: [], selectedQuantity: 0,
+            conditionconfig: [],
+            selectedQuantity: 0,
           })),
         }));
 
         setCategories(formattedCategories);
       } catch (err) {
-        setError(err instanceof Error ? err.message : t("admin.supplies.error"));
+        setError(
+          err instanceof Error ? err.message : t("admin.supplies.error"),
+        );
       } finally {
         setLoading(false);
       }
@@ -180,15 +248,19 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
 
   const getFilteredProducts = () => {
     const list = selectedCategory
-      ? (categories.find((c) => c.id === selectedCategory)?.products || [])
+      ? categories.find((c) => c.id === selectedCategory)?.products || []
       : categories.flatMap((c) => c.products);
 
     return list
       .map((p) => ({
-        id: p.id, name: p.name, size: p.unite, price: p.price,
+        id: p.id,
+        name: p.name,
+        size: p.unite,
+        price: p.price,
         quantite_livreur: p.quantite_livreur,
         selected: selectedProducts.includes(p.id),
-        image: p.image || null, etat: p.etat,
+        image: p.image || null,
+        etat: p.etat,
         conditionnements: p.conditionnements,
         conditionconfig: productQuantities[p.id]?.conditionconfig || [],
         quantity: productQuantities[p.id]?.quantity || 0,
@@ -200,21 +272,34 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
 
   const toggleProductSelection = (productId: string) => {
     setSelectedProducts((prev) =>
-      prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]
+      prev.includes(productId)
+        ? prev.filter((id) => id !== productId)
+        : [...prev, productId],
     );
     setProductQuantities((prev) => {
-      if (!prev[productId]) return { ...prev, [productId]: { quantity: 1, conditionconfig: [] } };
+      if (!prev[productId])
+        return { ...prev, [productId]: { quantity: 1, conditionconfig: [] } };
       return prev;
     });
   };
 
   const handleContinueClick = () => {
-    if (!selectedLivreur) { msg.warning(t("admin.supplies.select_deliverer")); return; }
-    if (selectedProducts.length === 0) { msg.warning(t("admin.supplies.select_products")); return; }
+    if (!selectedLivreur) {
+      msg.warning(t("admin.supplies.select_deliverer"));
+      return;
+    }
+    if (selectedProducts.length === 0) {
+      msg.warning(t("admin.supplies.select_products"));
+      return;
+    }
     // Le serveur refuse toute quantité inférieure à 1.
-    const sansQuantite = getSelectedProductsSummary().filter((p) => p.selectedQuantity < 1);
+    const sansQuantite = getSelectedProductsSummary().filter(
+      (p) => p.selectedQuantity < 1,
+    );
     if (sansQuantite.length > 0) {
-      msg.warning(`Quantité à 0 pour : ${sansQuantite.map((p) => p.name).join(", ")}`);
+      msg.warning(
+        `Quantité à 0 pour : ${sansQuantite.map((p) => p.name).join(", ")}`,
+      );
       return;
     }
     setSubmitError(null);
@@ -222,15 +307,34 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
   };
 
   const getSelectedProductsSummary = () =>
-    selectedProducts.map((productId) => {
-      const product = categories.flatMap((c) => c.products).find((p) => p.id === productId);
-      if (!product) return null;
-      const config = productQuantities[productId] || { quantity: 0, conditionconfig: [] };
-      const totalQty = config.quantity + config.conditionconfig.reduce(
-        (sum, c) => sum + c.conditionedQuantity * (product.conditionnements.find((cd) => getConditioningId(cd._id) === c.conditioningId)?.facteur || 1), 0
-      );
-      return { ...product, selectedQuantity: totalQty, conditionconfig: config.conditionconfig };
-    }).filter(Boolean) as Product[];
+    selectedProducts
+      .map((productId) => {
+        const product = categories
+          .flatMap((c) => c.products)
+          .find((p) => p.id === productId);
+        if (!product) return null;
+        const config = productQuantities[productId] || {
+          quantity: 0,
+          conditionconfig: [],
+        };
+        const totalQty =
+          config.quantity +
+          config.conditionconfig.reduce(
+            (sum, c) =>
+              sum +
+              c.conditionedQuantity *
+                (product.conditionnements.find(
+                  (cd) => getConditioningId(cd._id) === c.conditioningId,
+                )?.facteur || 1),
+            0,
+          );
+        return {
+          ...product,
+          selectedQuantity: totalQty,
+          conditionconfig: config.conditionconfig,
+        };
+      })
+      .filter(Boolean) as Product[];
 
   const handleConfirmSupply = async () => {
     try {
@@ -244,37 +348,69 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
       const payload = {
         livreur_id: livreurObj.id,
         produits: selectedProducts.map((productId) => {
-          const product = categories.flatMap((c) => c.products).find((p) => p.id === productId);
-          const config = productQuantities[productId] || { quantity: 0, conditionconfig: [] };
-          const qty = config.quantity + config.conditionconfig.reduce(
-            (sum, c) => sum + c.conditionedQuantity * (product?.conditionnements.find((cd) => getConditioningId(cd._id) === c.conditioningId)?.facteur || 1), 0
-          );
+          const product = categories
+            .flatMap((c) => c.products)
+            .find((p) => p.id === productId);
+          const config = productQuantities[productId] || {
+            quantity: 0,
+            conditionconfig: [],
+          };
+          const qty =
+            config.quantity +
+            config.conditionconfig.reduce(
+              (sum, c) =>
+                sum +
+                c.conditionedQuantity *
+                  (product?.conditionnements.find(
+                    (cd) => getConditioningId(cd._id) === c.conditioningId,
+                  )?.facteur || 1),
+              0,
+            );
           return { produit_id: productId, quantite: qty };
         }),
       };
 
-      const res = await fetch(`${getUrlServer()}/approvisionnements${isEdit ? `/${approvisionnementId}` : ""}`, {
-        method: isEdit ? "PUT" : "POST",
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch(
+        `${getUrlServer()}/approvisionnements${isEdit ? `/${approvisionnementId}` : ""}`,
+        {
+          method: isEdit ? "PUT" : "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        },
+      );
 
       if (!res.ok) {
         const errData = await res.json().catch(() => null);
         // Le serveur renvoie { error: "texte" } ou { error: { champ: [messages] } }.
         const detail = errData?.error ?? errData?.message;
-        const texte = typeof detail === "string" ? detail : detail ? JSON.stringify(detail) : "";
+        const texte =
+          typeof detail === "string"
+            ? detail
+            : detail
+              ? JSON.stringify(detail)
+              : "";
         throw new Error(texte || `Erreur HTTP: ${res.status}`);
       }
 
       setSubmitSuccess(true);
-      msg.success(isEdit ? "Approvisionnement modifié avec succès" : t("admin.supplies.success"));
+      msg.success(
+        isEdit
+          ? "Approvisionnement modifié avec succès"
+          : t("admin.supplies.success"),
+      );
       setTimeout(() => {
         setShowModal(false);
-        setTimeout(() => navigate("/admin/dashboard/produits_approvisionnements"), 800);
+        setTimeout(
+          () => navigate("/admin/dashboard/produits_approvisionnements"),
+          800,
+        );
       }, 2000);
     } catch (err) {
-      const errMsg = err instanceof Error ? err.message : t("admin.supplies.error");
+      const errMsg =
+        err instanceof Error ? err.message : t("admin.supplies.error");
       setSubmitError(errMsg);
       msg.error(errMsg);
     } finally {
@@ -283,32 +419,45 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
   };
 
   const summary = getSelectedProductsSummary();
-  const totalAmount = summary.reduce((sum, p) => sum + p.price * p.selectedQuantity, 0);
+  const totalAmount = summary.reduce(
+    (sum, p) => sum + p.price * p.selectedQuantity,
+    0,
+  );
   const livreurObj = livreurs.find((l) => l.id === selectedLivreur);
 
   if (loading) {
     return (
       <div className="flex justify-center items-center py-16">
-        <div className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin"
-          style={{ borderColor: `${APP_COLOR} transparent transparent transparent` }} />
+        <div
+          className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin"
+          style={{
+            borderColor: `${APP_COLOR} transparent transparent transparent`,
+          }}
+        />
       </div>
     );
   }
 
   if (error) {
-    return <div className="text-center py-8 text-red-500">{t("admin.dashboard.error")}: {error}</div>;
+    return (
+      <div className="text-center py-8 text-red-500">
+        {t("admin.dashboard.error")}: {error}
+      </div>
+    );
   }
 
   return (
     <>
-      <PageTitle>{isEdit ? "Modifier l'approvisionnement" : t("admin.supplies.title")}</PageTitle>
+      <PageTitle>
+        {isEdit ? "Modifier l'approvisionnement" : t("admin.supplies.title")}
+      </PageTitle>
 
       <div className="w-full bg-white min-h-screen pb-20 overflow-x-hidden">
         {/* Breadcrumb */}
         <div className="px-4 sm:px-6 pt-4 pb-3 flex items-center gap-2 text-sm font-medium flex-wrap">
           <Link
             to="/admin/dashboard/produits_approvisionnements"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-white text-xs font-semibold shadow-sm hover:opacity-90 transition-opacity"
+            className="flex items-center gap-1.5 px-3 py-1.5 !rounded-xl !text-white text-xs !font-semibold !shadow-sm !hover:opacity-90 !transition-opacity"
             style={{ backgroundColor: APP_COLOR }}
           >
             <ArrowLeftOutlined className="text-xs" />
@@ -316,21 +465,29 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
           </Link>
           <span className="text-gray-300 font-bold">›</span>
           <span className="text-xs text-gray-500 bg-gray-100 px-3 py-1.5 rounded-xl">
-            {isEdit ? "Modifier l'approvisionnement" : t("admin.supplies.select_products")}
+            {isEdit
+              ? "Modifier l'approvisionnement"
+              : t("admin.supplies.select_products")}
           </span>
         </div>
 
         {/* Header card */}
         <div
           className="mx-4 sm:mx-6 mb-4 p-3 sm:p-4 rounded-2xl border border-purple-100 shadow-sm"
-          style={{ background: `linear-gradient(135deg, ${APP_COLOR}09, #faf5ff)` }}
+          style={{
+            background: `linear-gradient(135deg, ${APP_COLOR}09, #faf5ff)`,
+          }}
         >
           <div className="flex flex-wrap items-end justify-between gap-3">
             {/* Sélection du gérant : largeur limitée (un nom n'a pas besoin de toute la ligne) */}
             <div className="w-full sm:w-72 min-w-0">
-              <label className="block text-xs font-bold mb-1.5 uppercase tracking-wide" style={{ color: APP_COLOR }}>
+              <label
+                className="block text-xs font-bold mb-1.5 uppercase tracking-wide"
+                style={{ color: APP_COLOR }}
+              >
                 <UserOutlined className="mr-1" />
-                {t("admin.supplies.deliverer")} <span className="text-red-500">*</span>
+                {t("admin.supplies.deliverer")}{" "}
+                <span className="text-red-500">*</span>
               </label>
               <Select
                 value={selectedLivreur || undefined}
@@ -353,8 +510,14 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
             <div className="flex w-full sm:w-auto flex-wrap sm:flex-nowrap items-center gap-2 min-w-0">
               <div className="flex items-center gap-1.5 bg-white border border-purple-100 rounded-xl px-3 py-2 shrink-0">
                 <ShoppingCartOutlined style={{ color: APP_COLOR }} />
-                <Badge count={selectedProducts.length} showZero style={{ backgroundColor: APP_COLOR }} />
-                <span className="text-xs text-gray-500 ml-1">{t("admin.supplies.itemsCount")}</span>
+                <Badge
+                  count={selectedProducts.length}
+                  showZero
+                  style={{ backgroundColor: APP_COLOR }}
+                />
+                <span className="text-xs text-gray-500 ml-1">
+                  {t("admin.supplies.itemsCount")}
+                </span>
               </div>
               <Button
                 type="primary"
@@ -364,13 +527,21 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
                 icon={<CheckCircleFilled />}
                 className="font-bold w-full sm:w-auto min-w-0"
                 style={{
-                  backgroundColor: selectedProducts.length === 0 || !selectedLivreur ? '#d1d5db' : APP_COLOR,
-                  borderColor: selectedProducts.length === 0 || !selectedLivreur ? '#d1d5db' : APP_COLOR,
-                  color: '#ffffff',
+                  backgroundColor:
+                    selectedProducts.length === 0 || !selectedLivreur
+                      ? "#d1d5db"
+                      : APP_COLOR,
+                  borderColor:
+                    selectedProducts.length === 0 || !selectedLivreur
+                      ? "#d1d5db"
+                      : APP_COLOR,
+                  color: "#ffffff",
                 }}
               >
-                <span className="truncate" style={{ color: '#ffffff' }}>
-                  {isEdit ? "Enregistrer les modifications" : t("admin.supplies.new_supply")}
+                <span className="truncate" style={{ color: "#ffffff" }}>
+                  {isEdit
+                    ? "Enregistrer les modifications"
+                    : t("admin.supplies.new_supply")}
                 </span>
               </Button>
             </div>
@@ -385,9 +556,13 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
             onSelectCategory={setSelectedCategory}
           />
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+            <SearchBar
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+            />
             <span className="text-xs text-gray-500">
-              {filteredProducts.length} produit{filteredProducts.length > 1 ? "s" : ""}
+              {filteredProducts.length} produit
+              {filteredProducts.length > 1 ? "s" : ""}
             </span>
           </div>
         </div>
@@ -415,17 +590,31 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
       {/* Confirmation Modal */}
       <Modal
         open={showModal}
-        onCancel={() => { setShowModal(false); if (!submitSuccess) setSubmitError(null); }}
+        onCancel={() => {
+          setShowModal(false);
+          if (!submitSuccess) setSubmitError(null);
+        }}
         title={
-          <div className="flex items-center gap-2 font-bold text-base" style={{ color: APP_COLOR }}>
+          <div
+            className="flex items-center gap-2 font-bold text-base"
+            style={{ color: APP_COLOR }}
+          >
             <ShoppingCartOutlined />
-            {isEdit ? "Confirmer la modification" : t("admin.supplies.confirm_title")}
+            {isEdit
+              ? "Confirmer la modification"
+              : t("admin.supplies.confirm_title")}
           </div>
         }
         footer={
           submitSuccess ? null : (
             <div className="flex justify-end gap-2 pt-1">
-              <Button onClick={() => { setShowModal(false); setSubmitError(null); }} disabled={isSubmitting}>
+              <Button
+                onClick={() => {
+                  setShowModal(false);
+                  setSubmitError(null);
+                }}
+                disabled={isSubmitting}
+              >
                 Annuler
               </Button>
               <Button
@@ -446,9 +635,11 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
       >
         {submitSuccess ? (
           <div className="text-center py-8">
-            <CheckCircleFilled style={{ fontSize: 60, color: '#22c55e' }} />
+            <CheckCircleFilled style={{ fontSize: 60, color: "#22c55e" }} />
             <p className="text-lg font-bold text-green-700 mt-3">
-              {isEdit ? "Approvisionnement modifié avec succès" : t("admin.supplies.success")}
+              {isEdit
+                ? "Approvisionnement modifié avec succès"
+                : t("admin.supplies.success")}
             </p>
             <p className="text-gray-400 text-sm mt-1">Redirection en cours…</p>
           </div>
@@ -456,14 +647,23 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
           <>
             {/* Livreur */}
             {livreurObj && (
-              <div className="flex items-center gap-3 mb-4 p-3 rounded-xl" style={{ backgroundColor: `${APP_COLOR}0a` }}>
-                <div className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0"
-                  style={{ backgroundColor: APP_COLOR }}>
+              <div
+                className="flex items-center gap-3 mb-4 p-3 rounded-xl"
+                style={{ backgroundColor: `${APP_COLOR}0a` }}
+              >
+                <div
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0"
+                  style={{ backgroundColor: APP_COLOR }}
+                >
                   {livreurObj.first_name?.[0]?.toUpperCase()}
                 </div>
                 <div className="min-w-0">
-                  <div className="text-xs text-gray-400">{t("admin.supplies.deliverer")}</div>
-                  <div className="font-semibold text-sm text-gray-800 truncate">{livreurObj.first_name} {livreurObj.name}</div>
+                  <div className="text-xs text-gray-400">
+                    {t("admin.supplies.deliverer")}
+                  </div>
+                  <div className="font-semibold text-sm text-gray-800 truncate">
+                    {livreurObj.first_name} {livreurObj.name}
+                  </div>
                 </div>
               </div>
             )}
@@ -474,14 +674,24 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
 
             <div className="max-h-52 overflow-y-auto space-y-1.5 pr-1">
               {summary.map((product) => (
-                <div key={product.id} className="flex items-center justify-between p-2.5 rounded-xl min-w-0"
-                  style={{ backgroundColor: `${APP_COLOR}06` }}>
+                <div
+                  key={product.id}
+                  className="flex items-center justify-between p-2.5 rounded-xl min-w-0"
+                  style={{ backgroundColor: `${APP_COLOR}06` }}
+                >
                   <div className="min-w-0 flex-1">
-                    <div className="font-semibold text-sm text-gray-800 truncate">{product.name}</div>
-                    <div className="text-xs text-gray-400">{product.selectedQuantity} {product.unite}</div>
+                    <div className="font-semibold text-sm text-gray-800 truncate">
+                      {product.name}
+                    </div>
+                    <div className="text-xs text-gray-400">
+                      {product.selectedQuantity} {product.unite}
+                    </div>
                   </div>
                   <Tag color="purple" className="font-bold shrink-0 ml-2">
-                    {(product.price * product.selectedQuantity).toLocaleString()} CFA
+                    {(
+                      product.price * product.selectedQuantity
+                    ).toLocaleString()}{" "}
+                    CFA
                   </Tag>
                 </div>
               ))}
@@ -490,8 +700,13 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
             <Divider className="my-3" />
 
             <div className="flex justify-between items-center font-bold text-base">
-              <span style={{ color: APP_COLOR }}>{t("admin.supplies.units.total")}</span>
-              <span style={{ color: APP_COLOR }}>{totalAmount.toLocaleString()} {t("delivery.productSelection.currency")}</span>
+              <span style={{ color: APP_COLOR }}>
+                {t("admin.supplies.units.total")}
+              </span>
+              <span style={{ color: APP_COLOR }}>
+                {totalAmount.toLocaleString()}{" "}
+                {t("delivery.productSelection.currency")}
+              </span>
             </div>
 
             {submitError && (
@@ -506,8 +721,12 @@ const ProductSelectInner: React.FC<ProductSelectProps> = ({ approvisionnementId 
   );
 };
 
-const ProductSelect: React.FC<ProductSelectProps> = ({ approvisionnementId }) => (
-  <ConfigProvider theme={{ token: { colorPrimary: APP_COLOR, borderRadius: 10 } }}>
+const ProductSelect: React.FC<ProductSelectProps> = ({
+  approvisionnementId,
+}) => (
+  <ConfigProvider
+    theme={{ token: { colorPrimary: APP_COLOR, borderRadius: 10 } }}
+  >
     <App>
       <ProductSelectInner approvisionnementId={approvisionnementId} />
     </App>
